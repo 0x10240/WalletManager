@@ -35,10 +35,10 @@ const router = [
                 path: '/mirror',
                 element: <Mirror/>,
             },
-            {
-                path: '/coffee',
-                element: <Coffee/>,
-            },
+            // {
+            //     path: '/coffee',
+            //     element: <Coffee/>,
+            // },
             {
                 path: '/deposit',
                 element: <Deposit/>,

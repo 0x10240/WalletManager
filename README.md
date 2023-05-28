@@ -1,4 +1,6 @@
-# MyWalletScan
+# MyWalletScan  
+
+> 基于https://github.com/wxtsky/MyWalletScan 修改
 
 ## 关于
 
@@ -25,7 +27,7 @@ npm run dev
 
 ## 使用
 
-https://bitboxtools.github.io/
+https://airdrop.zksync.io/
 
 
 

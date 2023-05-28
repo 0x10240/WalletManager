@@ -43,20 +43,20 @@ const MenuHeader = () => {
             label: 'Deposit',
             key: 'deposit',
         },
+        // {
+        //     label: 'Coffee',
+        //     key: 'coffee',
+        // },
         {
-            label: 'Coffee',
-            key: 'coffee',
-        },
-        {
-            label: <a href="https://github.com/wxtsky/MyWalletScan" target="_blank"
+            label: <a href="https://github.com/luoyeETH/MyWalletScan" target="_blank"
                       rel="noopener noreferrer"><GithubOutlined/></a>,
             key: 'github',
         },
-        {
-            label: <a href="https://twitter.com/jingluo0" target="_blank"
-                      rel="noopener noreferrer"><TwitterOutlined/></a>,
-            key: 'twitter',
-        },
+        // {
+        //     label: <a href="https://twitter.com/jingluo0" target="_blank"
+        //               rel="noopener noreferrer"><TwitterOutlined/></a>,
+        //     key: 'twitter',
+        // },
         {
             label: <EthPrice/>,
             key: 'ethPrice',
