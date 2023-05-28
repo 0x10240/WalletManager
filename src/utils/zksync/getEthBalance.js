@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const RPC_MAP = {
-    "ethereum": "https://rpc.ankr.com/eth",
+    "ethereum": "https://cloudflare-eth.com",
     "optimism": "https://optimism-mainnet.public.blastapi.io",
     "arbitrum": "https://rpc.ankr.com/arbitrum",
     "polygon": "https://polygon-bor.publicnode.com",
