@@ -13,21 +13,84 @@ async function getStarkTx(address) {
             'content-type': 'application/json',
         }
         const Json_data = {
-            'query': 'query TransactionsTableQuery(\n  $first: Int!\n  $after: String\n  $input: TransactionsInput!\n) {\n  ...TransactionsTablePaginationFragment_transactions_2DAjA4\n}\n\nfragment TransactionsTableExpandedItemFragment_transaction on Transaction {\n  entry_point_selector_name\n  calldata_decoded\n  entry_point_selector\n  calldata\n  initiator_address\n  initiator_identifier\n  main_calls {\n    selector\n    selector_name\n    calldata_decoded\n    selector_identifier\n    calldata\n    contract_address\n    contract_identifier\n    id\n  }\n}\n\nfragment TransactionsTablePaginationFragment_transactions_2DAjA4 on Query {\n  transactions(first: $first, after: $after, input: $input) {\n    edges {\n      node {\n        id\n        ...TransactionsTableRowFragment_transaction\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TransactionsTableRowFragment_transaction on Transaction {\n  id\n  transaction_hash\n  block_number\n  transaction_status\n  transaction_type\n  timestamp\n  initiator_address\n  initiator_identifier\n  initiator {\n    is_social_verified\n    id\n  }\n  main_calls {\n    selector_identifier\n    id\n  }\n  ...TransactionsTableExpandedItemFragment_transaction\n}\n',
-            'variables': {
-                'first': 30,
-                'after': null,
-                'input': {
-                    'initiator_address': address,
-                    'transaction_types': [
-                        'INVOKE_FUNCTION'
-                    ],
-                    'sort_by': 'timestamp',
-                    'order_by': 'desc',
-                    'min_block_number': null,
-                    'max_block_number': null,
-                    'min_timestamp': null,
-                    'max_timestamp': null
+            query: `query TransactionsTableQuery(
+                $first: Int!,
+                $after: String,
+                $input: TransactionsInput!
+              ) {
+                ...TransactionsTablePaginationFragment_transactions_2DAjA4
+              }
+              
+              fragment TransactionsTableExpandedItemFragment_transaction on Transaction {
+                entry_point_selector_name
+                calldata_decoded
+                entry_point_selector
+                calldata
+                initiator_address
+                initiator_identifier
+                main_calls {
+                  selector
+                  selector_name
+                  calldata_decoded
+                  selector_identifier
+                  calldata
+                  contract_address
+                  contract_identifier
+                  id
+                }
+              }
+              
+              fragment TransactionsTablePaginationFragment_transactions_2DAjA4 on Query {
+                transactions(
+                  first: $first,
+                  after: $after,
+                  input: $input
+                ) {
+                  edges {
+                    node {
+                      id
+                      ...TransactionsTableRowFragment_transaction
+                      __typename
+                    }
+                    cursor
+                  }
+                  pageInfo {
+                    endCursor
+                    hasNextPage
+                  }
+                }
+              }
+              
+              fragment TransactionsTableRowFragment_transaction on Transaction {
+                id
+                transaction_hash
+                block_number
+                transaction_status
+                transaction_type
+                timestamp
+                initiator_address
+                initiator_identifier
+                initiator {
+                  is_social_verified
+                  id
+                }
+                main_calls {
+                  selector_identifier
+                  id
+                }
+                ...TransactionsTableExpandedItemFragment_transaction
+              }`,
+              variables: {
+                first: 30,
+                after: null,
+                input: {
+                  initiator_address: address,
+                  sort_by: 'timestamp',
+                  order_by: 'desc',
+                  min_block_number: null,
+                  max_block_number: null,
+                  min_timestamp: null,
+                  max_timestamp: null
                 }
               }
         }
