@@ -296,20 +296,38 @@ function ZksyncTasks() {
         const fetchData = async () => {
             const parsedAddresses = JSON.parse(storedAddresses);
             if (!parsedAddresses) {
-                return;
+              return;
             }
             // 存储每个地址对应的合约数组到map中
             const taskContractsMap = new Map();
+            const promises = []; // 存储所有的异步任务
+          
             for (const entry of parsedAddresses) {
-                const address = entry.address;
-                const contractAddresses = await getZksTasks(address);
-                taskContractsMap.set(address, contractAddresses);
-              }
-            setTableLoading(false);
-            setTaskContracts(taskContractsMap);
-            };
-
-        fetchData();
+              const address = entry.address;
+              const promise = getZksTasks(address)
+                .then(contractAddresses => {
+                  taskContractsMap.set(address, contractAddresses);
+                })
+                .catch(error => {
+                  // 处理错误
+                  console.error(`Error fetching tasks for address ${address}:`, error);
+                });
+          
+              promises.push(promise);
+            }
+          
+            try {
+              await Promise.all(promises); // 等待所有的异步任务完成
+              setTableLoading(false);
+              setTaskContracts(taskContractsMap);
+            } catch (error) {
+              // 处理错误
+              console.error('Error fetching task contracts:', error);
+            }
+          };
+          
+          fetchData();
+          
     }, []);
 
     useEffect(() => {
