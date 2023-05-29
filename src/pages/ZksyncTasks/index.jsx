@@ -275,7 +275,7 @@ function ZksyncTasks() {
 
     useEffect(() => {
     const handleResize = () => {
-        setTableHeight(window.innerHeight - 300); // 减去其他组件的高度，如页眉、页脚等
+        setTableHeight(window.innerHeight - 220); // 减去其他组件的高度，如页眉、页脚等
     };
 
     window.addEventListener('resize', handleResize);
