@@ -4,6 +4,7 @@ import React, {Suspense} from "react";
 import {Navigate, useRoutes} from "react-router-dom";
 
 const Zksync = React.lazy(() => import("@pages/Zksync"));
+const ZksyncTasks = React.lazy(() => import("@pages/ZksyncTasks"))
 const App = React.lazy(() => import("@/App"));
 const MainPage = React.lazy(() => import("@pages/MainPage"));
 const Stark = React.lazy(() => import("@pages/Stark"));
@@ -22,6 +23,10 @@ const router = [
             {
                 path: '/zksync',
                 element: <Zksync/>,
+            },
+            {
+                path: '/zksyncTasks',
+                element: <ZksyncTasks/>,
             },
             {
                 path: '/stark',

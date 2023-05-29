@@ -6,6 +6,7 @@ import {Layout, FloatButton} from "antd";
 import Layer from "@pages/Layer/index.jsx";
 import Mirror from "@pages/Mirror/index.jsx";
 import Coffee from "@pages/Coffee/index.jsx";
+import ZksyncTasks from "@pages/ZksyncTasks/index.jsx";
 import Deposit from "@pages/Deposit/index.jsx";
 import Notice from "@components/Notice/index.jsx";
 
@@ -49,10 +50,11 @@ function MainPage() {
                     <div>
                         {location.pathname === "/" && <Zksync/>}
                         {location.pathname === "/zksync" && <Zksync/>}
+                        {location.pathname === "/zksyncTasks" && <ZksyncTasks/>}
                         {location.pathname === "/stark" && <Stark/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}
-                        {location.pathname === "/coffee" && <Coffee/>}
+                        {/* {location.pathname === "/coffee" && <Coffee/>} */}
                         {location.pathname === "/deposit" && <Deposit/>}
                     </div>
                 </div>
