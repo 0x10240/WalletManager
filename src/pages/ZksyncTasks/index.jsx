@@ -61,6 +61,9 @@ function ZksyncTasks() {
     const okxSwapContract = "0xb9061E38FeE7d30134F56aEf7117E2F6d1580666";
     const spacefiContract = "0xbE7D1FD1f6748bbDefC4fbaCafBb11C6Fc506d1d";
     const _1inchContract = "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F";
+    const izumiContract = "0x9606eC131EeC0F84c95D82c9a63959F2331cF2aC";
+    const rollupContract = "0x5B91962F5ECa75E6558E4d32Df69B30f75cc6FE5";
+    const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509"
 
     const initData = async () => {
         try {
@@ -69,8 +72,8 @@ function ZksyncTasks() {
             for (let item of newData) {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const isSync = checkTaskStatus(item.address, syncSwapContract);
-                        item.sync = isSync;
+                        const result = checkTaskStatus(item.address, syncSwapContract);
+                        item.sync = result;
                         resolve();
                     });
                 });
@@ -83,22 +86,43 @@ function ZksyncTasks() {
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const isOkx = checkTaskStatus(item.address, okxSwapContract);
-                        item.okx = isOkx;
+                        const result = checkTaskStatus(item.address, okxSwapContract);
+                        item.okx = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const isSpacefi = checkTaskStatus(item.address, spacefiContract);
-                        item.spacefi = isSpacefi;
+                        const result = checkTaskStatus(item.address, spacefiContract);
+                        item.spacefi = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const is1inch = checkTaskStatus(item.address, _1inchContract);
-                        item._1inch = is1inch;
+                        const result = checkTaskStatus(item.address, _1inchContract);
+                        item._1inch = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, izumiContract);
+                        item.izumi = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, rollupContract);
+                        item.rollup = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, znsContract);
+                        item.zns = result;
                         resolve();
                     });
                 });
@@ -126,62 +150,83 @@ function ZksyncTasks() {
           const newData = [...data];
           const promisesQueue = [];
           
-          for (let key of selectedKeys) {
-            const index = newData.findIndex(item => item.key === key);
-            if (index !== -1) {
-              const item = newData[index];
-              const taskContractsMap = new Map();
-              const contractAddresses = await getZksTasks(item.address);
-              taskContractsMap.set(item.address, contractAddresses);
-              setTaskContracts(taskContractsMap);
-              await new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve();
-                }, 200);
-              });
-              promisesQueue.push(() => {
-                return new Promise((resolve) => {
-                  const isSync = checkTaskStatusByArray(contractAddresses, syncSwapContract);
-                  item.sync = isSync;
-                  resolve();
-                });
-              });
+            for (let key of selectedKeys) {
+                const index = newData.findIndex(item => item.key === key);
+                if (index !== -1) {
+                    const item = newData[index];
+                    const taskContractsMap = new Map();
+                    const contractAddresses = await getZksTasks(item.address);
+                    taskContractsMap.set(item.address, contractAddresses);
+                    setTaskContracts(taskContractsMap);
+                    await new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 200);
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, syncSwapContract);
+                            item.sync = result;
+                            resolve();
+                        });
+                    });
 
-              promisesQueue.push(() => {
-                return new Promise((resolve) => {
-                  const isMute = checkTaskStatusByArray(contractAddresses, muteContract);
-                  item.mute = isMute;
-                  resolve();
-                });
-              });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, muteContract);
+                            item.mute = result;
+                            resolve();
+                        });
+                    });
 
-              promisesQueue.push(() => {
-                return new Promise((resolve) => {
-                  const isOkx = checkTaskStatusByArray(contractAddresses, okxSwapContract);
-                  item.okx = isOkx;
-                  resolve();
-                });
-              });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, okxSwapContract);
+                            item.okx = result;
+                            resolve();
+                        });
+                    });
 
-              promisesQueue.push(() => {
-                return new Promise((resolve) => {
-                  const isSpacefi = checkTaskStatusByArray(contractAddresses, spacefiContract);
-                  item.spacefi = isSpacefi;
-                  resolve();
-                });
-              });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, spacefiContract);
+                            item.spacefi = result;
+                            resolve();
+                        });
+                    });
 
-              promisesQueue.push(() => {
-                return new Promise((resolve) => {
-                  const is1inch = checkTaskStatusByArray(contractAddresses, _1inchContract);
-                  item._1inch = is1inch;
-                  resolve();
-                });
-              });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, _1inchContract);
+                            item._1inch = result;
+                            resolve();
+                        });
+                    });
 
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, izumiContract);
+                            item.izumi = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatus(item.address, rollupContract);
+                            item.rollup = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatus(item.address, znsContract);
+                            item.zns = result;
+                            resolve();
+                        });
+                    });
+                }
             }
-            }
-          
+
           await Promise.all(promisesQueue.map(promise => promise()));
           
           setTaskData([...newData]);
@@ -400,12 +445,48 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
+                    title: <a href="https://izumi.finance/trade/swap" target="_blank" rel="noopener noreferrer">izumi</a>,
+                    dataIndex: "izumi",
+                    key: "izumi",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://app.rollup.finance/#/stake" target="_blank" rel="noopener noreferrer">rollup</a>,
+                    dataIndex: "rollup",
+                    key: "rollup",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://zks.network/" target="_blank" rel="noopener noreferrer">zns</a>,
+                    dataIndex: "zns",
+                    key: "zns",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
                     title: "进度",
                     dataIndex: "progress",
                     key: "progress",
                     align: "center",
                     render: (text, record) => {
-                        const items = ["sync", "mute", "okx", "spacefi", "_1inch"];
+                        const items = ["sync", "mute", "okx", "spacefi", "_1inch", "izumi", "rollup", "zns"];
                         const count = items.reduce((total, item) => {
                             if (record[item] > 0) {
                                 return total + 1;
