@@ -687,13 +687,42 @@ function Zksync() {
                     // width: 63
                 },
                 {
-                    title: "Tx",
-                    dataIndex: "zks2_tx_amount",
-                    key: "zks2_tx_amount",
-                    align: "center",
-                    render: (text, record) => (text === null ? <Spin/> : text),
-                    // width: 34.2
-                },
+                    title: 'Tx',
+                    dataIndex: 'zks2_tx_amount',
+                    key: 'zks2_tx_amount',
+                    align: 'center',
+                    render: (text, record) => {
+                        if (text === null) {
+                          return <Spin />;
+                        }
+                  
+                        // 计算对数值
+                        const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
+                        // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
+                  
+                        // 归一化处理
+                        const minValue = Math.log(1); // 最小值的对数
+                        const maxValue = Math.log(100); // 最大值的对数
+                        const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
+                  
+                        // 计算透明度
+                        const minOpacity = 0.1; // 最小透明度
+                        const maxOpacity = 1; // 最大透明度
+                        const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
+                  
+                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; // 使用绿色作为背景色
+                  
+                        return {
+                          children: text,
+                          props: {
+                            style: {
+                              background: backgroundColor,
+                            },
+                          },
+                        };
+                      },
+                      // width: 34.2
+                    },
                 {
                     title: "最后交易",
                     dataIndex: "zks2_last_tx",
@@ -807,8 +836,38 @@ function Zksync() {
                             dataIndex: "totalExchangeAmount",
                             key: "totalExchangeAmount",
                             align: "center",
-                            render: (text, record) => (text === null ? <Spin/> : text),
-                        },
+                            render: (text, record) => {
+                                if (text === null) {
+                                  return <Spin />;
+                                }
+                          
+                                // 计算对数值
+                                const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
+                                // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
+                          
+                                // 归一化处理
+                                const minValue = Math.log(1); // 最小值的对数
+                                const maxValue = Math.log(100); // 最大值的对数
+                                const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
+                          
+                                // 计算透明度
+                                const minOpacity = 0.1; // 最小透明度
+                                const maxOpacity = 1; // 最大透明度
+                                const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
+                          
+                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; // 使用绿色作为背景色
+                          
+                                return {
+                                  children: text,
+                                  props: {
+                                    style: {
+                                      background: backgroundColor,
+                                    },
+                                  },
+                                };
+                              },
+                              // width: 34.2
+                            },
                         {
                             title: "FeeΞ",
                             dataIndex: "totalFee",
