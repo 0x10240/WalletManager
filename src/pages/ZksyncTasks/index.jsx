@@ -54,6 +54,7 @@ function ZksyncTasks() {
     const [taskContracts, setTaskContracts] = useState(new Map());
     const [taskData, setTaskData] = useState([]);
     const [initialized, setInitialized] = useState(false);
+    const [tableHeight, setTableHeight] = useState(0);
 
     const syncSwapContract = "0x2da10a1e27bf85cedd8ffb1abbe97e53391c0295";
     const muteContract = "0x8B791913eB07C32779a16750e3868aA8495F5964";
@@ -226,7 +227,20 @@ function ZksyncTasks() {
             
             return count;
       };
-    
+
+    useEffect(() => {
+    const handleResize = () => {
+        setTableHeight(window.innerHeight - 300); // 减去其他组件的高度，如页眉、页脚等
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+    }, []);
+
     useEffect(() => {
         setTableLoading(true);
         const storedAddresses = localStorage.getItem('addresses');
@@ -274,7 +288,7 @@ function ZksyncTasks() {
             key: "index",
             align: "center",
             render: (text, record, index) => index + 1,
-            // width: 34.5,
+            width: 34.5,
         },
         {
             title: "备注",
@@ -306,7 +320,7 @@ function ZksyncTasks() {
                     </>
                 );
             },
-            // width: 70
+            width: 70
         },
         {
             title: "钱包地址",
@@ -318,7 +332,7 @@ function ZksyncTasks() {
                     {text === null ? <Spin /> : text}
                 </span>
             ),
-            // width: 375
+            width: 175
         },
         {
             title: "zkSyncEra Task List",
@@ -335,7 +349,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    // width: 60
+                    width: 60
                 },
                 {
                     title: "Mute.io",
@@ -347,7 +361,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    // width: 63
+                    width: 60
                 },
                 {
                     title: "OKXSwap",
@@ -359,7 +373,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    // width: 34.2
+                    width: 60
                 },
                 {
                     title: "Spacefi",
@@ -371,7 +385,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    // width: 34.2
+                    width: 60
                 },
                 {
                     title: "1inch",
@@ -383,7 +397,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    // width: 34.2
+                    width: 60
                 },
                 {
                     title: "进度",
@@ -406,7 +420,7 @@ function ZksyncTasks() {
                             </span>
                         );
                     },
-                    // width: 77
+                    width: 60
                 }
             ],
         }
@@ -448,6 +462,9 @@ function ZksyncTasks() {
                         style={{marginBottom: "20px", zIndex: 2}}
                         size={"small"}
                         columns={columns}
+                        scroll={{
+                            y: tableHeight
+                          }}
                         // sticky
                         summary={pageData => {
                             let ethBalance = 0;
