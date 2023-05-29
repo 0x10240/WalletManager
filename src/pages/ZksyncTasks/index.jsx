@@ -212,14 +212,14 @@ function ZksyncTasks() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatus(item.address, rollupContract);
+                            const result = checkTaskStatusByArray(contractAddresses, rollupContract);
                             item.rollup = result;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatus(item.address, znsContract);
+                            const result = checkTaskStatusByArray(contractAddresses, znsContract);
                             item.zns = result;
                             resolve();
                         });
