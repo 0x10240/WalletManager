@@ -52,6 +52,8 @@ function ZksyncTasks() {
     const [isLoading, setIsLoading] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [taskContracts, setTaskContracts] = useState(new Map());
+    const [taskData, setTaskData] = useState([]);
+    const [initialized, setInitialized] = useState(false);
 
     const syncSwapContract = "0x2da10a1e27bf85cedd8ffb1abbe97e53391c0295";
     const muteContract = "0x8B791913eB07C32779a16750e3868aA8495F5964";
@@ -59,6 +61,57 @@ function ZksyncTasks() {
     const spacefiContract = "0xbE7D1FD1f6748bbDefC4fbaCafBb11C6Fc506d1d";
     const _1inchContract = "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F";
 
+    const initData = async () => {
+        try {
+            const newData = [...data];
+            const promisesQueue = [];
+            for (let item of newData) {
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const isSync = checkTaskStatus(item.address, syncSwapContract);
+                        item.sync = isSync;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const isMute = checkTaskStatus(item.address, muteContract);
+                        item.mute = isMute;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const isOkx = checkTaskStatus(item.address, okxSwapContract);
+                        item.okx = isOkx;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const isSpacefi = checkTaskStatus(item.address, spacefiContract);
+                        item.spacefi = isSpacefi;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const is1inch = checkTaskStatus(item.address, _1inchContract);
+                        item._1inch = is1inch;
+                        resolve();
+                    });
+                });
+            }
+            await Promise.all(promisesQueue.map((promise) => promise()));
+            setTaskData([...newData]);
+            localStorage.setItem('addresses', JSON.stringify(newData));
+        } catch (e) {
+            console.error(e);
+        }
+        finally {
+            setIsLoading(false);
+        }
+    }
     const handleRefresh = async () => {
         if (!selectedKeys.length) {
           notification.error({
@@ -87,7 +140,7 @@ function ZksyncTasks() {
               });
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
-                  const isSync = checkTaskStatus(item.address, syncSwapContract);
+                  const isSync = checkTaskStatusByArray(contractAddresses, syncSwapContract);
                   item.sync = isSync;
                   resolve();
                 });
@@ -95,7 +148,7 @@ function ZksyncTasks() {
 
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
-                  const isMute = checkTaskStatus(item.address, muteContract);
+                  const isMute = checkTaskStatusByArray(contractAddresses, muteContract);
                   item.mute = isMute;
                   resolve();
                 });
@@ -103,7 +156,7 @@ function ZksyncTasks() {
 
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
-                  const isOkx = checkTaskStatus(item.address, okxSwapContract);
+                  const isOkx = checkTaskStatusByArray(contractAddresses, okxSwapContract);
                   item.okx = isOkx;
                   resolve();
                 });
@@ -111,7 +164,7 @@ function ZksyncTasks() {
 
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
-                  const isSpacefi = checkTaskStatus(item.address, spacefiContract);
+                  const isSpacefi = checkTaskStatusByArray(contractAddresses, spacefiContract);
                   item.spacefi = isSpacefi;
                   resolve();
                 });
@@ -119,7 +172,7 @@ function ZksyncTasks() {
 
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
-                  const is1inch = checkTaskStatus(item.address, _1inchContract);
+                  const is1inch = checkTaskStatusByArray(contractAddresses, _1inchContract);
                   item._1inch = is1inch;
                   resolve();
                 });
@@ -130,7 +183,7 @@ function ZksyncTasks() {
           
           await Promise.all(promisesQueue.map(promise => promise()));
           
-          setData([...newData]);
+          setTaskData([...newData]);
           localStorage.setItem('addresses', JSON.stringify(newData));
           message.success("刷新成功");
         } catch (error) {
@@ -161,19 +214,31 @@ function ZksyncTasks() {
           
           return count;
     };
+
+    const checkTaskStatusByArray = (contractAddresses, taskContract) => {
+        taskContract = taskContract.toLowerCase();
+        const count = contractAddresses.reduce((accumulator, contractAddress) => {
+            if (contractAddress === taskContract) {
+                return accumulator + 1;
+              }
+              return accumulator;
+            }, 0);
+            
+            return count;
+      };
     
     useEffect(() => {
         setTableLoading(true);
         const storedAddresses = localStorage.getItem('addresses');
         if (storedAddresses) {
             setData(JSON.parse(storedAddresses));
+            setTaskData(JSON.parse(storedAddresses));
         }
         const fetchData = async () => {
-            if (storedAddresses.length === 0) {
-                // storedAddresses为空的情况
+            const parsedAddresses = JSON.parse(storedAddresses);
+            if (!parsedAddresses) {
                 return;
             }
-            const parsedAddresses = JSON.parse(storedAddresses);
             // 存储每个地址对应的合约数组到map中
             const taskContractsMap = new Map();
             for (const entry of parsedAddresses) {
@@ -188,6 +253,13 @@ function ZksyncTasks() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        if (!initialized && data.length > 0 && taskContracts.size > 0) {
+            initData()
+            setInitialized(true); // 标记为已初始化
+        }
+      }, [data, taskContracts]);
+   
     const rowSelection = {
         selectedRowKeys: selectedKeys,
         onChange: (selectedRowKeys) => {
@@ -314,13 +386,26 @@ function ZksyncTasks() {
                     // width: 34.2
                 },
                 {
-                    title: "最后交易",
-                    dataIndex: "zks2_last_tx",
-                    key: "zks2_last_tx",
+                    title: "进度",
+                    dataIndex: "progress",
+                    key: "progress",
                     align: "center",
-                    render: (text, record) => (text === null ? <Spin/> :
-                        <a href={"https://explorer.zksync.io/address/" + record.address}
-                           target={"_blank"}>{text}</a>),
+                    render: (text, record) => {
+                        const items = ["sync", "mute", "okx", "spacefi", "_1inch"];
+                        const count = items.reduce((total, item) => {
+                            if (record[item] > 0) {
+                                return total + 1;
+                            }
+                            return total;
+                        }, 0);
+                        const percentage = (count / items.length) * 100;
+
+                        return (
+                            <span>
+                                {text === null ? <Spin /> : `${percentage.toFixed(2)}%`}
+                            </span>
+                        );
+                    },
                     // width: 77
                 }
             ],
@@ -357,7 +442,7 @@ function ZksyncTasks() {
                 <Spin spinning={tableLoading}>
                     <Table
                         rowSelection={rowSelection}
-                        dataSource={data}
+                        dataSource={taskData}
                         pagination={false}
                         bordered={true}
                         style={{marginBottom: "20px", zIndex: 2}}
