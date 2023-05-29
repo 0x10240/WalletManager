@@ -340,7 +340,7 @@ function ZksyncTasks() {
             className: "zks_era",
             children: [
                 {
-                    title: "SyncSwap",
+                    title: <a href="https://syncswap.xyz" target="_blank" rel="noopener noreferrer">SyncSwap</a>,
                     dataIndex: "sync",
                     key: "sync",
                     align: "center",
@@ -352,7 +352,7 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
-                    title: "Mute.io",
+                    title: <a href="https://app.mute.io/swap" target="_blank" rel="noopener noreferrer">Mute.io</a>,
                     dataIndex: "mute",
                     key: "mute",
                     align: "center",
@@ -364,7 +364,7 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
-                    title: "OKXSwap",
+                    title: <a href="https://www.okx.com/cn/web3/dex" target="_blank" rel="noopener noreferrer">OKXSwap</a>,
                     dataIndex: "okx",
                     key: "okx",
                     align: "center",
@@ -376,7 +376,7 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
-                    title: "Spacefi",
+                    title: <a href="https://swap-zksync.spacefi.io/#/swap" target="_blank" rel="noopener noreferrer">Spacefi</a>,
                     dataIndex: "spacefi",
                     key: "spacefi",
                     align: "center",
@@ -388,7 +388,7 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
-                    title: "1inch",
+                    title: <a href="https://app.1inch.io" target="_blank" rel="noopener noreferrer">1inch</a>,
                     dataIndex: "_1inch",
                     key: "_1inch",
                     align: "center",
