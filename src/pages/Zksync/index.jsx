@@ -9,7 +9,7 @@ import {
     Spin,
     Tag,
     Popconfirm,
-    Row, Col, InputNumber, Badge, message, Switch, Pagination
+    Row, Col, InputNumber, Badge, message, Switch, Pagination,
 } from 'antd';
 import {
     getEthBalance,
@@ -699,9 +699,27 @@ function Zksync() {
                     dataIndex: "zks2_last_tx",
                     key: "zks2_last_tx",
                     align: "center",
-                    render: (text, record) => (text === null ? <Spin/> :
-                        <a href={"https://explorer.zksync.io/address/" + record.address}
-                           target={"_blank"}>{text}</a>),
+                    render: (text, record) => {
+                        let textColor = "inherit";
+                      
+                        if (text === null) {
+                          return <Spin />;
+                        } else if (text.includes("周")) {
+                          textColor = "red";
+                        } else {
+                          textColor = "#1677ff";
+                        }
+                      
+                        return (
+                          <a
+                            href={"https://explorer.zksync.io/address/" + record.address}
+                            target={"_blank"}
+                            style={{ color: textColor }}
+                          >
+                            {text}
+                          </a>
+                        );
+                      }
                     // width: 77
                 },
                 {
