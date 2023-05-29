@@ -76,7 +76,15 @@ function ZksyncTasks() {
             const index = newData.findIndex(item => item.key === key);
             if (index !== -1) {
               const item = newData[index];
-              
+              const taskContractsMap = new Map();
+              const contractAddresses = await getZksTasks(item.address);
+              taskContractsMap.set(item.address, contractAddresses);
+              setTaskContracts(taskContractsMap);
+              await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, 200);
+              });
               promisesQueue.push(() => {
                 return new Promise((resolve) => {
                   const isSync = checkTaskStatus(item.address, syncSwapContract);
@@ -140,6 +148,10 @@ function ZksyncTasks() {
     const checkTaskStatus = (address, taskContract) => {
         taskContract = taskContract.toLowerCase();
         const contractAddresses = taskContracts.get(address);
+        if (contractAddresses == undefined) {
+            message.info("等待数据加载完成再刷新");
+            return "error";
+        }
         const count = contractAddresses.reduce((accumulator, contractAddress) => {
             if (contractAddress === taskContract) {
               return accumulator + 1;
@@ -153,9 +165,6 @@ function ZksyncTasks() {
     useEffect(() => {
         setTableLoading(true);
         const storedAddresses = localStorage.getItem('addresses');
-        setTimeout(() => {
-            setTableLoading(false);
-        }, 500);
         if (storedAddresses) {
             setData(JSON.parse(storedAddresses));
         }
@@ -172,6 +181,7 @@ function ZksyncTasks() {
                 const contractAddresses = await getZksTasks(address);
                 taskContractsMap.set(address, contractAddresses);
               }
+            setTableLoading(false);
             setTaskContracts(taskContractsMap);
             };
 
