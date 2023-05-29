@@ -9,8 +9,9 @@ import {
     Spin,
     Tag,
     Popconfirm,
-    Row, Col, InputNumber, Badge, message, Switch, Pagination,
+    Row, Col, InputNumber, Badge, message, Switch, Pagination
 } from 'antd';
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
 import {
     getEthBalance,
     getTxCount,
@@ -50,6 +51,19 @@ function Zksync() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
+    const [hideColumn, setHideColumn] = useState(false);
+
+    const toggleHideColumn = () => {
+        setHideColumn(!hideColumn);
+      };
+    
+    const getEyeIcon = () => {
+    if (hideColumn) {
+        return <EyeInvisibleOutlined />;
+    }
+    return <EyeOutlined />;
+    };
+    
     useEffect(() => {
         setBatchProgress(0);
         const zksync_config = localStorage.getItem('zksync_config');
@@ -605,11 +619,21 @@ function Zksync() {
             // width: 70
         },
         {
-            title: "钱包地址",
+            title: (
+                <span>
+                钱包地址
+                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        {getEyeIcon()}
+                    </span>
+                </span>
+            ),
             dataIndex: "address",
             key: "address",
             align: "center",
             render: (text, record) => {
+                if (hideColumn) {
+                    return '***';
+                  }
                 return isRowSatisfyCondition(record) ?
                     <div
                         style={{backgroundColor: '#bbeefa', borderRadius: '5px'}}

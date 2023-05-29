@@ -11,6 +11,7 @@ import {
     Popconfirm,
     Row, Col, InputNumber, Badge, message, Switch, Pagination
 } from 'antd';
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
 import {
     getEthBalance,
     getTxCount,
@@ -55,6 +56,7 @@ function ZksyncTasks() {
     const [taskData, setTaskData] = useState([]);
     const [initialized, setInitialized] = useState(false);
     const [tableHeight, setTableHeight] = useState(0);
+    const [hideColumn, setHideColumn] = useState(false);
 
     const syncSwapContract = "0x2da10a1e27bf85cedd8ffb1abbe97e53391c0295";
     const muteContract = "0x8B791913eB07C32779a16750e3868aA8495F5964";
@@ -64,6 +66,17 @@ function ZksyncTasks() {
     const izumiContract = "0x9606eC131EeC0F84c95D82c9a63959F2331cF2aC";
     const rollupContract = "0x5B91962F5ECa75E6558E4d32Df69B30f75cc6FE5";
     const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509"
+
+    const toggleHideColumn = () => {
+        setHideColumn(!hideColumn);
+      };
+    
+    const getEyeIcon = () => {
+    if (hideColumn) {
+        return <EyeInvisibleOutlined />;
+    }
+    return <EyeOutlined />;
+    };
 
     const initData = async () => {
         try {
@@ -386,15 +399,23 @@ function ZksyncTasks() {
             width: 70
         },
         {
-            title: "钱包地址",
+            title: (
+                <span>
+                钱包地址
+                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        {getEyeIcon()}
+                    </span>
+                </span>
+            ),
             dataIndex: "address",
             key: "address",
             align: "center",
-            render: (text, record) => (
-                <span>
-                    {text === null ? <Spin /> : text}
-                </span>
-            ),
+            render: (text) => {
+                if (hideColumn) {
+                  return '***';
+                }
+                return text;
+              },
             width: 175
         },
         {
