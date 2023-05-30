@@ -520,28 +520,33 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
-                    title: "进度",
-                    dataIndex: "progress",
-                    key: "progress",
-                    align: "center",
+                    title: '进度',
+                    dataIndex: 'progress',
+                    key: 'progress',
+                    align: 'center',
                     render: (text, record) => {
-                        const items = ["sync", "mute", "okx", "spacefi", "_1inch", "izumi", "rollup", "zns"];
-                        const count = items.reduce((total, item) => {
-                            if (record[item] > 0) {
-                                return total + 1;
-                            }
-                            return total;
-                        }, 0);
-                        const percentage = (count / items.length) * 100;
-
-                        return (
-                            <span>
-                                {text === null ? <Spin /> : `${percentage.toFixed(2)}%`}
-                            </span>
-                        );
+                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'rollup', 'zns'];
+                      const count = items.reduce((total, item) => {
+                        if (record[item] > 0) {
+                          return total + 1;
+                        }
+                        return total;
+                      }, 0);
+                      const percentage = (count / items.length) * 100;
+                
+                      const backgroundColor = `rgba(64, 64, 64, ${percentage / 100})`;
+                
+                      return {
+                        children: <span>{text === null ? <Spin /> : `${percentage.toFixed(2)}%`}</span>,
+                        props: {
+                          style: {
+                            background: backgroundColor,
+                          },
+                        },
+                      };
                     },
-                    width: 60
-                }
+                    width: 60,
+                  },
             ],
         }
     ];

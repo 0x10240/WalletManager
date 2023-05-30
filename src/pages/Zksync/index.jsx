@@ -879,7 +879,7 @@ function Zksync() {
                                 const maxOpacity = 1; // 最大透明度
                                 const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
                           
-                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; // 使用绿色作为背景色
+                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; 
                           
                                 return {
                                   children: text,
