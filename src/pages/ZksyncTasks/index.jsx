@@ -417,6 +417,33 @@ function ZksyncTasks() {
                 return text;
               },
             width: 175
+        },{
+            title: "最后交易",
+            dataIndex: "zks2_last_tx",
+            key: "zks2_last_tx",
+            align: "center",
+            render: (text, record) => {
+                let textColor = "inherit";
+              
+                if (text === null) {
+                  return <Spin />;
+                } else if (text.includes("周")) {
+                  textColor = "red";
+                } else {
+                  textColor = "#1677ff";
+                }
+              
+                return (
+                  <a
+                    href={"https://explorer.zksync.io/address/" + record.address}
+                    target={"_blank"}
+                    style={{ color: textColor }}
+                  >
+                    {text}
+                  </a>
+                );
+              },
+            width: 60
         },
         {
             title: "zkSyncEra Task List",
