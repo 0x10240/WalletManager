@@ -65,7 +65,10 @@ function ZksyncTasks() {
     const _1inchContract = "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F";
     const izumiContract = "0x9606eC131EeC0F84c95D82c9a63959F2331cF2aC";
     const rollupContract = "0x5B91962F5ECa75E6558E4d32Df69B30f75cc6FE5";
-    const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509"
+    const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509";
+    const veloContract = "0xd999E16e68476bC749A28FC14a0c3b6d7073F50c";
+    const ReactorFusionContract = "0xC5db68F30D21cBe0C9Eac7BE5eA83468d69297e6";
+    const eraLendContract = "0x1BbD33384869b30A323e15868Ce46013C82B86FB";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -136,6 +139,27 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, znsContract);
                         item.zns = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, veloContract);
+                        item.velo = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, ReactorFusionContract);
+                        item.rf = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, eraLendContract);
+                        item.eralend = result;
                         resolve();
                     });
                 });
@@ -234,6 +258,27 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, znsContract);
                             item.zns = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, veloContract);
+                            item.velo = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, ReactorFusionContract);
+                            item.rf = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, eraLendContract);
+                            item.eralend = result;
                             resolve();
                         });
                     });
@@ -547,12 +592,48 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
+                    title: <a href="https://app.velocore.xyz/swap" target="_blank" rel="noopener noreferrer">velocore</a>,
+                    dataIndex: "velo",
+                    key: "velo",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://app.reactorfusion.xyz/" target="_blank" rel="noopener noreferrer">Reactor</a>,
+                    dataIndex: "rf",
+                    key: "rf",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend</a>,
+                    dataIndex: "eralend",
+                    key: "eralend",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
                     align: 'center',
                     render: (text, record) => {
-                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'rollup', 'zns'];
+                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'rollup', 'zns', 'velo', 'rf', 'eralend'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
