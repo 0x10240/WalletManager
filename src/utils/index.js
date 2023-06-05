@@ -10,6 +10,7 @@ import getStarkInfo from "@utils/stark/getStarkInfo.js";
 import getLayerData from "@utils/layer/getLayerData.js";
 import getEthPrice from "@utils/ether/getEthPrice.js";
 import getZksTasks from "@utils/zksync/getZksTasks.js";
+import calculateScore from "@utils/score/getScore.js";
 
 export {
     getEthBalance,
@@ -23,5 +24,6 @@ export {
     getStarkInfo,
     getLayerData,
     getEthPrice,
-    getZksTasks
+    getZksTasks,
+    calculateScore
 };

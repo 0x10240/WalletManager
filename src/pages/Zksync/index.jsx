@@ -18,7 +18,8 @@ import {
     getZksEra,
     getZksLite,
     getZkSyncBridge,
-    exportToExcel
+    exportToExcel,
+    calculateScore
 } from "@utils"
 import {useEffect, useState} from "react";
 import './index.css';
@@ -52,6 +53,7 @@ function Zksync() {
     const [isLoading, setIsLoading] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [hideColumn, setHideColumn] = useState(false);
+    const [scoreData, setScoreData] = useState([]);
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -547,8 +549,26 @@ function Zksync() {
         }, 500);
         if (storedAddresses) {
             setData(JSON.parse(storedAddresses));
+            setScoreData(JSON.parse(storedAddresses));
         }
     }, []);
+    useEffect(() => {
+        const newData = [...data];
+      
+        for (const item of newData) {
+          setTimeout(async () => {
+            const score = await calculateScore(item);
+            item.zk_score = score;
+            
+            // 检查是否所有数据的评分都已计算完成
+            const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
+            
+            if (allScoresCalculated) {
+              setData(newData);
+            }
+          }, 0);
+        }
+      }, [scoreData]);
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -734,7 +754,7 @@ function Zksync() {
                         const maxOpacity = 1; // 最大透明度
                         const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
                   
-                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; // 使用绿色作为背景色
+                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; 
                   
                         return {
                           children: text,
@@ -903,6 +923,43 @@ function Zksync() {
                     ],
                 },
             ],
+        },
+        {
+            title: "地址评分",
+            dataIndex: "zk_score",
+            key: "zk_score",
+            align: "center",
+            render: (text, record) => {
+                if (text === null) {
+                  return <Spin />;
+                }
+          
+                // 计算对数值
+                const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
+                // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
+          
+                // 归一化处理
+                const minValue = Math.log(1); // 最小值的对数
+                const maxValue = Math.log(100); // 最大值的对数
+                const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
+          
+                // 计算透明度
+                const minOpacity = 0.1; // 最小透明度
+                const maxOpacity = 1; // 最大透明度
+                const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
+          
+                const backgroundColor = `rgba(240, 121, 78, ${opacity})`; 
+          
+                return {
+                  children: text,
+                  props: {
+                    style: {
+                      background: backgroundColor,
+                    },
+                  },
+                };
+              },
+            // width: 77
         },
         {
             title: "操作",
