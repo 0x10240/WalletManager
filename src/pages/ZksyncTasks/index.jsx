@@ -69,6 +69,7 @@ function ZksyncTasks() {
     const veloContract = "0xd999E16e68476bC749A28FC14a0c3b6d7073F50c";
     const ReactorFusionContract = "0xC5db68F30D21cBe0C9Eac7BE5eA83468d69297e6";
     const eraLendContract = "0x1BbD33384869b30A323e15868Ce46013C82B86FB";
+    const mavContract = "0x39e098a153ad69834a9dac32f0fca92066ad03f4";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -160,6 +161,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, eraLendContract);
                         item.eralend = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, mavContract);
+                        item.mav = result;
                         resolve();
                     });
                 });
@@ -279,6 +287,13 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, eraLendContract);
                             item.eralend = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, mavContract);
+                            item.mav = result;
                             resolve();
                         });
                     });
@@ -580,6 +595,18 @@ function ZksyncTasks() {
                     width: 60
                 },
                 {
+                    title: <a href="https://app.mav.xyz/?chain=324" target="_blank" rel="noopener noreferrer">Maverick</a>,
+                    dataIndex: "mav",
+                    key: "mav",
+                    align: "center",
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
                     title: <a href="https://zks.network/" target="_blank" rel="noopener noreferrer">zns</a>,
                     dataIndex: "zns",
                     key: "zns",
@@ -633,7 +660,7 @@ function ZksyncTasks() {
                     key: 'progress',
                     align: 'center',
                     render: (text, record) => {
-                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'rollup', 'zns', 'velo', 'rf', 'eralend'];
+                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'rollup', 'zns', 'velo', 'rf', 'eralend', 'mav'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
