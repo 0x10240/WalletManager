@@ -674,7 +674,7 @@ function Zksync() {
                         {text}</div> : text ||
                     <Spin/>;
             },
-            width: 375
+            width: 200
         },
         {
             title: "ETH",
