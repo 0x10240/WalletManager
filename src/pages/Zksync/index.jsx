@@ -69,7 +69,7 @@ function Zksync() {
 
     useEffect(() => {
         const handleResize = () => {
-            setTableHeight(window.innerHeight - 270); // 减去其他组件的高度，如页眉、页脚等
+            setTableHeight(window.innerHeight - 240); // 减去其他组件的高度，如页眉、页脚等
         };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -1163,7 +1163,7 @@ function Zksync() {
                                     width: '100%',
                                     display: 'flex',
                                     justifyContent: 'space-between',
-                                    gap: '10px'
+                                    gap: '20px'
                                 }}>
                                     <Button type="primary" onClick={() => {
                                         setIsWalletModalVisible(true)
