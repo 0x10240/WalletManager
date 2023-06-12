@@ -895,6 +895,7 @@ function Zksync() {
                             dataIndex: "totalExchangeAmount",
                             key: "totalExchangeAmount",
                             align: "center",
+                            sorter: (a, b) => a.totalExchangeAmount - b.totalExchangeAmount,
                             render: (text, record) => {
                                 if (text === null) {
                                   return <Spin />;
