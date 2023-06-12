@@ -69,7 +69,7 @@ function Zksync() {
 
     useEffect(() => {
         const handleResize = () => {
-            setTableHeight(window.innerHeight - 220); // 减去其他组件的高度，如页眉、页脚等
+            setTableHeight(window.innerHeight - 270); // 减去其他组件的高度，如页眉、页脚等
         };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -617,7 +617,7 @@ function Zksync() {
             key: "index",
             align: "center",
             render: (text, record, index) => index + 1,
-            width: 34.5,
+            width: 40,
         },
         {
             title: "备注",
@@ -649,7 +649,7 @@ function Zksync() {
                     </>
                 );
             },
-            width: 70
+            width: 75
         },
         {
             title: (
@@ -674,7 +674,7 @@ function Zksync() {
                         {text}</div> : text ||
                     <Spin/>;
             },
-            width: 200
+            width: 168
         },
         {
             title: "ETH",
@@ -741,13 +741,14 @@ function Zksync() {
                     key: "zks2_usdcBalance",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
-                    width: 63
+                    width: 60
                 },
                 {
                     title: 'Tx',
                     dataIndex: 'zks2_tx_amount',
                     key: 'zks2_tx_amount',
                     align: 'center',
+                    sorter: (a, b) => a.zks2_tx_amount - b.zks2_tx_amount,
                     render: (text, record) => {
                         if (text === null) {
                           return <Spin />;
@@ -778,7 +779,7 @@ function Zksync() {
                           },
                         };
                       },
-                      width: 34.2
+                      width: 40
                     },
                 {
                     title: "最后交易",
@@ -806,7 +807,7 @@ function Zksync() {
                           </a>
                         );
                       },
-                    width: 77
+                    width: 70
                 },
                 {
                     title: "官方桥跨链Tx数",
@@ -817,6 +818,7 @@ function Zksync() {
                             dataIndex: "l1Tol2Times",
                             key: "l1Tol2Times",
                             align: "center",
+                            sorter: (a, b) => a.l1Tol2Times - b.l1Tol2Times,
                             render: (text, record) => (text === null ? <Spin/> : text),
                             width: 60
                         },
@@ -826,12 +828,12 @@ function Zksync() {
                             key: "l2Tol1Times",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 60
+                            width: 50
                         },
                     ],
                 },
                 {
-                    title: "官方桥跨链金额(ETH)",
+                    title: "官方桥跨链金额",
                     key: "cross_chain_amount_group",
                     children: [
                         {
@@ -840,7 +842,7 @@ function Zksync() {
                             key: "l1Tol2Amount",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 75
+                            width: 50
                         },
                         {
                             title: "L2->L1",
@@ -848,7 +850,7 @@ function Zksync() {
                             key: "l2Tol1Amount",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 75
+                            width: 50
                         },
                     ],
                 },
@@ -938,10 +940,11 @@ function Zksync() {
             ],
         },
         {
-            title: "地址评分",
+            title: "评分",
             dataIndex: "zk_score",
             key: "zk_score",
             align: "center",
+            sorter: (a, b) => a.zk_score - b.zk_score,
             render: (text, record) => {
                 if (text === null) {
                   return <Spin />;
@@ -972,7 +975,7 @@ function Zksync() {
                   },
                 };
               },
-            width: 77
+            width: 50
         },
         {
             title: "操作",
@@ -1106,7 +1109,7 @@ function Zksync() {
                         dataSource={data}
                         pagination={false}
                         bordered={true}
-                        style={{marginBottom: "20px", zIndex: 2}}
+                        style={{marginBottom: "10px", zIndex: 2}}
                         size={"small"}
                         columns={columns}
                         scroll={{
