@@ -28,6 +28,11 @@
     line-height: 1.2;
 }
 
+.ant-card .ant-card-body {
+    padding: 8px;
+    border-radius: 0 0 8px 8px;
+}
+
 .ant-table {
     font-weight: 600;
 }

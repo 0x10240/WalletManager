@@ -69,7 +69,7 @@ function Zksync() {
 
     useEffect(() => {
         const handleResize = () => {
-            setTableHeight(window.innerHeight - 240); // 减去其他组件的高度，如页眉、页脚等
+            setTableHeight(window.innerHeight - 210); // 减去其他组件的高度，如页眉、页脚等
         };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -1110,7 +1110,7 @@ function Zksync() {
                         dataSource={data}
                         pagination={false}
                         bordered={true}
-                        style={{marginBottom: "10px", zIndex: 2}}
+                        style={{marginBottom: "0px", zIndex: 2}}
                         size={"small"}
                         columns={columns}
                         scroll={{

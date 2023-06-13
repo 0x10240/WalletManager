@@ -71,6 +71,7 @@ function ZksyncTasks() {
     const eraLendContract = "0x1BbD33384869b30A323e15868Ce46013C82B86FB";
     const mavContract = "0x39e098a153ad69834a9dac32f0fca92066ad03f4";
     const veSyncContract = "0x6C31035D62541ceba2Ac587ea09891d1645D6D07";
+    const overNightContract = "0x84d05333f1F5Bf1358c3f63A113B1953C427925D";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -176,6 +177,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, veSyncContract);
                         item.veSync = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, overNightContract);
+                        item.usdp = result;
                         resolve();
                     });
                 });
@@ -312,6 +320,13 @@ function ZksyncTasks() {
                             resolve();
                         });
                     });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, overNightContract);
+                            item.usdp = result;
+                            resolve();
+                        });
+                    });
                 }
             }
 
@@ -363,7 +378,7 @@ function ZksyncTasks() {
 
     useEffect(() => {
     const handleResize = () => {
-        setTableHeight(window.innerHeight - 220); // 减去其他组件的高度，如页眉、页脚等
+        setTableHeight(window.innerHeight - 180); // 减去其他组件的高度，如页眉、页脚等
     };
 
     window.addEventListener('resize', handleResize);
@@ -530,6 +545,13 @@ function ZksyncTasks() {
                     dataIndex: "sync",
                     key: "sync",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.sync === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -542,6 +564,13 @@ function ZksyncTasks() {
                     dataIndex: "mute",
                     key: "mute",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.mute === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -554,6 +583,13 @@ function ZksyncTasks() {
                     dataIndex: "okx",
                     key: "okx",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.okx === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -566,6 +602,13 @@ function ZksyncTasks() {
                     dataIndex: "spacefi",
                     key: "spacefi",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.spacefi === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -578,6 +621,13 @@ function ZksyncTasks() {
                     dataIndex: "_1inch",
                     key: "_1inch",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record._1inch === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -590,6 +640,13 @@ function ZksyncTasks() {
                     dataIndex: "izumi",
                     key: "izumi",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.izumi === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -602,6 +659,13 @@ function ZksyncTasks() {
                     dataIndex: "veSync",
                     key: "veSync",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.veSync === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -626,6 +690,13 @@ function ZksyncTasks() {
                     dataIndex: "mav",
                     key: "mav",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.mav === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -638,6 +709,13 @@ function ZksyncTasks() {
                     dataIndex: "zns",
                     key: "zns",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.zns === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -650,6 +728,13 @@ function ZksyncTasks() {
                     dataIndex: "velo",
                     key: "velo",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.velo === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -662,6 +747,13 @@ function ZksyncTasks() {
                     dataIndex: "rf",
                     key: "rf",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.rf === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -674,6 +766,32 @@ function ZksyncTasks() {
                     dataIndex: "eralend",
                     key: "eralend",
                     align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.eralend === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://app.overnight.fi/stats?tabName=zksync" target="_blank" rel="noopener noreferrer">USD+</a>,
+                    dataIndex: "usdp",
+                    key: "usdp",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.usdp === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -686,8 +804,9 @@ function ZksyncTasks() {
                     dataIndex: 'progress',
                     key: 'progress',
                     align: 'center',
+                    sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns', 'velo', 'rf', 'eralend', 'mav', 'veSync'];
+                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns', 'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
@@ -695,6 +814,7 @@ function ZksyncTasks() {
                         return total;
                       }, 0);
                       const percentage = (count / items.length) * 100;
+                      record.progress = percentage;
                 
                       const backgroundColor = `rgba(64, 64, 64, ${percentage / 100})`;
                 
@@ -746,7 +866,7 @@ function ZksyncTasks() {
                         dataSource={taskData}
                         pagination={false}
                         bordered={true}
-                        style={{marginBottom: "20px", zIndex: 2}}
+                        style={{marginBottom: "0px", zIndex: 2}}
                         size={"small"}
                         columns={columns}
                         scroll={{
