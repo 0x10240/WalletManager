@@ -512,19 +512,17 @@ function ZkRank() {
                     align: 'center',
                     sorter: (a, b) => a.rank - b.rank,
                     render: (text, record) => {
-                      // 计算综合排名
                       const txRank = parseFloat(record.txRank);
                       const totalExchangeAmountRank = parseFloat(record.totalExchangeAmountRank);
                       const balanceRank = parseFloat(record.balanceRank);
                       const dayActivityRank = parseFloat(record.dayActivityRank);
                       const contractRank = parseFloat(record.contractRank);
                       
-                      // 计算综合排名
                       const rank = parseFloat(txRank + totalExchangeAmountRank + balanceRank + dayActivityRank + contractRank) / 5;
                       record.rank = rank.toFixed(2);
                 
                       return {
-                        children: <span>{text === null ? <Spin /> : <Progress steps={20} percent={text} size="small" status="active" strokeColor={text > 50 ? '#f5222d' : '#00a854'} />}</span>,
+                        children: <span>{rank.toFixed(2) === null ? <Spin /> : <Progress steps={20} percent={rank.toFixed(2)} size="small" status="active" strokeColor={text > 50 ? '#f5222d' : '#00a854'} />}</span>,
                       };
                     },
                     width: 60,
