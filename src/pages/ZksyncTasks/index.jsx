@@ -72,6 +72,7 @@ function ZksyncTasks() {
     const mavContract = "0x39e098a153ad69834a9dac32f0fca92066ad03f4";
     const veSyncContract = "0x6C31035D62541ceba2Ac587ea09891d1645D6D07";
     const overNightContract = "0x84d05333f1F5Bf1358c3f63A113B1953C427925D";
+    const openoceanContract = "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -184,6 +185,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, overNightContract);
                         item.usdp = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, openoceanContract);
+                        item.ooe = result;
                         resolve();
                     });
                 });
@@ -324,6 +332,13 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, overNightContract);
                             item.usdp = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, openoceanContract);
+                            item.ooe = result;
                             resolve();
                         });
                     });
@@ -792,6 +807,25 @@ function ZksyncTasks() {
                         }
                     ],
                     onFilter: (value, record) => record.usdp === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://app.openocean.finance/CLASSIC#/ZKSYNC/ETH/USDC" target="_blank" rel="noopener noreferrer">OpenOcean</a>,
+                    dataIndex: "ooe",
+                    key: "ooe",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.ooe === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
