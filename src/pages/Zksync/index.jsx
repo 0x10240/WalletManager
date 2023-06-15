@@ -415,7 +415,13 @@ function Zksync() {
             setBatchLoading(true);
             setIsBatchModalVisible(false);
             const values = await batchForm.validateFields();
-            const addresses = values.addresses.split("\n");
+            const addressLines = values.addresses.split("\n");
+            const wallets = addressLines.map(line => {
+                const [address, name] = line.split(",");
+                return { address: address.trim(), name: name ? name.trim() : ''  };
+              });
+            const addresses = wallets.map(obj => obj.address);
+            const names = wallets.map(obj => obj.name);
             setBatchLength(addresses.length);
             const newData = [...data];
             const limit = 50;
@@ -436,6 +442,7 @@ function Zksync() {
 
             for (let address of addresses) {
                 address = address.trim();
+                let note = names[addresses.indexOf(address)];
                 if (address.length !== 42) {
                     notification.error({
                         message: "错误",
@@ -453,6 +460,7 @@ function Zksync() {
                 const item = index !== -1 ? newData[index] : {
                     key: newData.length.toString(),
                     address: address,
+                    name: note,
                     eth_balance: null,
                     eth_tx_amount: null,
                     zks2_balance: null,
@@ -1043,7 +1051,7 @@ function Zksync() {
                 >
                     <Form form={batchForm} layout="vertical">
                         <Form.Item label="地址" name="addresses" rules={[{required: true}]}>
-                            <TextArea placeholder="请输入地址，每行一个" style={{width: "500px", height: "200px"}}/>
+                            <TextArea placeholder="请输入地址，每行一个  要添加备注时放在地址后以逗号(,)间隔" style={{width: "500px", height: "200px"}}/>
                         </Form.Item>
                     </Form>
                 </Modal>
