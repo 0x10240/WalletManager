@@ -522,7 +522,7 @@ function ZkRank() {
                       record.rank = rank.toFixed(2);
                 
                       return {
-                        children: <span>{rank.toFixed(2) === null ? <Spin /> : <Progress steps={20} percent={rank.toFixed(2)} size="small" status="active" strokeColor={text > 50 ? '#f5222d' : '#00a854'} />}</span>,
+                        children: <span><Progress steps={20} percent={rank.toFixed(2)} size="small" status="active" strokeColor={text > 50 ? '#f5222d' : '#00a854'} /></span>,
                       };
                     },
                     width: 60,
