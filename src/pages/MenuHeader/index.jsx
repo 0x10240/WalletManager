@@ -32,6 +32,10 @@ const MenuHeader = () => {
             key: 'zksyncTasks',
         },
         {
+            label: 'zkRank',
+            key: 'zkRank',
+        },
+        {
             label: 'Stark',
             key: 'stark',
         },

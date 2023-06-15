@@ -7,6 +7,7 @@ import Layer from "@pages/Layer/index.jsx";
 import Mirror from "@pages/Mirror/index.jsx";
 import Coffee from "@pages/Coffee/index.jsx";
 import ZksyncTasks from "@pages/ZksyncTasks/index.jsx";
+import ZkRank from "@pages/ZkRank/index.jsx";
 import Deposit from "@pages/Deposit/index.jsx";
 import Notice from "@components/Notice/index.jsx";
 
@@ -51,6 +52,7 @@ function MainPage() {
                         {location.pathname === "/" && <Zksync/>}
                         {location.pathname === "/zksync" && <Zksync/>}
                         {location.pathname === "/zksyncTasks" && <ZksyncTasks/>}
+                        {location.pathname === "/zkRank" && <ZkRank/>}
                         {location.pathname === "/stark" && <Stark/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}

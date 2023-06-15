@@ -5,6 +5,7 @@ import {Navigate, useRoutes} from "react-router-dom";
 
 const Zksync = React.lazy(() => import("@pages/Zksync"));
 const ZksyncTasks = React.lazy(() => import("@pages/ZksyncTasks"))
+const ZkRank = React.lazy(() => import("@pages/ZkRank"));
 const App = React.lazy(() => import("@/App"));
 const MainPage = React.lazy(() => import("@pages/MainPage"));
 const Stark = React.lazy(() => import("@pages/Stark"));
@@ -27,6 +28,10 @@ const router = [
             {
                 path: '/zksyncTasks',
                 element: <ZksyncTasks/>,
+            },
+            {
+                path: '/zkRank',
+                element: <ZkRank/>,
             },
             {
                 path: '/stark',
