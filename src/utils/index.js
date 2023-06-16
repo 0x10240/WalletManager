@@ -11,7 +11,7 @@ import getLayerData from "@utils/layer/getLayerData.js";
 import getEthPrice from "@utils/ether/getEthPrice.js";
 import getZksTasks from "@utils/zksync/getZksTasks.js";
 import calculateScore from "@utils/score/getScore.js";
-
+import getStarkERC20 from "@utils/stark/getStarkERC20.js";
 export {
     getEthBalance,
     getTxCount,
@@ -25,5 +25,6 @@ export {
     getLayerData,
     getEthPrice,
     getZksTasks,
-    calculateScore
+    calculateScore,
+    getStarkERC20,
 };

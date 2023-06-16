@@ -6,6 +6,7 @@ import {
     getStarkBridge,
     getStarkInfo,
     exportToExcel,
+    getStarkERC20
 } from "@utils"
 import {
     DeleteOutlined,
@@ -79,6 +80,16 @@ const Stark = () => {
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
                 })
+                getStarkERC20(values.address).then(({USDC, USDT, DAI}) => {
+                    updatedData[index] = {
+                        ...updatedData[index],
+                        stark_usdc_balance: USDC,
+                        stark_usdt_balance: USDT,
+                        stark_dai_balance: DAI,
+                    };
+                    setData(updatedData);
+                    localStorage.setItem('stark_addresses', JSON.stringify(data));
+                })
                 getStarkBridge(values.address).then(({
                                                          d_eth_amount, d_eth_count,
                                                          d_usdc_amount, d_usdc_count,
@@ -128,6 +139,9 @@ const Stark = () => {
                     name: values.name,
                     address: values.address,
                     stark_eth_balance: null,
+                    stark_usdc_balance: null,
+                    stark_usdt_balance: null,
+                    stark_dai_balance: null,
                     stark_id: null,
                     create_time: null,
                     d_eth_amount: null,
@@ -169,6 +183,13 @@ const Stark = () => {
                     newEntry.stark_eth_balance = eth_balance;
                     newEntry.stark_id = stark_id;
                     newEntry.create_time = deployed_at_timestamp;
+                    setData([...newData]);
+                    localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                })
+                getStarkERC20(values.address).then(({USDC, USDT, DAI}) => {
+                    newEntry.stark_usdc_balance = USDC;
+                    newEntry.stark_usdt_balance = USDT;
+                    newEntry.stark_dai_balance = DAI;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
@@ -261,6 +282,16 @@ const Stark = () => {
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
+                    getStarkERC20(address).then(({USDC, USDT, DAI}) => {
+                        updatedData[index] = {
+                            ...updatedData[index],
+                            stark_usdc_balance: USDC,
+                            stark_usdt_balance: USDT,
+                            stark_dai_balance: DAI,
+                        };
+                        setData(updatedData);
+                        localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
+                    })
                     getStarkBridge(address).then(({
                                                       d_eth_amount, d_eth_count,
                                                       d_usdc_amount, d_usdc_count,
@@ -306,6 +337,9 @@ const Stark = () => {
                         key: newData.length.toString(),
                         address: address,
                         stark_eth_balance: null,
+                        stark_usdc_balance: null,
+                        stark_usdt_balance: null,
+                        stark_dai_balance: null,
                         stark_id: null,
                         create_time: null,
                         d_eth_amount: null,
@@ -348,6 +382,13 @@ const Stark = () => {
                         newEntry.stark_eth_balance = eth_balance;
                         newEntry.stark_id = stark_id;
                         newEntry.create_time = deployed_at_timestamp;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                    })
+                    getStarkERC20(address).then(({USDC, USDT, DAI}) => {
+                        newEntry.stark_usdc_balance = USDC;
+                        newEntry.stark_usdt_balance = USDT;
+                        newEntry.stark_dai_balance = DAI;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
@@ -423,6 +464,9 @@ const Stark = () => {
                     item.stark_latest_tx = null;
                     item.stark_latest_tx_time = null;
                     item.stark_eth_balance = null;
+                    item.stark_usdc_balance = null;
+                    item.stark_usdt_balance = null;
+                    item.stark_dai_balance = null;
                     item.stark_id = null;
                     item.create_time = null;
                     item.d_eth_amount = null;
@@ -459,6 +503,13 @@ const Stark = () => {
                         item.stark_eth_balance = eth_balance;
                         item.stark_id = stark_id;
                         item.create_time = deployed_at_timestamp;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(data));
+                    }))
+                    promises.push(getStarkERC20(item.address).then(({USDC, USDT, DAI}) => {
+                        item.stark_usdc_balance = USDC;
+                        item.stark_usdt_balance = USDT;
+                        item.stark_dai_balance = DAI;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
@@ -611,6 +662,27 @@ const Stark = () => {
                     title: "ETH",
                     dataIndex: "stark_eth_balance",
                     key: "stark_eth_balance",
+                    align: "center",
+                    render: (text, record) => text === null ? <Spin/> : text,
+                },
+                {
+                    title: "USDC",
+                    dataIndex: "stark_usdc_balance",
+                    key: "stark_usdc_balance",
+                    align: "center",
+                    render: (text, record) => text === null ? <Spin/> : text,
+                },
+                {
+                    title: "USDT",
+                    dataIndex: "stark_usdt_balance",
+                    key: "stark_usdt_balance",
+                    align: "center",
+                    render: (text, record) => text === null ? <Spin/> : text,
+                },
+                {
+                    title: "DAI",
+                    dataIndex: "stark_dai_balance",
+                    key: "stark_dai_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
                 },
