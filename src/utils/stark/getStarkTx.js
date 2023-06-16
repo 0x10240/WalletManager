@@ -133,9 +133,6 @@ async function getStarkTx(address) {
         const diffInDays = Math.floor(diffInHours / 24);
         let diffTime = ""
         if (diffInDays > 0) {
-            if (diffInDays > 7) {
-              diffTime = `${parseInt(diffInDays / 7)} 周前`
-            }
             diffTime = `${diffInDays} 天前`
         } else if (diffInHours > 0) {
           diffTime = `${diffInHours} 小时前`

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Button, Input, Space, Table, Modal, Form, notification, Spin, Tag, Popconfirm} from 'antd';
 import {Layout, Card} from 'antd';
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
 import {
     getStarkTx,
     getStarkBridge,
@@ -30,6 +31,19 @@ const Stark = () => {
     const [selectedKeys, setSelectedKeys] = useState([]);
     const [tableLoading, setTableLoading] = useState(false);
     const [form] = Form.useForm();
+    const [tableHeight, setTableHeight] = useState(0);
+    const [hideColumn, setHideColumn] = useState(false);
+
+    const toggleHideColumn = () => {
+        setHideColumn(!hideColumn);
+      };
+    
+    const getEyeIcon = () => {
+    if (hideColumn) {
+        return <EyeInvisibleOutlined />;
+    }
+    return <EyeOutlined />;
+    };
     useEffect(() => {
         setTableLoading(true)
         const storedAddresses = localStorage.getItem('stark_addresses');
@@ -621,13 +635,25 @@ const Stark = () => {
             },
         },
         {
-            title: "钱包地址",
+            title: (
+                <span>
+                钱包地址
+                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        {getEyeIcon()}
+                    </span>
+                </span>
+            ),
             dataIndex: "address",
             key: "address",
             align: "center",
             className: "address",
-            render: (text, record) =>
-                text === null ? <Spin/> : text.slice(0, 4) + "..." + text.slice(-4),
+            render: (text, record) =>{
+                if (hideColumn) {
+                    return '***';
+                  }
+                return  (text === null ? <Spin/> : text.slice(0, 4) + "..." + text.slice(-4))
+            }
+               
         },
         {
             title: "创建时间",
@@ -648,11 +674,23 @@ const Stark = () => {
             },
         },
         {
-            title: "StarkId",
+            title: (
+                <span>
+                starkId
+                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        {getEyeIcon()}
+                    </span>
+                </span>
+            ),
             dataIndex: "stark_id",
             key: "stark_id",
             align: "center",
-            render: (text, record) => text === null ? <Spin/> : text,
+            render: (text, record) => {
+                    if (hideColumn) {
+                        return '***';
+                      }
+                return (text === null ? <Spin/> : text)
+                    }
         },
         {
             title: "StarkWare",
@@ -905,6 +943,40 @@ const Stark = () => {
                         style={{marginBottom: "20px"}}
                         size={"small"}
                         columns={columns}
+                        scroll={200}
+                        summary={pageData => {
+                            let starkEthBalance = 0;
+                            let starkUsdcBalance = 0;
+                            let starkUsdtBalance = 0;
+                            let starkDaiBalance = 0;
+                            pageData.forEach(({
+                                                  stark_eth_balance,
+                                                  stark_usdc_balance,
+                                                  stark_usdt_balance,
+                                                  stark_dai_balance,
+                                              }) => {
+                                starkEthBalance += Number(stark_eth_balance);
+                                starkUsdcBalance += Number(stark_usdc_balance);
+                                starkUsdtBalance += Number(stark_usdt_balance);
+                                starkDaiBalance += Number(stark_dai_balance);
+                            })
+
+                            const emptyCells = Array(18).fill().map((_, index) => <Table.Summary.Cell
+                                index={index + 10}/>);
+
+                            return (
+                                <>
+                                    <Table.Summary.Row>
+                                        <Table.Summary.Cell index={0} colSpan={6}>总计</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={6}>{starkEthBalance.toFixed(4)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={7}>{starkUsdcBalance.toFixed(2)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={8}>{starkUsdtBalance.toFixed(2)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={9}>{starkDaiBalance.toFixed(2)}</Table.Summary.Cell>
+                                        {emptyCells}
+                                    </Table.Summary.Row>
+                                </>
+                            )
+                        }}
                     />
                 </Spin>
                 <Card>
