@@ -871,6 +871,7 @@ function Zksync() {
                             dataIndex: "dayActivity",
                             key: "dayActivity",
                             align: "center",
+                            sorter: (a, b) => a.dayActivity - b.dayActivity,
                             render: (text, record) => (text === null ? <Spin/> : text),
                             width: 34
                         },
@@ -879,6 +880,7 @@ function Zksync() {
                             dataIndex: "weekActivity",
                             key: "weekActivity",
                             align: "center",
+                            sorter: (a, b) => a.weekActivity - b.weekActivity,
                             render: (text, record) => (text === null ? <Spin/> : text),
                             width: 34
                         },
