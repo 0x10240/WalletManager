@@ -123,8 +123,27 @@ async function getStarkTx(address) {
                 }
             }
         }
-        console.log(tx, formattedDate)
-        return {tx: tx, stark_latest_tx: formattedDate};
+        const date2 = new Date(timestamp * 1000);
+        const offset = 8;
+        const utc8Date = new Date(date2.getTime() + offset * 3600 * 1000);
+        const now = new Date();
+        const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
+        const diff = utc8Now - utc8Date;
+        const diffInHours = Math.floor(diff / (1000 * 60 * 60));
+        const diffInDays = Math.floor(diffInHours / 24);
+        let diffTime = ""
+        if (diffInDays > 0) {
+            if (diffInDays > 7) {
+              diffTime = `${parseInt(diffInDays / 7)} 周前`
+            }
+            diffTime = `${diffInDays} 天前`
+        } else if (diffInHours > 0) {
+          diffTime = `${diffInHours} 小时前`
+        } else {
+          diffTime = "刚刚"
+        }
+        console.log(tx, formattedDate, diffTime)
+        return {tx: tx, stark_latest_tx: formattedDate, stark_latest_tx_time: diffTime};
     } catch (error) {
         console.error(error);
         return {tx: "Error", stark_latest_tx: "Error"};

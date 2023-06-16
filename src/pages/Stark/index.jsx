@@ -112,11 +112,12 @@ const Stark = () => {
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
                 })
-                getStarkTx(values.address).then(({tx, stark_latest_tx}) => {
+                getStarkTx(values.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
                     updatedData[index] = {
                         ...updatedData[index],
                         stark_tx_amount: tx,
-                        stark_latest_tx: stark_latest_tx
+                        stark_latest_tx: stark_latest_tx,
+                        stark_latest_tx_time: stark_latest_tx_time
                     };
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
@@ -151,14 +152,16 @@ const Stark = () => {
                     w_wbtc_count: null,
                     stark_tx_amount: null,
                     stark_latest_tx: null,
+                    stark_latest_tx_time: null,
                     total_deposit_count: null,
                     total_widthdraw_count: null
                 };
                 const newData = [...data, newEntry];
                 setData(newData);
-                getStarkTx(values.address).then(({tx, stark_latest_tx}) => {
+                getStarkTx(values.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
                     newEntry.stark_tx_amount = tx;
                     newEntry.stark_latest_tx = stark_latest_tx;
+                    newEntry.stark_latest_tx_time = stark_latest_tx_time;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
@@ -238,11 +241,12 @@ const Stark = () => {
                 const index = newData.findIndex(item => item.address === address);
                 if (index !== -1) {
                     const updatedData = [...newData];
-                    getStarkTx(address).then(({tx, stark_latest_tx}) => {
+                    getStarkTx(address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
                         updatedData[index] = {
                             ...updatedData[index],
                             stark_tx_amount: tx,
                             stark_latest_tx: stark_latest_tx,
+                            stark_latest_tx_time: stark_latest_tx_time,
                         };
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
@@ -326,15 +330,17 @@ const Stark = () => {
                         w_wbtc_count: null,
                         stark_tx_amount: null,
                         stark_latest_tx: null,
+                        stark_latest_tx_time: null,
                         total_deposit_count: null,
                         total_widthdraw_count: null
 
                     };
                     newData.push(newEntry);
                     setData(newData);
-                    getStarkTx(address).then(({tx, stark_latest_tx}) => {
+                    getStarkTx(address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
                         newEntry.stark_tx_amount = tx;
                         newEntry.stark_latest_tx = stark_latest_tx;
+                        newEntry.stark_latest_tx_time = stark_latest_tx_time;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
@@ -415,6 +421,7 @@ const Stark = () => {
                     const item = newData[index];
                     item.stark_tx_amount = null;
                     item.stark_latest_tx = null;
+                    item.stark_latest_tx_time = null;
                     item.stark_eth_balance = null;
                     item.stark_id = null;
                     item.create_time = null;
@@ -441,9 +448,10 @@ const Stark = () => {
                     item.total_widthdraw_count = null;
                     item.total_deposit_count = null;
                     setData([...newData]);
-                    promises.push(getStarkTx(item.address).then(({tx, stark_latest_tx}) => {
+                    promises.push(getStarkTx(item.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
                         item.stark_tx_amount = tx;
                         item.stark_latest_tx = stark_latest_tx;
+                        item.stark_latest_tx_time = stark_latest_tx_time;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
@@ -617,6 +625,13 @@ const Stark = () => {
                     title: "最后交易时间",
                     dataIndex: "stark_latest_tx",
                     key: "stark_latest_tx",
+                    align: "center",
+                    render: (text, record) => text === null ? <Spin/> : text,
+                },
+                {
+                    title: "最后交易",
+                    dataIndex: "stark_latest_tx_time",
+                    key: "stark_latest_tx_time",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
                 },
