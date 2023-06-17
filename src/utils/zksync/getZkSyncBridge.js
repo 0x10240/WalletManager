@@ -139,24 +139,6 @@ async function getZkSyncBridge(address) {
         const initUrl = "https://zksync2-mainnet-explorer.zksync.io/transactions?limit=100&direction=older&accountAddress=" + address;
         const initResponse = await axios.get(initUrl)
         const initDataLength = initResponse.data.total;
-        [zks2_last_tx, totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
-         l2Tol1Times,
-         l2Tol1Amount] =
-            await processTransactions(
-                zks2_last_tx,
-                totalExchangeAmount,
-                address,
-                totalFee,
-                contract,
-                days,
-                weeks,
-                months,
-                initResponse.data.list,
-                l1Tol2Times,
-                l1Tol2Amount,
-                l2Tol1Times,
-                l2Tol1Amount
-            );
         if (initDataLength > 100) {
             fromBlockNumber = initResponse.data.list[0].blockNumber;
             fromTxIndex = initResponse.data.list[0].indexInBlock;
@@ -191,6 +173,25 @@ async function getZkSyncBridge(address) {
                     break;
                 }
             }
+        } else {
+            [zks2_last_tx, totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
+                l2Tol1Times,
+                l2Tol1Amount] =
+                   await processTransactions(
+                       zks2_last_tx,
+                       totalExchangeAmount,
+                       address,
+                       totalFee,
+                       contract,
+                       days,
+                       weeks,
+                       months,
+                       initResponse.data.list,
+                       l1Tol2Times,
+                       l1Tol2Amount,
+                       l2Tol1Times,
+                       l2Tol1Amount
+                   );
         }
         dayActivity = days.size;
         weekActivity = weeks.size;
