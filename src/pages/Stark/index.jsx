@@ -44,6 +44,19 @@ const Stark = () => {
     }
     return <EyeOutlined />;
     };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setTableHeight(window.innerHeight - 260); // 减去其他组件的高度，如页眉、页脚等
+        };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+    }, []);
+
     useEffect(() => {
         setTableLoading(true)
         const storedAddresses = localStorage.getItem('stark_addresses');
@@ -601,6 +614,7 @@ const Stark = () => {
             key: "index",
             align: "center",
             render: (text, record, index) => index + 1,
+            width: 60,
         },
         {
             title: "备注",
@@ -633,6 +647,7 @@ const Stark = () => {
                     </>
                 );
             },
+            width: 80,
         },
         {
             title: (
@@ -652,8 +667,8 @@ const Stark = () => {
                     return '***';
                   }
                 return  (text === null ? <Spin/> : text.slice(0, 4) + "..." + text.slice(-4))
-            }
-               
+            },
+            width: 120, 
         },
         {
             title: "创建时间",
@@ -672,6 +687,7 @@ const Stark = () => {
                     return `${year}/${month}/${day}`;
                 }
             },
+            width: 90,
         },
         {
             title: (
@@ -686,11 +702,12 @@ const Stark = () => {
             key: "stark_id",
             align: "center",
             render: (text, record) => {
-                    if (hideColumn) {
-                        return '***';
-                      }
-                return (text === null ? <Spin/> : text)
-                    }
+                if (hideColumn) {
+                    return '***';
+                }
+                return (text === null ? <Spin /> : text)
+            },
+            width: 150,
         },
         {
             title: "StarkWare",
@@ -702,6 +719,7 @@ const Stark = () => {
                     key: "stark_eth_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "USDC",
@@ -709,6 +727,7 @@ const Stark = () => {
                     key: "stark_usdc_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "USDT",
@@ -716,6 +735,7 @@ const Stark = () => {
                     key: "stark_usdt_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "DAI",
@@ -723,6 +743,7 @@ const Stark = () => {
                     key: "stark_dai_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "Tx",
@@ -730,6 +751,7 @@ const Stark = () => {
                     key: "stark_tx_amount",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "最后交易时间",
@@ -737,6 +759,7 @@ const Stark = () => {
                     key: "stark_latest_tx",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 100,
                 },
                 {
                     title: "最后交易",
@@ -744,6 +767,7 @@ const Stark = () => {
                     key: "stark_latest_tx_time",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
+                    width: 80,
                 },
                 {
                     title: "官方桥Tx数量",
@@ -758,6 +782,7 @@ const Stark = () => {
                                     key: "12cross_eth_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "USDT",
@@ -765,6 +790,7 @@ const Stark = () => {
                                     key: "12cross_usdt_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "USDC",
@@ -772,13 +798,15 @@ const Stark = () => {
                                     key: "12cross_usdc_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "总计",
                                     dataIndex: "total_deposit_count",
                                     key: "12cross_total_tx",
                                     align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text
+                                    render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 }
                             ]
                         },
@@ -792,6 +820,7 @@ const Stark = () => {
                                     key: "21cross_eth_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "USDT",
@@ -799,6 +828,7 @@ const Stark = () => {
                                     key: "21cross_usdt_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "USDC",
@@ -806,13 +836,15 @@ const Stark = () => {
                                     key: "21cross_usdc_tx",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 },
                                 {
                                     title: "总计",
                                     dataIndex: "total_widthdraw_count",
                                     key: "21cross_total_tx",
                                     align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text
+                                    render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 40,
                                 }
                             ]
                         },
@@ -831,6 +863,7 @@ const Stark = () => {
                                     key: "12cross_eth_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 },
                                 {
                                     title: "USDT",
@@ -838,6 +871,7 @@ const Stark = () => {
                                     key: "12cross_usdt_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 },
                                 {
                                     title: "USDC",
@@ -845,6 +879,7 @@ const Stark = () => {
                                     key: "12cross_usdc_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 },
                             ]
                         },
@@ -858,6 +893,7 @@ const Stark = () => {
                                     key: "21cross_eth_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 },
                                 {
                                     title: "USDT",
@@ -865,6 +901,7 @@ const Stark = () => {
                                     key: "21cross_usdt_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 },
                                 {
                                     title: "USDC",
@@ -872,6 +909,7 @@ const Stark = () => {
                                     key: "21cross_usdc_amount",
                                     align: "center",
                                     render: (text, record) => text === null ? <Spin/> : text,
+                                    width: 60,
                                 }
                             ]
                         }
@@ -889,8 +927,8 @@ const Stark = () => {
                                 <Button icon={<DeleteOutlined/>}/>
                             </Popconfirm>
                         </Space>
-                    )
-
+                    ),
+                    width: 60,
                 }
             ]
         },
@@ -940,10 +978,10 @@ const Stark = () => {
                         dataSource={data}
                         pagination={false}
                         bordered={true}
-                        style={{marginBottom: "20px"}}
+                        style={{marginBottom: "0px"}}
                         size={"small"}
                         columns={columns}
-                        scroll={200}
+                        scroll={{y: tableHeight}}
                         summary={pageData => {
                             let starkEthBalance = 0;
                             let starkUsdcBalance = 0;

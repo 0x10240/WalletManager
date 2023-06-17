@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Button, Card, Form, Input, Layout, Modal, notification, Popconfirm, Space, Spin, Table, Tag} from "antd";
 import {exportToExcel, getLayerData} from "@utils";
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
 import {
     DeleteOutlined,
     DownloadOutlined,
@@ -25,6 +26,32 @@ const Layer = () => {
     const [isChangeApiModalVisible, setIsChangeApiModalVisible] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
     const [apiKey, setApiKey] = useState(localStorage.getItem('l0_api_key'));
+    const [tableHeight, setTableHeight] = useState(0);
+    const [hideColumn, setHideColumn] = useState(false);
+
+    const toggleHideColumn = () => {
+        setHideColumn(!hideColumn);
+      };
+    
+    const getEyeIcon = () => {
+    if (hideColumn) {
+        return <EyeInvisibleOutlined />;
+    }
+    return <EyeOutlined />;
+    };
+
+    useEffect(() => {
+        const handleResize = () => {
+            setTableHeight(window.innerHeight - 180); // 减去其他组件的高度，如页眉、页脚等
+        };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+        window.removeEventListener('resize', handleResize);
+    };
+    }, []);
+
     const exportToExcelFile = () => {
         exportToExcel(data, 'LayerZeroInfo');
     }
@@ -268,6 +295,7 @@ const Layer = () => {
             key: 'index',
             render: (text, record, index) => index + 1,
             align: 'center',
+            width: 40,
         },
         {
             title: '备注',
@@ -298,13 +326,28 @@ const Layer = () => {
                         />
                     </>
                 );
-            }
+            },
+            width: 80,
         },
         {
-            title: '地址',
+            title: (
+                <span>
+                钱包地址
+                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                        {getEyeIcon()}
+                    </span>
+                </span>
+            ),
             dataIndex: 'address',
             key: 'address',
             align: 'center',
+            render: (text, record) =>{
+                if (hideColumn) {
+                    return '***';
+                  }
+                return text;
+            },
+            width: 350,
         },
         {
             title: 'ETH',
@@ -314,6 +357,7 @@ const Layer = () => {
                 return (text === null ? <Spin/> : text)
             },
             align: 'center',
+            width: 80,
         },
         {
             title: 'MATIC',
@@ -323,6 +367,7 @@ const Layer = () => {
                 return (text === null ? <Spin/> : text)
             },
             align: 'center',
+            width: 80,
         },
         {
             title: 'BSC',
@@ -332,11 +377,13 @@ const Layer = () => {
                 return (text === null ? <Spin/> : text)
             },
             align: 'center',
+            width: 80,
         },
         {
             title: 'ARB',
             dataIndex: 'arb',
             key: 'arb',
+            width: 80,
             render: (text, record) => {
                 return (text === null ? <Spin/> : text)
                 },
@@ -346,6 +393,7 @@ const Layer = () => {
                 title: 'OP',
                 dataIndex: 'op',
                 key: 'op',
+                width: 80,
                 render: (text, record) => {
                     return (text === null ? <Spin/> : text)
                 },
@@ -355,6 +403,7 @@ const Layer = () => {
                 title: 'AVAX',
                 dataIndex: 'avax',
                 key: 'avax',
+                width: 80,
                 render: (text, record) => {
                     return (text === null ? <Spin/> : text)
                 },
@@ -364,6 +413,7 @@ const Layer = () => {
                 title: 'FTM',
                 dataIndex: 'ftm',
                 key: 'ftm',
+                width: 80,
                 render: (text, record) => {
                     return (text === null ? <Spin/> : text)
                 },
@@ -373,6 +423,7 @@ const Layer = () => {
                 title: 'METIS',
                 dataIndex: 'metis',
                 key: 'metis',
+                width: 80,
                 render: (text, record) => {
                     return (text === null ? <Spin/> : text)
                 },
@@ -382,6 +433,7 @@ const Layer = () => {
                 title: "总Tx",
                 dataIndex: "total",
                 key: "total",
+                width: 80,
                 render: (text, record) => {
                     return (text === null ? <Spin/> : text)
                 },
@@ -390,6 +442,7 @@ const Layer = () => {
             {
                 title: "操作",
                 key: "action",
+                width: 80,
                 render: (text, record) => {
                     return (
                         <Space size="small">
@@ -528,6 +581,7 @@ const Layer = () => {
                         pagination={false}
                         bordered={true}
                         size={"small"}
+                        scroll={{y: tableHeight}}
                     />
                 </Spin>
                 <Card>
