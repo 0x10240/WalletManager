@@ -68,7 +68,9 @@ function ZksyncTasks() {
     const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509";
     const veloContract = "0xd999E16e68476bC749A28FC14a0c3b6d7073F50c";
     const ReactorFusionContract = "0xC5db68F30D21cBe0C9Eac7BE5eA83468d69297e6";
+    const ReactorFusionContract2 = "0x04e9Db37d8EA0760072e1aCE3F2A219988Fdac29";
     const eraLendContract = "0x1BbD33384869b30A323e15868Ce46013C82B86FB";
+    const eraLendContract2 = "0x1181D7BE04D80A8aE096641Ee1A87f7D557c6aeb";
     const mavContract = "0x39e098a153ad69834a9dac32f0fca92066ad03f4";
     const veSyncContract = "0x6C31035D62541ceba2Ac587ea09891d1645D6D07";
     const overNightContract = "0x84d05333f1F5Bf1358c3f63A113B1953C427925D";
@@ -156,14 +158,16 @@ function ZksyncTasks() {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, ReactorFusionContract);
-                        item.rf = result;
+                        const result2 = checkTaskStatus(item.address, ReactorFusionContract2);
+                        item.rf = result + result2;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, eraLendContract);
-                        item.eralend = result;
+                        const result2 = checkTaskStatus(item.address, eraLendContract2);
+                        item.eralend = result + result2;
                         resolve();
                     });
                 });
@@ -303,14 +307,16 @@ function ZksyncTasks() {
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, ReactorFusionContract);
-                            item.rf = result;
+                            const result2 = checkTaskStatusByArray(contractAddresses, ReactorFusionContract2);
+                            item.rf = result + result2;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, eraLendContract);
-                            item.eralend = result;
+                            const result2 = checkTaskStatusByArray(contractAddresses, eraLendContract2);
+                            item.eralend = result + result2;
                             resolve();
                         });
                     });
