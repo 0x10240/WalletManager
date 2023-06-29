@@ -19,7 +19,8 @@ import {
     getZksLite,
     getZkSyncBridge,
     exportToExcel,
-    calculateScore
+    calculateScore,
+    getDebankValue
 } from "@utils"
 import {useEffect, useState} from "react";
 import './index.css';
@@ -313,7 +314,14 @@ function Zksync() {
                 const index = newData.findIndex(item => item.key === key);
                 if (index !== -1) {
                     const item = newData[index];
-
+                    // promisesQueue.push(() => {
+                    //     item.debank = null;
+                    //     return getDebankValue(item.address).then((debankValue) => {
+                    //         item.debank = debankValue;
+                    //         setData([...newData]);
+                    //         localStorage.setItem('addresses', JSON.stringify(newData));
+                    //     })
+                    // })
                     promisesQueue.push(() => {
                         item.zks2_balance = null;
                         item.zks2_tx_amount = null;
@@ -684,6 +692,20 @@ function Zksync() {
             },
             width: 168
         },
+        // {
+        //     title: "余额",
+        //     key: "debank",
+        //     className: "debank",
+        //     align: "center",
+        //     sorter: (a, b) => a.debank - b.debank,
+        //     render: (text, record) => {
+        //         if (record.debank === undefined) {
+        //             return <Spin/>;
+        //         }
+        //         return record.debank;
+        //     },
+        //     width: 60
+        // },
         {
             title: "ETH",
             key: "eth_group",
