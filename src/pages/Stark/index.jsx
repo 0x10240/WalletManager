@@ -1035,7 +1035,9 @@ const Stark = () => {
                         style={{marginBottom: "0px"}}
                         size={"small"}
                         columns={columns}
-                        scroll={{y: tableHeight}}
+                        scroll={{
+                            y: tableHeight
+                          }}
                         summary={pageData => {
                             let starkEthBalance = 0;
                             let starkUsdcBalance = 0;
@@ -1053,8 +1055,7 @@ const Stark = () => {
                                 starkDaiBalance += Number(stark_dai_balance);
                             })
 
-                            const emptyCells = Array(18).fill().map((_, index) => <Table.Summary.Cell
-                                index={index + 10}/>);
+                            const emptyCells = Array(17).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 10}/>);
 
                             return (
                                 <>
@@ -1069,38 +1070,41 @@ const Stark = () => {
                                 </>
                             )
                         }}
+                    
+                    footer={() => (
+                        <Card>
+                        <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+                            <Button type="primary" onClick={handleRefresh} loading={isLoading} size={"large"}
+                                        style={{width: "20%"}}
+                                        icon={<SyncOutlined/>}>
+                                    刷新选中地址
+                            </Button>
+                            <Button type="primary" onClick={() => {
+                                setIsModalVisible(true)
+                            }} size={"large"} style={{width: "20%"}} icon={<PlusOutlined/>}>
+                                添加地址
+                            </Button>
+                            <Button type="primary" onClick={() => {
+                                setIsBatchModalVisible(true)
+                            }} size={"large"} style={{width: "20%"}} icon={<UploadOutlined/>}>
+                                批量添加地址
+                            </Button>
+                            <Popconfirm title={"确认删除" + selectedKeys.length + "个地址？"}
+                                        onConfirm={handleDeleteSelected}>
+                                <Button type="primary" danger size={"large"}
+                                        style={{width: "20%"}}
+                                        icon={<DeleteOutlined/>}>
+                                    删除选中地址
+                                </Button>
+                            </Popconfirm>
+                            <Button type="primary" icon={<DownloadOutlined/>} size={"large"} style={{width: "8%"}}
+                                    onClick={exportToExcelFile}
+                            />
+                        </div>
+                    </Card>
+                    )}
                     />
                 </Spin>
-                <Card>
-                    <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
-                        <Button type="primary" onClick={handleRefresh} loading={isLoading} size={"large"}
-                                    style={{width: "20%"}}
-                                    icon={<SyncOutlined/>}>
-                                刷新选中地址
-                        </Button>
-                        <Button type="primary" onClick={() => {
-                            setIsModalVisible(true)
-                        }} size={"large"} style={{width: "20%"}} icon={<PlusOutlined/>}>
-                            添加地址
-                        </Button>
-                        <Button type="primary" onClick={() => {
-                            setIsBatchModalVisible(true)
-                        }} size={"large"} style={{width: "20%"}} icon={<UploadOutlined/>}>
-                            批量添加地址
-                        </Button>
-                        <Popconfirm title={"确认删除" + selectedKeys.length + "个地址？"}
-                                    onConfirm={handleDeleteSelected}>
-                            <Button type="primary" danger size={"large"}
-                                    style={{width: "20%"}}
-                                    icon={<DeleteOutlined/>}>
-                                删除选中地址
-                            </Button>
-                        </Popconfirm>
-                        <Button type="primary" icon={<DownloadOutlined/>} size={"large"} style={{width: "8%"}}
-                                onClick={exportToExcelFile}
-                        />
-                    </div>
-                </Card>
             </Content>
         </div>
     )

@@ -1169,8 +1169,7 @@ function Zksync() {
                                 totalFees += Number(totalFee);
                             })
 
-                            const emptyCells = Array(10).fill().map((_, index) => <Table.Summary.Cell
-                                index={index + 6}/>);
+                            const emptyCells = Array(10).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 10}/>);
 
                             return (
                                 <>
@@ -1186,6 +1185,8 @@ function Zksync() {
                                         {emptyCells}
                                         <Table.Summary.Cell index={19}/>
                                         <Table.Summary.Cell index={20}>{totalFees.toFixed(4)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={21}/>
+                                        <Table.Summary.Cell index={22}/>
                                     </Table.Summary.Row>
                                 </>
                             )
