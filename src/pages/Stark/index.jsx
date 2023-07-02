@@ -666,9 +666,9 @@ const Stark = () => {
                 if (hideColumn) {
                     return '***';
                   }
-                return  (text === null ? <Spin/> : text.slice(0, 4) + "..." + text.slice(-4))
+                return  (text === null ? <Spin/> : text.slice(0, 6) + "..." + text.slice(-6))
             },
-            width: 120, 
+            width: 180, 
         },
         {
             title: "创建时间",
@@ -687,7 +687,7 @@ const Stark = () => {
                     return `${year}/${month}/${day}`;
                 }
             },
-            width: 90,
+            width: 100,
         },
         {
             title: (
@@ -707,7 +707,7 @@ const Stark = () => {
                 }
                 return (text === null ? <Spin /> : text)
             },
-            width: 150,
+            width: 180,
         },
         {
             title: "StarkWare",
@@ -750,23 +750,73 @@ const Stark = () => {
                     dataIndex: "stark_tx_amount",
                     key: "stark_tx_amount",
                     align: "center",
-                    render: (text, record) => text === null ? <Spin/> : text,
+                    sorter: (a, b) => a.stark_tx_amount - b.stark_tx_amount,
+                    render: (text, record) => {
+                        if (text === null) {
+                          return <Spin />;
+                        }
+                  
+                        // 计算对数值
+                        const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
+                        // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
+                  
+                        // 归一化处理
+                        const minValue = Math.log(1); // 最小值的对数
+                        const maxValue = Math.log(100); // 最大值的对数
+                        const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
+                  
+                        // 计算透明度
+                        const minOpacity = 0.1; // 最小透明度
+                        const maxOpacity = 1; // 最大透明度
+                        const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
+                  
+                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; 
+                  
+                        return {
+                          children: text,
+                          props: {
+                            style: {
+                              background: backgroundColor,
+                            },
+                          },
+                        };
+                      },
                     width: 80,
                 },
-                {
-                    title: "最后交易时间",
-                    dataIndex: "stark_latest_tx",
-                    key: "stark_latest_tx",
-                    align: "center",
-                    render: (text, record) => text === null ? <Spin/> : text,
-                    width: 100,
-                },
+                // {
+                //     title: "最后交易时间",
+                //     dataIndex: "stark_latest_tx",
+                //     key: "stark_latest_tx",
+                //     align: "center",
+                //     render: (text, record) => text === null ? <Spin/> : text,
+                //     width: 100,
+                // },
                 {
                     title: "最后交易",
                     dataIndex: "stark_latest_tx_time",
                     key: "stark_latest_tx_time",
                     align: "center",
-                    render: (text, record) => text === null ? <Spin/> : text,
+                    render: (text, record) => {
+                        let textColor = "inherit";
+                      
+                        if (text === null) {
+                          return <Spin />;
+                        } else if (text.includes("天") && parseInt(text) > 7) {
+                          textColor = "red";
+                        } else {
+                          textColor = "#1677ff";
+                        }
+                      
+                        return (
+                          <a
+                            href={"https://starkscan.co/contract/" + record.address}
+                            target={"_blank"}
+                            style={{ color: textColor }}
+                          >
+                            {text}
+                          </a>
+                        );
+                      },
                     width: 80,
                 },
                 {
@@ -805,7 +855,11 @@ const Stark = () => {
                                     dataIndex: "total_deposit_count",
                                     key: "12cross_total_tx",
                                     align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
+                                    render: (text, record) => (
+                                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                                            {text === null ? <Spin /> : text}
+                                        </span>
+                                    ),
                                     width: 40,
                                 }
                             ]
