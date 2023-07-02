@@ -586,6 +586,11 @@ const Layer = () => {
                 </Spin>
                 <Card>
                     <div style={{width: '100%', display: 'flex', justifyContent: 'space-between'}}>
+                        <Button type="primary" onClick={handleRefresh} loading={isLoading} size={"large"}
+                                    style={{width: "15%"}}
+                                    icon={<SyncOutlined/>}>
+                                刷新选中地址
+                        </Button>
                         <Button type="primary" onClick={() => {
                             setIsModalVisible(true)
                         }} size={"large"} style={{width: "15%"}} icon={<PlusOutlined/>}>
@@ -595,11 +600,6 @@ const Layer = () => {
                             setIsBatchModalVisible(true)
                         }} size={"large"} style={{width: "15%"}} icon={<UploadOutlined/>}>
                             批量添加地址
-                        </Button>
-                        <Button type="primary" onClick={handleRefresh} loading={isLoading} size={"large"}
-                                style={{width: "15%"}}
-                                icon={<SyncOutlined/>}>
-                            刷新选中地址
                         </Button>
                         <Popconfirm title={"确认删除" + selectedKeys.length + "个地址？"}
                                     onConfirm={handleDeleteSelected}>

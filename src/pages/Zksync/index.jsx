@@ -1198,11 +1198,10 @@ function Zksync() {
                                     justifyContent: 'space-between',
                                     gap: '20px'
                                 }}>
-                                    <Button type="primary" onClick={() => {
-                                        setIsWalletModalVisible(true)
-                                    }} size={"large"} style={{width: "20%"}}
-                                            icon={<SettingOutlined/>}>
-                                        配置
+                                    <Button type="primary" onClick={handleRefresh} loading={isLoading}
+                                            size={"large"}
+                                            style={{width: "20%"}} icon={<SyncOutlined/>}>
+                                        {isLoading ? "正在刷新" : "刷新选中地址"}
                                     </Button>
                                     <Button type="primary" onClick={showModal} size={"large"} style={{width: "20%"}}
                                             icon={<PlusOutlined/>}>
@@ -1215,10 +1214,11 @@ function Zksync() {
                                     >
                                         {batchloading ? `添加中 进度:(${batchProgress}/${batchLength})` : "批量添加地址"}
                                     </Button>
-                                    <Button type="primary" onClick={handleRefresh} loading={isLoading}
-                                            size={"large"}
-                                            style={{width: "20%"}} icon={<SyncOutlined/>}>
-                                        {isLoading ? "正在刷新" : "刷新选中地址"}
+                                    <Button type="primary" onClick={() => {
+                                        setIsWalletModalVisible(true)
+                                    }} size={"large"} style={{width: "20%"}}
+                                            icon={<SettingOutlined/>}>
+                                        配置
                                     </Button>
                                     <Popconfirm title={"确认删除" + selectedKeys.length + "个地址？"}
                                                 onConfirm={handleDeleteSelected}>
