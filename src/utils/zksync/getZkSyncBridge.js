@@ -67,7 +67,7 @@ async function getAmount(address) {
         const response = await axios.get(url);
         const list = response.data.items;
         for (let i = 0; i < list.length; i++) {
-            if (list[i]['token'] !== null) {
+            if (list[i]['token'] !== null && list[i]['type'] == "transfer") {
                 if (list[i]['from'].toLowerCase() === address.toLowerCase() && list[i]['to'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
                     const symbol = list[i]['token']['symbol']
                     if (symbol === "ETH") {
@@ -75,14 +75,15 @@ async function getAmount(address) {
                     } else if (list[i]['token']['symbol'] === "USDC") {
                         totalExchangeAmount += list[i]['amount'] / 10 ** 6
                     }
-                } else if (list[i]['to'].toLowerCase() === address.toLowerCase() && list[i]['from'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
-                    const symbol = list[i]['token']['symbol']
-                    if (symbol === "ETH") {
-                        totalExchangeAmount += (list[i]['amount'] / 10 ** 18) * parseFloat(ethPrice)
-                    } else if (list[i]['token']['symbol'] === "USDC") {
-                        totalExchangeAmount += list[i]['amount'] / 10 ** 6
-                    }
-                }
+                } 
+                // else if (list[i]['to'].toLowerCase() === address.toLowerCase() && list[i]['from'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
+                //     const symbol = list[i]['token']['symbol']
+                //     if (symbol === "ETH") {
+                //         totalExchangeAmount += (list[i]['amount'] / 10 ** 18) * parseFloat(ethPrice)
+                //     } else if (list[i]['token']['symbol'] === "USDC") {
+                //         totalExchangeAmount += list[i]['amount'] / 10 ** 6
+                //     }
+                // }
             }
         }
     }
