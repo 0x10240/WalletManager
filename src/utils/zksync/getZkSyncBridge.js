@@ -83,15 +83,15 @@ async function processTransactions(
     l2Tol1Amount
 ) {
     for (let i = 0; i < list.length; i++) {
-        if (list[i]['balanceChanges'][0]['from'].toLowerCase() === address.toLowerCase()) {
-            totalExchangeAmount += getAmount(address, list[i]['erc20Transfers'])
+        if (list[i]['from'].toLowerCase() === address.toLowerCase()) {
+            // totalExchangeAmount += getAmount(address, list[i]['erc20Transfers'])
             const receivedAt = new Date(Date.parse(list[i]['receivedAt']));
             if (zks2_last_tx === null) {
                 zks2_last_tx = getZkSyncLastTX(list[i]['receivedAt']);
                 console.log(zks2_last_tx)
             }
-            const contractAddress = list[i].data.contractAddress;
-            const fee = (parseInt(list[i].fee, 16) / 10 ** 18).toFixed(5)
+            const contractAddress = list[i]['to'];
+            const fee = (parseInt(list[i]['fee'], 16) / 10 ** 18).toFixed(5)
             totalFee += parseFloat(fee);
             contract.add(contractAddress)
             days.add(getDayNumber(receivedAt));
@@ -100,14 +100,14 @@ async function processTransactions(
         }
         if (list[i].isL1Originated === true) {
             l1Tol2Times++;
-            const value = ethers.formatEther(list[i].data.value, "ether");
+            const value = ethers.formatEther(list[i]['value'], "ether");
             l1Tol2Amount += parseFloat(value);
         } else if (
-            list[i].data.contractAddress ===
-            "0x000000000000000000000000000000000000800a"
+            list[i]['to'] ===
+            "0x000000000000000000000000000000000000800A"
         ) {
             l2Tol1Times++;
-            const value = ethers.formatEther(list[i].data.value, "ether");
+            const value = ethers.formatEther(list[i]['value'], "ether");
             l2Tol1Amount += parseFloat(value);
         }
     }
@@ -133,25 +133,19 @@ async function getZkSyncBridge(address) {
         let l2Tol1Times = 0;
         let l2Tol1Amount = 0;
         let totalExchangeAmount = 0;
-        let offset = 0;
-        let fromBlockNumber = null;
-        let fromTxIndex = null;
-        const initUrl = "https://zksync2-mainnet-explorer.zksync.io/transactions?limit=100&direction=older&accountAddress=" + address;
-        const initResponse = await axios.get(initUrl)
-        const initDataLength = initResponse.data.total;
-        if (initDataLength > 100) {
-            fromBlockNumber = initResponse.data.list[0].blockNumber;
-            fromTxIndex = initResponse.data.list[0].indexInBlock;
-            while (true) {
-                let url = `https://zksync2-mainnet-explorer.zksync.io/transactions?limit=100&direction=older&accountAddress=${address}`;
-                if (fromBlockNumber !== undefined && fromTxIndex !== undefined && offset !== 0) {
-                    url += `&fromBlockNumber=${fromBlockNumber}&fromTxIndex=${fromTxIndex}&offset=${offset}`;
-                }
+        const initUrl = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=1`;
+        const response = await axios.get(initUrl)
+        console.log(response.data);
+        var pageValue = parseInt(response.data.meta.totalPages);
+        if (pageValue > 1) {
+            for (let i = 1; i <= pageValue; i++) {
+                const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;
                 const response = await axios.get(url);
-                const ListLength = response.data.list.length;
+                const list = response.data.items;
+
                 [zks2_last_tx,
-                 totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
-                 l2Tol1Times, l2Tol1Amount] =
+                    totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
+                    l2Tol1Times, l2Tol1Amount] =
                     await processTransactions(
                         zks2_last_tx,
                         totalExchangeAmount,
@@ -161,37 +155,32 @@ async function getZkSyncBridge(address) {
                         days,
                         weeks,
                         months,
-                        response.data.list,
+                        list,
                         l1Tol2Times,
                         l1Tol2Amount,
                         l2Tol1Times,
                         l2Tol1Amount
-                    );
-                if (ListLength === 100) {
-                    offset += ListLength;
-                } else {
-                    break;
-                }
+                    )
             }
         } else {
-            [zks2_last_tx, totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
-                l2Tol1Times,
-                l2Tol1Amount] =
-                   await processTransactions(
-                       zks2_last_tx,
-                       totalExchangeAmount,
-                       address,
-                       totalFee,
-                       contract,
-                       days,
-                       weeks,
-                       months,
-                       initResponse.data.list,
-                       l1Tol2Times,
-                       l1Tol2Amount,
-                       l2Tol1Times,
-                       l2Tol1Amount
-                   );
+            [zks2_last_tx,
+                totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
+                l2Tol1Times, l2Tol1Amount] =
+                await processTransactions(
+                    zks2_last_tx,
+                    totalExchangeAmount,
+                    address,
+                    totalFee,
+                    contract,
+                    days,
+                    weeks,
+                    months,
+                    response.data.items,
+                    l1Tol2Times,
+                    l1Tol2Amount,
+                    l2Tol1Times,
+                    l2Tol1Amount
+                )
         }
         dayActivity = days.size;
         weekActivity = weeks.size;
