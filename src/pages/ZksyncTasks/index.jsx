@@ -76,6 +76,7 @@ function ZksyncTasks() {
     const overNightContract = "0x84d05333f1F5Bf1358c3f63A113B1953C427925D";
     const openoceanContract = "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230";
     const ezkContract = "0x498f7bB59c61307De7dEA005877220e4406470e9";
+    const odosContract = "0xA269031037B4D5fa3F771c401D19E57def6Cb491";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -204,6 +205,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, ezkContract);
                         item.ezk = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, odosContract);
+                        item.odos = result;
                         resolve();
                     });
                 });
@@ -360,6 +368,13 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, ezkContract);
                             item.ezk = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, odosContract);
+                            item.odos = result;
                             resolve();
                         });
                     });
@@ -874,13 +889,33 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
+                    title: <a href="https://app.odos.xyz/" target="_blank" rel="noopener noreferrer">odos</a>,
+                    dataIndex: "odos",
+                    key: "odos",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.ooe === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 55
+                },
+                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
                     align: 'center',
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns', 'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp', 'ooe', 'ezk'];
+                      const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns',
+                       'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp', 'ooe', 'ezk', 'odos'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
