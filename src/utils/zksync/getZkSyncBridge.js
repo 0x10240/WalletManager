@@ -135,8 +135,7 @@ async function getZkSyncBridge(address) {
         let totalExchangeAmount = 0;
         const initUrl = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=1`;
         const response = await axios.get(initUrl)
-        console.log(response.data);
-        var pageValue = parseInt(response.data.meta.totalPages);
+        const pageValue = parseInt(response.data.meta.totalPages);
         if (pageValue > 1) {
             for (let i = 1; i <= pageValue; i++) {
                 const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;

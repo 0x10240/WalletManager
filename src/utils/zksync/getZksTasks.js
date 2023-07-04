@@ -2,31 +2,20 @@ import axios from 'axios';
 
 async function getZksTasks(address) {
     try {
-        let url = "https://zksync2-mainnet-explorer.zksync.io/transactions?limit=100&direction=older&accountAddress=" + address;
-        let offset = 0;
+        let url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=1`;
         const response = await axios.get(url);
-        const initDataLength = response.data.total;
-        let contractAddresses = response.data.list.map(item => item.data.contractAddress);
-        if (initDataLength > 100) {
+        const pageValue = parseInt(response.data.meta.totalPages);
+        let contractAddresses = response.data.items.map(item => item["to"]);
+        if (pageValue > 1) {
             contractAddresses = [];
-            const fromBlockNumber = response.data.list[0].blockNumber;
-            const fromTxIndex = response.data.list[0].indexInBlock;
-            while (true) {
-                let url = `https://zksync2-mainnet-explorer.zksync.io/transactions?limit=100&direction=older&accountAddress=${address}`;
-                if (fromBlockNumber !== undefined && fromTxIndex !== undefined && offset !== 0) {
-                    url += `&fromBlockNumber=${fromBlockNumber}&fromTxIndex=${fromTxIndex}&offset=${offset}`;
-                }
+            for (let i = 1; i <= pageValue; i++) {
+                const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;
                 const response = await axios.get(url);
-                let newcontractAddresses = response.data.list.map(item => item.data.contractAddress);
+                let newcontractAddresses = response.data.items.map(item => item["to"]);
                 contractAddresses = contractAddresses.concat(newcontractAddresses);
-                const ListLength = response.data.list.length;
-                if (ListLength === 100) {
-                    offset += ListLength;
-                } else {
-                    break;
-                }
             }
         }
+        contractAddresses = contractAddresses.map(item => item.toLowerCase());
         return contractAddresses;
 
     } catch (error) {
