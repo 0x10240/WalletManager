@@ -17,6 +17,21 @@ function getMonthNumber(d) {
     return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1);
 }
 
+const getEthPrice = async () => {
+    try {
+        const options = {
+            method: 'GET',
+            url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
+        }
+        let response = await axios.request(options)
+        return response.data['USD']
+    } catch (e) {
+        console.log(e)
+        return 1950
+    }
+
+}
+
 function getZkSyncLastTX(lastTxDatetime) {
     const date = new Date(lastTxDatetime);
     const offset = 8;
@@ -38,32 +53,40 @@ function getZkSyncLastTX(lastTxDatetime) {
     }
 }
 
-function getAmount(address, list) {
+async function getAmount(address) {
+    const ethPrice = await getEthPrice();
+    var currentDate = new Date();
+    var formattedDate = currentDate.toISOString();
+    var encodedDate = encodeURIComponent(formattedDate);
+    const initUrl = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&pageSize=10&page=1`;
+    const response = await axios.get(initUrl)
+    var pageValue = parseInt(response.data.meta.totalPages);
     let totalExchangeAmount = 0;
-    for (let i = 0; i < list.length; i++) {
-        if (list[i]['from'].toLowerCase() === address.toLowerCase() && list[i]['to'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
-            const symbol = list[i]['tokenInfo']['symbol']
-            if (symbol === "ETH") {
-                const usdPrice = list[i]['tokenInfo']['usdPrice']
-                totalExchangeAmount += (parseInt(list[i]['amount'], 16) / 10 ** 18) * parseFloat(usdPrice)
-                break
-            } else if (list[i]['tokenInfo']['symbol'] === "USDC") {
-                totalExchangeAmount += parseInt(list[i]['amount'], 16) / 10 ** 6
-                break
-            }
-        } else if (list[i]['to'].toLowerCase() === address.toLowerCase() && list[i]['from'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
-            const symbol = list[i]['tokenInfo']['symbol']
-            if (symbol === "ETH") {
-                const usdPrice = list[i]['tokenInfo']['usdPrice']
-                totalExchangeAmount += (parseInt(list[i]['amount'], 16) / 10 ** 18) * parseFloat(usdPrice)
-                break
-            } else if (list[i]['tokenInfo']['symbol'] === "USDC") {
-                totalExchangeAmount += parseInt(list[i]['amount'], 16) / 10 ** 6
-                break
+    for (let i = 1; i <= pageValue; i++) {
+        const url = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&pageSize=10&page=${i}`;
+        const response = await axios.get(url);
+        const list = response.data.items;
+        for (let i = 0; i < list.length; i++) {
+            if (list[i]['token'] !== null) {
+                if (list[i]['from'].toLowerCase() === address.toLowerCase() && list[i]['to'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
+                    const symbol = list[i]['token']['symbol']
+                    if (symbol === "ETH") {
+                        totalExchangeAmount += (list[i]['amount'] / 10 ** 18) * parseFloat(ethPrice)
+                    } else if (list[i]['token']['symbol'] === "USDC") {
+                        totalExchangeAmount += list[i]['amount'] / 10 ** 6
+                    }
+                } else if (list[i]['to'].toLowerCase() === address.toLowerCase() && list[i]['from'].toLowerCase() !== "0x0000000000000000000000000000000000008001".toLowerCase()) {
+                    const symbol = list[i]['token']['symbol']
+                    if (symbol === "ETH") {
+                        totalExchangeAmount += (list[i]['amount'] / 10 ** 18) * parseFloat(ethPrice)
+                    } else if (list[i]['token']['symbol'] === "USDC") {
+                        totalExchangeAmount += list[i]['amount'] / 10 ** 6
+                    }
+                }
             }
         }
     }
-    console.log(totalExchangeAmount)
+    // console.log(totalExchangeAmount)
     return totalExchangeAmount;
 }
 
@@ -84,7 +107,6 @@ async function processTransactions(
 ) {
     for (let i = 0; i < list.length; i++) {
         if (list[i]['from'].toLowerCase() === address.toLowerCase()) {
-            // totalExchangeAmount += getAmount(address, list[i]['erc20Transfers'])
             const receivedAt = new Date(Date.parse(list[i]['receivedAt']));
             if (zks2_last_tx === null) {
                 zks2_last_tx = getZkSyncLastTX(list[i]['receivedAt']);
@@ -136,32 +158,11 @@ async function getZkSyncBridge(address) {
         const initUrl = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=1`;
         const response = await axios.get(initUrl)
         const pageValue = parseInt(response.data.meta.totalPages);
-        if (pageValue > 1) {
-            for (let i = 1; i <= pageValue; i++) {
-                const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;
-                const response = await axios.get(url);
-                const list = response.data.items;
+        for (let i = 1; i <= pageValue; i++) {
+            const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;
+            const response = await axios.get(url);
+            const list = response.data.items;
 
-                [zks2_last_tx,
-                    totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
-                    l2Tol1Times, l2Tol1Amount] =
-                    await processTransactions(
-                        zks2_last_tx,
-                        totalExchangeAmount,
-                        address,
-                        totalFee,
-                        contract,
-                        days,
-                        weeks,
-                        months,
-                        list,
-                        l1Tol2Times,
-                        l1Tol2Amount,
-                        l2Tol1Times,
-                        l2Tol1Amount
-                    )
-            }
-        } else {
             [zks2_last_tx,
                 totalExchangeAmount, totalFee, contract, days, weeks, months, l1Tol2Times, l1Tol2Amount,
                 l2Tol1Times, l2Tol1Amount] =
@@ -174,18 +175,19 @@ async function getZkSyncBridge(address) {
                     days,
                     weeks,
                     months,
-                    response.data.items,
+                    list,
                     l1Tol2Times,
                     l1Tol2Amount,
                     l2Tol1Times,
                     l2Tol1Amount
                 )
         }
+        totalExchangeAmount = await getAmount(address);
         dayActivity = days.size;
         weekActivity = weeks.size;
         monthActivity = months.size;
         contractActivity = contract.size;
-        console.log("zks2_last_tx", zks2_last_tx);
+        // console.log("zks2_last_tx", zks2_last_tx);
         return {
             zks2_last_tx: zks2_last_tx === null ? "无交易" : zks2_last_tx,
             totalExchangeAmount: totalExchangeAmount.toFixed(2),
