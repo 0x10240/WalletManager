@@ -753,7 +753,7 @@ function Zksync() {
             ],
         },
         {
-            title: "zkSyncEra   🚨🚨ETH及USDC数据异常 等待官方修复🚨🚨",
+            title: "zkSync Era",
             key: "zks_era_group",
             className: "zks_era",
             children: [
