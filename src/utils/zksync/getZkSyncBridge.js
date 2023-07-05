@@ -19,12 +19,13 @@ function getMonthNumber(d) {
 
 const getEthPrice = async () => {
     try {
-        const options = {
-            method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
-        }
-        let response = await axios.request(options)
-        return response.data['USD']
+        const response = await axios.post('https://mainnet.era.zksync.io/', {
+            id: 42,
+            jsonrpc: '2.0',
+            method: 'zks_getTokenPrice',
+            params: ['0x0000000000000000000000000000000000000000'],
+        });
+        return response.data.result
     } catch (e) {
         console.log(e)
         return 1950
@@ -58,12 +59,12 @@ async function getAmount(address) {
     var currentDate = new Date();
     var formattedDate = currentDate.toISOString();
     var encodedDate = encodeURIComponent(formattedDate);
-    const initUrl = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&pageSize=10&page=1`;
+    const initUrl = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&limit=100&page=1`;
     const response = await axios.get(initUrl)
     var pageValue = parseInt(response.data.meta.totalPages);
     let totalExchangeAmount = 0;
     for (let i = 1; i <= pageValue; i++) {
-        const url = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&pageSize=10&page=${i}`;
+        const url = `https://block-explorer-api.mainnet.zksync.io/address/${address}/transfers?toDate=${encodedDate}&limit=100&page=${i}`;
         const response = await axios.get(url);
         const list = response.data.items;
         for (let i = 0; i < list.length; i++) {
@@ -156,11 +157,11 @@ async function getZkSyncBridge(address) {
         let l2Tol1Times = 0;
         let l2Tol1Amount = 0;
         let totalExchangeAmount = 0;
-        const initUrl = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=1`;
+        const initUrl = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&limit=100&page=1`;
         const response = await axios.get(initUrl)
         const pageValue = parseInt(response.data.meta.totalPages);
         for (let i = 1; i <= pageValue; i++) {
-            const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&pageSize=10&page=${i}`;
+            const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&limit=100&page=${i}`;
             const response = await axios.get(url);
             const list = response.data.items;
 
