@@ -587,7 +587,8 @@ function ZksyncTasks() {
             width: 55
         },
         {
-            title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据]</a>,
+            title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
+                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🚨🚨当前官方浏览器数据延迟🚨🚨</a>,
             key: "zks_era_group",
             className: "zks_era",
             children: [
