@@ -20,6 +20,7 @@ async function getZksEra(address) {
         if ("0x1BbD33384869b30A323e15868Ce46013C82B86FB" in response.data.balances) {
             eraETH = ((response.data.balances["0x1BbD33384869b30A323e15868Ce46013C82B86FB"]
                 .balance / 10 ** 8) / 50).toFixed(4);
+            eraETH = eraETH > 0 ? eraETH : 0;
         } else {
             eraETH = 0;
         }
