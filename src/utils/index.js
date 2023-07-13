@@ -14,6 +14,8 @@ import calculateScore from "@utils/score/getScore.js";
 import getStarkERC20 from "@utils/stark/getStarkERC20.js";
 import getDebankValue from "@utils/zksync/getDebankValue.js";
 import getStarkTasks from "@utils/stark/getStarkTasks.js";
+import getStarkActivity from "@utils/stark/getStarkActivity.js";
+import getStarkAmount from "@utils/stark/getStarkAmount.js";
 
 export {
     getEthBalance,
@@ -31,5 +33,7 @@ export {
     calculateScore,
     getStarkERC20,
     getDebankValue,
-    getStarkTasks
+    getStarkTasks,
+    getStarkActivity,
+    getStarkAmount
 };

@@ -19,7 +19,8 @@ import {
     getZksLite,
     getZkSyncBridge,
     exportToExcel,
-    getZksTasks
+    getZksTasks,
+    getEthPrice
 } from "@utils"
 import {useEffect, useState} from "react";
 import './index.css';
@@ -57,6 +58,7 @@ function ZkRank() {
     const [initialized, setInitialized] = useState(false);
     const [tableHeight, setTableHeight] = useState(0);
     const [hideColumn, setHideColumn] = useState(false);
+    const [ethPrice, setEthPrice] = useState(1900);
     const txRanges = [
         [[0, 4], 0.331243382],
         [[5, 9], 0.155235411],
@@ -167,7 +169,7 @@ function ZkRank() {
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const balance = parseFloat(item.zks2_balance) * 1750 + parseFloat(item.zks2_usdcBalance);
+                        const balance = parseFloat(item.zks2_balance) * ethPrice + parseFloat(item.zks2_usdcBalance);
                         const result = calculateRank(balanceRanges, balance);
                         item.balanceRank = result;
                         resolve();
@@ -242,7 +244,7 @@ function ZkRank() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const balance = parseFloat(item.zks2_balance) * 1750 + parseFloat(item.zks2_usdcBalance);
+                            const balance = parseFloat(item.zks2_balance) * ethPrice + parseFloat(item.zks2_usdcBalance);
                             const result = calculateRank(balanceRanges, balance);
                             item.balanceRank = result;
                             resolve();
@@ -323,7 +325,14 @@ function ZkRank() {
             setTaskData(JSON.parse(storedAddresses));
         }
     }, []);
-
+    
+    useEffect(() => {
+        const fetchPrice = async () => {
+            const price = await getEthPrice();
+            setEthPrice(price);
+        };
+        fetchPrice();
+    }, []);
     useEffect(() => {
         if (!initialized && data.length > 0) {
             initData()

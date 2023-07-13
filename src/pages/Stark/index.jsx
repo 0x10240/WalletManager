@@ -7,7 +7,9 @@ import {
     getStarkBridge,
     getStarkInfo,
     exportToExcel,
-    getStarkERC20
+    getStarkERC20,
+    getStarkActivity,
+    getStarkAmount,
 } from "@utils"
 import {
     DeleteOutlined,
@@ -117,6 +119,24 @@ const Stark = () => {
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
                 })
+                getStarkActivity(values.address).then(({dayActivity, weekActivity, monthActivity}) => {
+                    updatedData[index] = {
+                        ...updatedData[index],
+                        dayActivity: dayActivity, 
+                        weekActivity: weekActivity, 
+                        monthActivity: monthActivity
+                    };
+                    setData(updatedData);
+                    localStorage.setItem('stark_addresses', JSON.stringify(data));
+                })
+                getStarkAmount(values.address).then(({stark_exchange_amount}) => {
+                    updatedData[index] = {
+                        ...updatedData[index],
+                        stark_exchange_amount: stark_exchange_amount,
+                    };
+                    setData(updatedData);
+                    localStorage.setItem('stark_addresses', JSON.stringify(data));
+                })
                 getStarkBridge(values.address).then(({
                                                          d_eth_amount, d_eth_count,
                                                          d_usdc_amount, d_usdc_count,
@@ -169,6 +189,10 @@ const Stark = () => {
                     stark_usdc_balance: null,
                     stark_usdt_balance: null,
                     stark_dai_balance: null,
+                    dayActivity: null,
+                    weekActivity: null,
+                    monthActivity: null,
+                    stark_exchange_amount: null,
                     stark_id: null,
                     create_time: null,
                     d_eth_amount: null,
@@ -217,6 +241,18 @@ const Stark = () => {
                     newEntry.stark_usdc_balance = USDC;
                     newEntry.stark_usdt_balance = USDT;
                     newEntry.stark_dai_balance = DAI;
+                    setData([...newData]);
+                    localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                })
+                getStarkActivity(values.address).then(({dayActivity, weekActivity, monthActivity}) => {
+                    newEntry.dayActivity = dayActivity;
+                    newEntry.weekActivity = weekActivity;
+                    newEntry.monthActivity = monthActivity;
+                    setData([...newData]);
+                    localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                })
+                getStarkAmount(values.address).then(({stark_exchange_amount}) => {
+                    newEntry.stark_exchange_amount = stark_exchange_amount;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
@@ -319,6 +355,24 @@ const Stark = () => {
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
+                    getStarkActivity(address).then(({dayActivity, weekActivity, monthActivity}) => {
+                        updatedData[index] = {
+                            ...updatedData[index],
+                            dayActivity: dayActivity,
+                            weekActivity: weekActivity,
+                            monthActivity: monthActivity,
+                        };
+                        setData(updatedData);
+                        localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
+                    })
+                    getStarkAmount(address).then(({stark_exchange_amount}) => {
+                        updatedData[index] = {
+                            ...updatedData[index],
+                            stark_exchange_amount: stark_exchange_amount,
+                        };
+                        setData(updatedData);
+                        localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
+                    })
                     getStarkBridge(address).then(({
                                                       d_eth_amount, d_eth_count,
                                                       d_usdc_amount, d_usdc_count,
@@ -367,6 +421,10 @@ const Stark = () => {
                         stark_usdc_balance: null,
                         stark_usdt_balance: null,
                         stark_dai_balance: null,
+                        dayActivity: null,
+                        weekActivity: null,
+                        monthActivity: null,
+                        stark_exchange_amount: null,
                         stark_id: null,
                         create_time: null,
                         d_eth_amount: null,
@@ -416,6 +474,18 @@ const Stark = () => {
                         newEntry.stark_usdc_balance = USDC;
                         newEntry.stark_usdt_balance = USDT;
                         newEntry.stark_dai_balance = DAI;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                    })
+                    getStarkActivity(address).then(({dayActivity, weekActivity, monthActivity}) => {
+                        newEntry.dayActivity = dayActivity;
+                        newEntry.weekActivity = weekActivity;
+                        newEntry.monthActivity = monthActivity;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                    })
+                    getStarkAmount(address).then((stark_exchange_amount) => {
+                        newEntry.stark_exchange_amount = stark_exchange_amount;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
@@ -494,6 +564,10 @@ const Stark = () => {
                     item.stark_usdc_balance = null;
                     item.stark_usdt_balance = null;
                     item.stark_dai_balance = null;
+                    item.dayActivity = null;
+                    item.weekActivity = null;
+                    item.monthActivity = null;
+                    item.stark_exchange_amount = null;
                     item.stark_id = null;
                     item.create_time = null;
                     item.d_eth_amount = null;
@@ -537,6 +611,18 @@ const Stark = () => {
                         item.stark_usdc_balance = USDC;
                         item.stark_usdt_balance = USDT;
                         item.stark_dai_balance = DAI;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(data));
+                    }))
+                    promises.push(getStarkActivity(item.address).then(({dayActivity, weekActivity, monthActivity}) => {
+                        item.dayActivity = dayActivity;
+                        item.weekActivity = weekActivity;
+                        item.monthActivity = monthActivity;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(data));
+                    }))
+                    promises.push(getStarkAmount(item.address).then(({stark_exchange_amount}) => {
+                        item.stark_exchange_amount = stark_exchange_amount;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
@@ -647,7 +733,7 @@ const Stark = () => {
                     </>
                 );
             },
-            width: 80,
+            width: 100,
         },
         {
             title: (
@@ -668,7 +754,7 @@ const Stark = () => {
                   }
                 return  (text === null ? <Spin/> : text.slice(0, 6) + "..." + text.slice(-6))
             },
-            width: 180, 
+            width: 160, 
         },
         {
             title: "创建时间",
@@ -707,10 +793,10 @@ const Stark = () => {
                 }
                 return (text === null ? <Spin /> : text)
             },
-            width: 180,
+            width: 140,
         },
         {
-            title: "StarkWare",
+            title: "StarkNet",
             className: "zksync2",
             children: [
                 {
@@ -719,7 +805,7 @@ const Stark = () => {
                     key: "stark_eth_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
-                    width: 80,
+                    width: 75,
                 },
                 {
                     title: "USDC",
@@ -727,7 +813,7 @@ const Stark = () => {
                     key: "stark_usdc_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
-                    width: 80,
+                    width: 75,
                 },
                 {
                     title: "USDT",
@@ -735,7 +821,7 @@ const Stark = () => {
                     key: "stark_usdt_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
-                    width: 80,
+                    width: 75,
                 },
                 {
                     title: "DAI",
@@ -743,7 +829,7 @@ const Stark = () => {
                     key: "stark_dai_balance",
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
-                    width: 80,
+                    width: 75,
                 },
                 {
                     title: "Tx",
@@ -781,7 +867,7 @@ const Stark = () => {
                           },
                         };
                       },
-                    width: 80,
+                    width: 75,
                 },
                 // {
                 //     title: "最后交易时间",
@@ -817,7 +903,77 @@ const Stark = () => {
                           </a>
                         );
                       },
-                    width: 80,
+                    width: 75,
+                },
+                {
+                    title: "活跃统计",
+                    key: "activity_stats_group",
+                    children: [
+                        {
+                            title: "日",
+                            dataIndex: "dayActivity",
+                            key: "dayActivity",
+                            align: "center",
+                            sorter: (a, b) => a.dayActivity - b.dayActivity,
+                            render: (text, record) => (text === null ? <Spin/> : text),
+                            width: 60
+                        },
+                        {
+                            title: "周",
+                            dataIndex: "weekActivity",
+                            key: "weekActivity",
+                            align: "center",
+                            sorter: (a, b) => a.weekActivity - b.weekActivity,
+                            render: (text, record) => (text === null ? <Spin/> : text),
+                            width: 60
+                        },
+                        {
+                            title: "月",
+                            dataIndex: "monthActivity",
+                            key: "monthActivity",
+                            align: "center",
+                            render: (text, record) => (text === null ? <Spin/> : text),
+                            width: 60
+                        },
+                        {
+                            title: "交易金额",
+                            dataIndex: "stark_exchange_amount",
+                            key: "stark_exchange_amount",
+                            align: "center",
+                            sorter: (a, b) => a.stark_exchange_amount - b.stark_exchange_amount,
+                            render: (text, record) => {
+                                if (text === null) {
+                                  return <Spin />;
+                                }
+                          
+                                // 计算对数值
+                                const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
+                                // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
+                          
+                                // 归一化处理
+                                const minValue = Math.log(1); // 最小值的对数
+                                const maxValue = Math.log(100); // 最大值的对数
+                                const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
+                          
+                                // 计算透明度
+                                const minOpacity = 0.1; // 最小透明度
+                                const maxOpacity = 1; // 最大透明度
+                                const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
+                          
+                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; 
+                          
+                                return {
+                                  children: text,
+                                  props: {
+                                    style: {
+                                      background: backgroundColor,
+                                    },
+                                  },
+                                };
+                              },
+                              width: 100
+                        },
+                    ]
                 },
                 {
                     title: "官方桥Tx数量",
@@ -825,82 +981,24 @@ const Stark = () => {
                     children: [
                         {
                             title: "L1->L2",
-                            children: [
-                                {
-                                    title: "ETH",
-                                    dataIndex: "d_eth_count",
-                                    key: "12cross_eth_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "USDT",
-                                    dataIndex: "d_usdt_count",
-                                    key: "12cross_usdt_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "USDC",
-                                    dataIndex: "d_usdc_count",
-                                    key: "12cross_usdc_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "总计",
-                                    dataIndex: "total_deposit_count",
-                                    key: "12cross_total_tx",
-                                    align: "center",
-                                    render: (text, record) => (
-                                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
-                                            {text === null ? <Spin /> : text}
-                                        </span>
-                                    ),
-                                    width: 40,
-                                }
-                            ]
+                            dataIndex: "total_deposit_count",
+                            key: "12cross_total_tx",
+                            align: "center",
+                            render: (text, record) => (
+                                <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                                    {text === null ? <Spin /> : text}
+                                </span>
+                            ),
+                            width: 60,
+                                
                         },
                         {
                             title: "L2->L1",
-                            className: "cross21",
-                            children: [
-                                {
-                                    title: "ETH",
-                                    dataIndex: "w_eth_count",
-                                    key: "21cross_eth_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "USDT",
-                                    dataIndex: "w_usdt_count",
-                                    key: "21cross_usdt_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "USDC",
-                                    dataIndex: "w_usdc_count",
-                                    key: "21cross_usdc_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                },
-                                {
-                                    title: "总计",
-                                    dataIndex: "total_widthdraw_count",
-                                    key: "21cross_total_tx",
-                                    align: "center",
-                                    render: (text, record) => text === null ? <Spin/> : text,
-                                    width: 40,
-                                }
-                            ]
+                            dataIndex: "total_widthdraw_count",
+                            key: "21cross_total_tx",
+                            align: "center",
+                            render: (text, record) => text === null ? <Spin/> : text,
+                            width: 60,
                         },
                     ]
                 },
@@ -1055,7 +1153,7 @@ const Stark = () => {
                                 starkDaiBalance += Number(stark_dai_balance);
                             })
 
-                            const emptyCells = Array(17).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 10}/>);
+                            const emptyCells = Array(15).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 10}/>);
 
                             return (
                                 <>
