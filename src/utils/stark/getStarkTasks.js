@@ -7,7 +7,6 @@ async function getStarkTasks(address) {
         let contractAddresses = response.data.items.map(item => item["transfer_to"]);
         const lastPage = response.data.lastPage;
         if (lastPage > 1) {
-            contractAddresses = [];
             for (let i = 2; i <= lastPage; i++) {
                 const url = `https://voyager.online/api/contract/${address}/transfers?ps=50&p=${i}`;
                 const response = await axios.get(url);
@@ -24,4 +23,5 @@ async function getStarkTasks(address) {
         return "Error";
     }
 }
+
 export default getStarkTasks;
