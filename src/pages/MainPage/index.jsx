@@ -10,6 +10,7 @@ import ZksyncTasks from "@pages/ZksyncTasks/index.jsx";
 import ZkRank from "@pages/ZkRank/index.jsx";
 import Deposit from "@pages/Deposit/index.jsx";
 import Notice from "@components/Notice/index.jsx";
+import StarkTasks from "@pages/StarkTasks/index.jsx";
 
 function MainPage() {
     const location = useLocation()
@@ -54,6 +55,7 @@ function MainPage() {
                         {location.pathname === "/zksyncTasks" && <ZksyncTasks/>}
                         {location.pathname === "/zkRank" && <ZkRank/>}
                         {location.pathname === "/stark" && <Stark/>}
+                        {location.pathname === "/starkTasks" && <StarkTasks/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}
                         {/* {location.pathname === "/coffee" && <Coffee/>} */}

@@ -13,6 +13,7 @@ import getZksTasks from "@utils/zksync/getZksTasks.js";
 import calculateScore from "@utils/score/getScore.js";
 import getStarkERC20 from "@utils/stark/getStarkERC20.js";
 import getDebankValue from "@utils/zksync/getDebankValue.js";
+import getStarkTasks from "@utils/stark/getStarkTasks.js";
 
 export {
     getEthBalance,
@@ -29,5 +30,6 @@ export {
     getZksTasks,
     calculateScore,
     getStarkERC20,
-    getDebankValue
+    getDebankValue,
+    getStarkTasks
 };

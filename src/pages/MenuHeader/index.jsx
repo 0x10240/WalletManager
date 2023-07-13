@@ -40,6 +40,10 @@ const MenuHeader = () => {
             key: 'stark',
         },
         {
+            label: 'starkTasks',
+            key: 'starkTasks',
+        },
+        {
             label: 'LayerZero',
             key: 'layer',
         },

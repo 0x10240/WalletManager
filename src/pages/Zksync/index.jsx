@@ -760,7 +760,7 @@ function Zksync() {
             ],
         },
         {
-            title: "zkSync Era 🚨🚨当前官方浏览器数据延迟🚨🚨",
+            title: "zkSync Era",
             key: "zks_era_group",
             className: "zks_era",
             children: [

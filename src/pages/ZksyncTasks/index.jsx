@@ -588,7 +588,7 @@ function ZksyncTasks() {
         },
         {
             title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🚨🚨当前官方浏览器数据延迟🚨🚨</a>,
+                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据]</a>,
             key: "zks_era_group",
             className: "zks_era",
             children: [
@@ -881,7 +881,7 @@ function ZksyncTasks() {
                           value: 0,
                         }
                     ],
-                    onFilter: (value, record) => record.ooe === value,
+                    onFilter: (value, record) => record.ezk === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -900,7 +900,7 @@ function ZksyncTasks() {
                           value: 0,
                         }
                     ],
-                    onFilter: (value, record) => record.ooe === value,
+                    onFilter: (value, record) => record.odos === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
