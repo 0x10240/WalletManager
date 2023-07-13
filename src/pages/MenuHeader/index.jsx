@@ -40,7 +40,7 @@ const MenuHeader = () => {
             key: 'stark',
         },
         {
-            label: 'starkTasks',
+            label: 'StarkTasks',
             key: 'starkTasks',
         },
         {
