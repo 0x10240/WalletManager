@@ -7,7 +7,7 @@ import {
     getStarkBridge,
     getStarkInfo,
     exportToExcel,
-    getStarkERC20,
+    getStarkBalances,
     getStarkActivity,
     getStarkAmount,
 } from "@utils"
@@ -99,22 +99,22 @@ const Stark = () => {
                     return item;
                 }));
                 const updatedData = [...data];
-                getStarkInfo(values.address).then(({eth_balance, stark_id, deployed_at_timestamp}) => {
+                getStarkInfo(values.address).then(({wallet_type, deployed_at_timestamp}) => {
                     updatedData[index] = {
                         ...updatedData[index],
-                        stark_eth_balance: eth_balance,
-                        stark_id: stark_id,
+                        wallet_type: wallet_type,
                         create_time: deployed_at_timestamp,
                     };
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
                 })
-                getStarkERC20(values.address).then(({USDC, USDT, DAI}) => {
+                getStarkBalances(values.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                     updatedData[index] = {
                         ...updatedData[index],
-                        stark_usdc_balance: USDC,
-                        stark_usdt_balance: USDT,
-                        stark_dai_balance: DAI,
+                        stark_eth_balance: eth_balance,
+                        stark_usdc_balance: usdc_balance,
+                        stark_usdt_balance: usdt_balance,
+                        stark_dai_balance: dai_balance,
                     };
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
@@ -170,11 +170,10 @@ const Stark = () => {
                     setData(updatedData);
                     localStorage.setItem('stark_addresses', JSON.stringify(data));
                 })
-                getStarkTx(values.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
+                getStarkTx(values.address).then(({tx, stark_latest_tx_time}) => {
                     updatedData[index] = {
                         ...updatedData[index],
                         stark_tx_amount: tx,
-                        stark_latest_tx: stark_latest_tx,
                         stark_latest_tx_time: stark_latest_tx_time
                     };
                     setData(updatedData);
@@ -223,24 +222,23 @@ const Stark = () => {
                 };
                 const newData = [...data, newEntry];
                 setData(newData);
-                getStarkTx(values.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
+                getStarkTx(values.address).then(({tx, stark_latest_tx_time}) => {
                     newEntry.stark_tx_amount = tx;
-                    newEntry.stark_latest_tx = stark_latest_tx;
                     newEntry.stark_latest_tx_time = stark_latest_tx_time;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
-                getStarkInfo(values.address).then(({eth_balance, stark_id, deployed_at_timestamp}) => {
-                    newEntry.stark_eth_balance = eth_balance;
-                    newEntry.stark_id = stark_id;
+                getStarkInfo(values.address).then(({wallet_type, deployed_at_timestamp}) => {
+                    newEntry.wallet_type = wallet_type;
                     newEntry.create_time = deployed_at_timestamp;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
-                getStarkERC20(values.address).then(({USDC, USDT, DAI}) => {
-                    newEntry.stark_usdc_balance = USDC;
-                    newEntry.stark_usdt_balance = USDT;
-                    newEntry.stark_dai_balance = DAI;
+                getStarkBalances(values.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                    newEntry.stark_eth_balance = eth_balance;
+                    newEntry.stark_usdc_balance = usdc_balance;
+                    newEntry.stark_usdt_balance = usdt_balance;
+                    newEntry.stark_dai_balance = dai_balance;
                     setData([...newData]);
                     localStorage.setItem('stark_addresses', JSON.stringify(newData));
                 })
@@ -325,32 +323,31 @@ const Stark = () => {
                 const index = newData.findIndex(item => item.address === address);
                 if (index !== -1) {
                     const updatedData = [...newData];
-                    getStarkTx(address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
+                    getStarkTx(address).then(({tx, stark_latest_tx_time}) => {
                         updatedData[index] = {
                             ...updatedData[index],
                             stark_tx_amount: tx,
-                            stark_latest_tx: stark_latest_tx,
                             stark_latest_tx_time: stark_latest_tx_time,
                         };
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
-                    getStarkInfo(address).then(({eth_balance, stark_id, deployed_at_timestamp}) => {
+                    getStarkInfo(address).then(({wallet_type, deployed_at_timestamp}) => {
                         updatedData[index] = {
                             ...updatedData[index],
-                            stark_eth_balance: eth_balance,
-                            stark_id: stark_id,
+                            wallet_type: wallet_type,
                             create_time: deployed_at_timestamp,
                         };
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
-                    getStarkERC20(address).then(({USDC, USDT, DAI}) => {
+                    getStarkBalances(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         updatedData[index] = {
                             ...updatedData[index],
-                            stark_usdc_balance: USDC,
-                            stark_usdt_balance: USDT,
-                            stark_dai_balance: DAI,
+                            stark_eth_balance: eth_balance,
+                            stark_usdc_balance: usdc_balance,
+                            stark_usdt_balance: usdt_balance,
+                            stark_dai_balance: dai_balance,
                         };
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
@@ -456,24 +453,23 @@ const Stark = () => {
                     };
                     newData.push(newEntry);
                     setData(newData);
-                    getStarkTx(address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
+                    getStarkTx(address).then(({tx, stark_latest_tx_time}) => {
                         newEntry.stark_tx_amount = tx;
-                        newEntry.stark_latest_tx = stark_latest_tx;
                         newEntry.stark_latest_tx_time = stark_latest_tx_time;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
-                    getStarkInfo(address).then(({eth_balance, stark_id, deployed_at_timestamp}) => {
-                        newEntry.stark_eth_balance = eth_balance;
-                        newEntry.stark_id = stark_id;
+                    getStarkInfo(address).then(({wallet_type, deployed_at_timestamp}) => {
+                        newEntry.wallet_type = wallet_type;
                         newEntry.create_time = deployed_at_timestamp;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
-                    getStarkERC20(address).then(({USDC, USDT, DAI}) => {
-                        newEntry.stark_usdc_balance = USDC;
-                        newEntry.stark_usdt_balance = USDT;
-                        newEntry.stark_dai_balance = DAI;
+                    getStarkBalances(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                        newEntry.stark_eth_balance = eth_balance;
+                        newEntry.stark_usdc_balance = usdc_balance;
+                        newEntry.stark_usdt_balance = usdt_balance;
+                        newEntry.stark_dai_balance = dai_balance;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
@@ -593,24 +589,23 @@ const Stark = () => {
                     item.total_widthdraw_count = null;
                     item.total_deposit_count = null;
                     setData([...newData]);
-                    promises.push(getStarkTx(item.address).then(({tx, stark_latest_tx, stark_latest_tx_time}) => {
+                    promises.push(getStarkTx(item.address).then(({tx, stark_latest_tx_time}) => {
                         item.stark_tx_amount = tx;
-                        item.stark_latest_tx = stark_latest_tx;
                         item.stark_latest_tx_time = stark_latest_tx_time;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkInfo(item.address).then(({eth_balance, stark_id, deployed_at_timestamp}) => {
-                        item.stark_eth_balance = eth_balance;
-                        item.stark_id = stark_id;
+                    promises.push(getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
+                        item.wallet_type = wallet_type;
                         item.create_time = deployed_at_timestamp;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkERC20(item.address).then(({USDC, USDT, DAI}) => {
-                        item.stark_usdc_balance = USDC;
-                        item.stark_usdt_balance = USDT;
-                        item.stark_dai_balance = DAI;
+                    promises.push(getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                        item.stark_eth_balance = eth_balance;
+                        item.stark_usdc_balance = usdc_balance;
+                        item.stark_usdt_balance = usdt_balance;
+                        item.stark_dai_balance = dai_balance;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
@@ -776,25 +771,39 @@ const Stark = () => {
             width: 100,
         },
         {
-            title: (
-                <span>
-                starkId
-                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
-                        {getEyeIcon()}
-                    </span>
-                </span>
-            ),
-            dataIndex: "stark_id",
-            key: "stark_id",
+            title: "钱包类型",
+            dataIndex: "wallet_type",
+            key: "wallet_type",
             align: "center",
+            className: "wallet_type",
             render: (text, record) => {
-                if (hideColumn) {
-                    return '***';
+                if (text === null) {
+                    return <Spin/>;
+                } else {
+                    return text;
                 }
-                return (text === null ? <Spin /> : text)
-            },
-            width: 140,
+            }
         },
+        // {
+        //     title: (
+        //         <span>
+        //         starkId
+        //             <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+        //                 {getEyeIcon()}
+        //             </span>
+        //         </span>
+        //     ),
+        //     dataIndex: "stark_id",
+        //     key: "stark_id",
+        //     align: "center",
+        //     render: (text, record) => {
+        //         if (hideColumn) {
+        //             return '***';
+        //         }
+        //         return (text === null ? <Spin /> : text)
+        //     },
+        //     width: 140,
+        // },
         {
             title: "StarkNet",
             className: "zksync2",
