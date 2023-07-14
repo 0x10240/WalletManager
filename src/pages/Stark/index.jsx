@@ -410,6 +410,7 @@ const Stark = () => {
                             total_deposit_count: total_deposit_count,
                         };
                     })
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 } else {
                     const newEntry = {
                         key: newData.length.toString(),
@@ -480,7 +481,7 @@ const Stark = () => {
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
                     })
-                    getStarkAmount(address).then((stark_exchange_amount) => {
+                    getStarkAmount(address).then(({stark_exchange_amount}) => {
                         newEntry.stark_exchange_amount = stark_exchange_amount;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
@@ -523,7 +524,8 @@ const Stark = () => {
                         newEntry.total_deposit_count = total_deposit_count;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(newData));
-                    })
+                    }) 
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 }
             }
             setIsBatchModalVisible(false);
@@ -547,7 +549,7 @@ const Stark = () => {
         }
         setIsLoading(true);
         try {
-            const limit = 5;
+            const limit = 4;
             let activePromises = 0;
             let promisesQueue = [];
             const newData = [...data];
@@ -578,7 +580,6 @@ const Stark = () => {
                     item.monthActivity = null;
                     item.stark_exchange_amount = null;
                     item.stark_id = null;
-                    item.create_time = null;
                     item.d_eth_amount = null;
                     item.d_eth_count = null;
                     item.d_usdc_amount = null;
@@ -609,13 +610,13 @@ const Stark = () => {
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     })})
-                    promisesQueue.push(() => {
-                        return getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
-                        item.wallet_type = wallet_type;
-                        item.create_time = deployed_at_timestamp;
-                        setData([...newData]);
-                        localStorage.setItem('stark_addresses', JSON.stringify(data));
-                    })})
+                    // promisesQueue.push(() => {
+                    //     return getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
+                    //     item.wallet_type = wallet_type;
+                    //     item.create_time = deployed_at_timestamp;
+                    //     setData([...newData]);
+                    //     localStorage.setItem('stark_addresses', JSON.stringify(data));
+                    // })})
                     promisesQueue.push(() => {
                         return getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         item.stark_eth_balance = eth_balance;
@@ -641,49 +642,50 @@ const Stark = () => {
                     })})
                     promisesQueue.push(() => {
                         return getStarkBridge(item.address).then(({
-                                                                         d_eth_amount, d_eth_count,
-                                                                         d_usdc_amount, d_usdc_count,
-                                                                         d_usdt_amount, d_usdt_count,
-                                                                         d_dai_amount, d_dai_count,
-                                                                         d_wbtc_amount,
-                                                                         d_wbtc_count,
-                                                                         w_eth_amount, w_eth_count,
-                                                                         w_usdc_amount, w_usdc_count,
-                                                                         w_usdt_amount, w_usdt_count,
-                                                                         w_dai_amount, w_dai_count,
-                                                                         w_wbtc_amount, w_wbtc_count,
-                                                                         total_widthdraw_count, total_deposit_count
-                                                                     }) => {
-                        item.d_eth_amount = d_eth_amount;
-                        item.d_eth_count = d_eth_count;
-                        item.d_usdc_amount = d_usdc_amount;
-                        item.d_usdc_count = d_usdc_count;
-                        item.d_usdt_amount = d_usdt_amount;
-                        item.d_usdt_count = d_usdt_count;
-                        item.d_dai_amount = d_dai_amount;
-                        item.d_dai_count = d_dai_count;
-                        item.d_wbtc_amount = d_wbtc_amount;
-                        item.d_wbtc_count = d_wbtc_count;
-                        item.w_eth_amount = w_eth_amount;
-                        item.w_eth_count = w_eth_count;
-                        item.w_usdc_amount = w_usdc_amount;
-                        item.w_usdc_count = w_usdc_count;
-                        item.w_usdt_amount = w_usdt_amount;
-                        item.w_usdt_count = w_usdt_count;
-                        item.w_dai_amount = w_dai_amount;
-                        item.w_dai_count = w_dai_count;
-                        item.w_wbtc_amount = w_wbtc_amount;
-                        item.w_wbtc_count = w_wbtc_count;
-                        item.total_widthdraw_count = total_widthdraw_count;
-                        item.total_deposit_count = total_deposit_count;
-                        setData([...newData]);
-                        localStorage.setItem('stark_addresses', JSON.stringify(data));
-                    })})
+                            d_eth_amount, d_eth_count,
+                            d_usdc_amount, d_usdc_count,
+                            d_usdt_amount, d_usdt_count,
+                            d_dai_amount, d_dai_count,
+                            d_wbtc_amount,
+                            d_wbtc_count,
+                            w_eth_amount, w_eth_count,
+                            w_usdc_amount, w_usdc_count,
+                            w_usdt_amount, w_usdt_count,
+                            w_dai_amount, w_dai_count,
+                            w_wbtc_amount, w_wbtc_count,
+                            total_widthdraw_count, total_deposit_count
+                        }) => {
+                            item.d_eth_amount = d_eth_amount;
+                            item.d_eth_count = d_eth_count;
+                            item.d_usdc_amount = d_usdc_amount;
+                            item.d_usdc_count = d_usdc_count;
+                            item.d_usdt_amount = d_usdt_amount;
+                            item.d_usdt_count = d_usdt_count;
+                            item.d_dai_amount = d_dai_amount;
+                            item.d_dai_count = d_dai_count;
+                            item.d_wbtc_amount = d_wbtc_amount;
+                            item.d_wbtc_count = d_wbtc_count;
+                            item.w_eth_amount = w_eth_amount;
+                            item.w_eth_count = w_eth_count;
+                            item.w_usdc_amount = w_usdc_amount;
+                            item.w_usdc_count = w_usdc_count;
+                            item.w_usdt_amount = w_usdt_amount;
+                            item.w_usdt_count = w_usdt_count;
+                            item.w_dai_amount = w_dai_amount;
+                            item.w_dai_count = w_dai_count;
+                            item.w_wbtc_amount = w_wbtc_amount;
+                            item.w_wbtc_count = w_wbtc_count;
+                            item.total_widthdraw_count = total_widthdraw_count;
+                            item.total_deposit_count = total_deposit_count;
+                            setData([...newData]);
+                            localStorage.setItem('stark_addresses', JSON.stringify(data));
+                        })
+                    })
                 }
             processQueue();
             }
             while (activePromises > 0 || promisesQueue.length > 0) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }
         } catch (error) {
             notification.error({
@@ -830,8 +832,8 @@ const Stark = () => {
         //     width: 140,
         // },
         {
-            title: "StarkNet",
-            className: "zksync2",
+            title: "StarkNet   🔴建议减少刷新次数",
+            className: "starkNet",
             children: [
                 {
                     title: "ETH",

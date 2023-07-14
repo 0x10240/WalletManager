@@ -9,6 +9,11 @@
     font-size: 16px;
 }
 
+.ant-table-thead > tr > th.starkNet {
+    background-color: #4e9ed4;
+    color: white;
+}
+
 .ant-table-small .ant-table-row {
     line-height: 1.2;
 }
@@ -28,6 +33,6 @@
 }
 
 .ant-table-thead > tr > th.stark_cross_amount {
-    background-color: #4e9ed4;
+    background-color: #64bcef;
     color: white;
 }
