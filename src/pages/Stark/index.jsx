@@ -547,8 +547,23 @@ const Stark = () => {
         }
         setIsLoading(true);
         try {
-            let promises = [];
+            const limit = 50;
+            let activePromises = 0;
+            let promisesQueue = [];
             const newData = [...data];
+            const processQueue = () => {
+                while (activePromises < limit && promisesQueue.length > 0) {
+                    const promise = promisesQueue.shift();
+                    activePromises += 1;
+
+                    promise().finally(() => {
+                        activePromises -= 1;
+                        processQueue();
+                    });
+                }
+            };
+            let promises = [];
+            // const newData = [...data];
             for (let key of selectedKeys) {
                 const index = newData.findIndex(item => item.key === key);
                 if (index !== -1) {
@@ -589,19 +604,19 @@ const Stark = () => {
                     item.total_widthdraw_count = null;
                     item.total_deposit_count = null;
                     setData([...newData]);
-                    promises.push(getStarkTx(item.address).then(({tx, stark_latest_tx_time}) => {
+                    promisesQueue.push(getStarkTx(item.address).then(({tx, stark_latest_tx_time}) => {
                         item.stark_tx_amount = tx;
                         item.stark_latest_tx_time = stark_latest_tx_time;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
+                    promisesQueue.push(getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
                         item.wallet_type = wallet_type;
                         item.create_time = deployed_at_timestamp;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                    promisesQueue.push(getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         item.stark_eth_balance = eth_balance;
                         item.stark_usdc_balance = usdc_balance;
                         item.stark_usdt_balance = usdt_balance;
@@ -609,19 +624,19 @@ const Stark = () => {
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkActivity(item.address).then(({dayActivity, weekActivity, monthActivity}) => {
+                    promisesQueue.push(getStarkActivity(item.address).then(({dayActivity, weekActivity, monthActivity}) => {
                         item.dayActivity = dayActivity;
                         item.weekActivity = weekActivity;
                         item.monthActivity = monthActivity;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkAmount(item.address).then(({stark_exchange_amount}) => {
+                    promisesQueue.push(getStarkAmount(item.address).then(({stark_exchange_amount}) => {
                         item.stark_exchange_amount = stark_exchange_amount;
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     }))
-                    promises.push(getStarkBridge(item.address).then(({
+                    promisesQueue.push(getStarkBridge(item.address).then(({
                                                                          d_eth_amount, d_eth_count,
                                                                          d_usdc_amount, d_usdc_count,
                                                                          d_usdt_amount, d_usdt_count,
