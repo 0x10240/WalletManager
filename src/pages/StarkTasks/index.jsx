@@ -45,12 +45,13 @@ function StarkTasks() {
     const [tableHeight, setTableHeight] = useState(0);
     const [hideColumn, setHideColumn] = useState(false);
 
-    const jediContract = "0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a";
+    const jediETHUSDCpool = "0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a";
+    const jediETHUSDTpool = "0x045e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6";
     const mySwapContract = "0x010884171baf1914edc28d7afb619b40a4051cfae78a094a55d230f19e944a28";
     const avnuContract = "0x04270219d365d6b017231b52e92b3fb5d7c8378b05e9abc97724537a80e93b0f";
     const zkLendContract = "0x04c0a5193d58f74fbace4b74dcf65481e734ed1714121bdc571da345540efa05";
-    const _10KSwapContract = "0x05900cfa2b50d53b097cb305d54e249e31f24f881885aae5639b0cd6af4ed298";
-
+    const _10KSwapETHUSDTpool = "0x05900cfa2b50d53b097cb305d54e249e31f24f881885aae5639b0cd6af4ed298";
+    const _10KSwapETHUSDCpool = "0x000023c72abdf49dffc85ae3ede714f2168ad384cc67d08524732acea90df325";
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
       };
@@ -69,35 +70,35 @@ function StarkTasks() {
             for (let item of newData) {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, jediContract);
+                        const result = (checkTaskStatus(item.address, jediETHUSDTpool) || checkTaskStatus(item.address, jediETHUSDCpool)) > 0 ? "✅" : "❌";
                         item.jedi = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, mySwapContract);
+                        const result = checkTaskStatus(item.address, mySwapContract) > 0 ? "✅" : "❌";
                         item.myswap = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, avnuContract);
+                        const result = checkTaskStatus(item.address, avnuContract) > 0 ? "✅" : "❌";
                         item.avnu = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, zkLendContract);
+                        const result = checkTaskStatus(item.address, zkLendContract) > 0 ? "✅" : "❌";
                         item.zklend = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, _10KSwapContract);
+                        const result = (checkTaskStatus(item.address, _10KSwapETHUSDCpool) || checkTaskStatus(item.address, _10KSwapETHUSDTpool)) > 0 ? "✅" : "❌";
                         item._10k = result;
                         resolve();
                     });
@@ -141,35 +142,35 @@ function StarkTasks() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, jediContract);
+                            const result = (checkTaskStatusByArray(contractAddresses, jediETHUSDCpool) || checkTaskStatusByArray(contractAddresses, jediETHUSDTpool)) > 0 ? "✅" : "❌";
                             item.jedi = result;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, mySwapContract);
+                            const result = checkTaskStatusByArray(contractAddresses, mySwapContract) > 0 ? "✅" : "❌";
                             item.myswap = result;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, avnuContract);
+                            const result = checkTaskStatusByArray(contractAddresses, avnuContract) > 0 ? "✅" : "❌";
                             item.avnu = result;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, zkLendContract);
+                            const result = checkTaskStatusByArray(contractAddresses, zkLendContract) > 0 ? "✅" : "❌";
                             item.zklend = result;
                             resolve();
                         });
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, _10KSwapContract);
+                            const result = (checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDCpool) || checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDTpool)) > 0 ? "✅" : "❌";
                             item._10k = result;
                             resolve();
                         });
@@ -207,8 +208,7 @@ function StarkTasks() {
             }
             return accumulator;
           }, 0);
-        const status = count > 0 ? "✅" : "❌";
-        return status;
+        return count;
     };
 
     const checkTaskStatusByArray = (contractAddresses, taskContract) => {
@@ -219,8 +219,7 @@ function StarkTasks() {
               }
               return accumulator;
             }, 0);
-        const status = count > 0 ? "✅" : "❌";
-        return status;
+        return count;
       };
 
     useEffect(() => {
