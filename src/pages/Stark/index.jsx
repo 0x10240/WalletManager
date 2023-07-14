@@ -779,8 +779,10 @@ const Stark = () => {
             render: (text, record) => {
                 if (text === null) {
                     return <Spin/>;
+                } else if (text === undefined) {
+                    return "Error"
                 } else {
-                    return text.slice(0, -5);
+                    return text?.slice(0, -5);
                 }
             },
             width: 80,
