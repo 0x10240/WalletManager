@@ -780,9 +780,10 @@ const Stark = () => {
                 if (text === null) {
                     return <Spin/>;
                 } else {
-                    return text;
+                    return text.slice(0, -5);
                 }
-            }
+            },
+            width: 80,
         },
         // {
         //     title: (
