@@ -47,11 +47,17 @@ function StarkTasks() {
 
     const jediETHUSDCpool = "0x04d0390b777b424e43839cd1e744799f3de6c176c7e32c1812a41dbd9c19db6a";
     const jediETHUSDTpool = "0x045e7131d776dddc137e30bdd490b431c7144677e97bf9369f629ed8d3fb7dd6";
+    const jediETHDAIpool = "0x07e2a13b40fc1119ec55e0bcf9428eedaa581ab3c924561ad4e955f95da63138";
     const mySwapContract = "0x010884171baf1914edc28d7afb619b40a4051cfae78a094a55d230f19e944a28";
     const avnuContract = "0x04270219d365d6b017231b52e92b3fb5d7c8378b05e9abc97724537a80e93b0f";
     const zkLendContract = "0x04c0a5193d58f74fbace4b74dcf65481e734ed1714121bdc571da345540efa05";
     const _10KSwapETHUSDTpool = "0x05900cfa2b50d53b097cb305d54e249e31f24f881885aae5639b0cd6af4ed298";
     const _10KSwapETHUSDCpool = "0x000023c72abdf49dffc85ae3ede714f2168ad384cc67d08524732acea90df325";
+    const _10KSwapETHDAIpool = "0x017e9e62c04b50800d7c59454754fe31a2193c9c3c6c92c093f2ab0faadf8c87";
+    const sithSwapETHUSDCpool = "0x030615bec9c1506bfac97d9dbd3c546307987d467a7f95d5533c2e861eb81f3f";
+    const sithSwapETHUSDTpool = "0x05e86d570376e8dc917d241288150a3286c8ad7151638c152d787eca2b96aec3";
+    const sithSwapETHDAIpool = "0x02aab581754064a87ade1b680fd9756dc3a17440a87aaf496dcfb39fd163d1dd";
+
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
       };
@@ -70,7 +76,8 @@ function StarkTasks() {
             for (let item of newData) {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = (checkTaskStatus(item.address, jediETHUSDTpool) || checkTaskStatus(item.address, jediETHUSDCpool)) > 0 ? "✅" : "❌";
+                        const result = (checkTaskStatus(item.address, jediETHUSDTpool) || checkTaskStatus(item.address, jediETHUSDCpool
+                            || checkTaskStatus(item.address, jediETHDAIpool))) > 0 ? "✅" : "❌";
                         item.jedi = result;
                         resolve();
                     });
@@ -98,8 +105,17 @@ function StarkTasks() {
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = (checkTaskStatus(item.address, _10KSwapETHUSDCpool) || checkTaskStatus(item.address, _10KSwapETHUSDTpool)) > 0 ? "✅" : "❌";
+                        const result = (checkTaskStatus(item.address, _10KSwapETHUSDCpool) || checkTaskStatus(item.address, _10KSwapETHUSDTpool)
+                            || checkTaskStatus(item.address, _10KSwapETHDAIpool)) > 0 ? "✅" : "❌";
                         item._10k = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = (checkTaskStatus(item.address, sithSwapETHDAIpool) || checkTaskStatus(item.address, sithSwapETHUSDCpool)
+                            || checkTaskStatus(item.address, sithSwapETHUSDTpool)) > 0 ? "✅" : "❌";
+                        item.sith = result;
                         resolve();
                     });
                 });
@@ -142,7 +158,8 @@ function StarkTasks() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = (checkTaskStatusByArray(contractAddresses, jediETHUSDCpool) || checkTaskStatusByArray(contractAddresses, jediETHUSDTpool)) > 0 ? "✅" : "❌";
+                            const result = (checkTaskStatusByArray(contractAddresses, jediETHUSDCpool) || checkTaskStatusByArray(contractAddresses, jediETHUSDTpool)
+                                || (checkTaskStatusByArray(contractAddresses, jediETHDAIpool))) > 0 ? "✅" : "❌";
                             item.jedi = result;
                             resolve();
                         });
@@ -170,8 +187,17 @@ function StarkTasks() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = (checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDCpool) || checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDTpool)) > 0 ? "✅" : "❌";
+                            const result = (checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDCpool) || checkTaskStatusByArray(contractAddresses, _10KSwapETHUSDTpool)
+                                || checkTaskStatusByArray(contractAddresses, _10KSwapETHDAIpool)) > 0 ? "✅" : "❌";
                             item._10k = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = (checkTaskStatusByArray(contractAddresses, sithSwapETHDAIpool) || checkTaskStatusByArray(contractAddresses, sithSwapETHUSDCpool)
+                                || checkTaskStatusByArray(contractAddresses, sithSwapETHUSDTpool)) > 0 ? "✅" : "❌";
+                            item.sith = result;
                             resolve();
                         });
                     });
@@ -384,7 +410,7 @@ function StarkTasks() {
         },
         {
             title: <a href="https://defillama.com/chain/Starknet" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">StarkNet Task List  [参考defillama TVL数据]</a>,
+                target="_blank" rel="noopener noreferrer">StarkNet Task List  [参考defillama TVL数据] 🟡部分Dex只统计eth/usdc eth/usdt eth/dai交易记录</a>,
             key: "starkNet_group",
             className: "starkNet",
             children: [
@@ -427,6 +453,29 @@ function StarkTasks() {
                         }
                     ],
                     onFilter: (value, record) => record.myswap === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 60
+                },
+                {
+                    title: <a href="https://10kswap.com/swap" target="_blank" rel="noopener noreferrer">10KSwap</a>,
+                    dataIndex: "_10k",
+                    key: "_10k",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: "❌",
+                        },
+                        {
+                          text: '已完成',
+                          value: "✅",
+                        }
+                    ],
+                    onFilter: (value, record) => record._10k === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -481,9 +530,9 @@ function StarkTasks() {
                     width: 60
                 },
                 {
-                    title: <a href="https://10kswap.com/swap" target="_blank" rel="noopener noreferrer">10KSwap</a>,
-                    dataIndex: "_10k",
-                    key: "_10k",
+                    title: <a href="https://app.sithswap.com/swap/" target="_blank" rel="noopener noreferrer">SithSwap</a>,
+                    dataIndex: "sith",
+                    key: "sith",
                     align: "center",
                     filters: [
                         {
@@ -495,7 +544,7 @@ function StarkTasks() {
                           value: "✅",
                         }
                     ],
-                    onFilter: (value, record) => record._10k === value,
+                    onFilter: (value, record) => record.sith === value,
                     render: (text, record) => (
                         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
                             {text === null ? <Spin /> : text}
@@ -510,7 +559,7 @@ function StarkTasks() {
                     align: 'center',
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['jedi', 'myswap', 'avnu', 'zklend', '_10k'];
+                      const items = ['jedi', 'myswap', 'avnu', 'zklend', '_10k', 'sith'];
                       const count = items.reduce((total, item) => {
                         if (record[item] === '✅') {
                           return total + 1;
