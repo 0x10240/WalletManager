@@ -365,7 +365,7 @@ function StarkTasks() {
               
                 if (text === null) {
                   return <Spin />;
-                } else if (text.includes("天") && parseInt(text) > 7) {
+                } else if (text?.includes("天") && parseInt(text) > 7) {
                   textColor = "red";
                 } else {
                   textColor = "#1677ff";
