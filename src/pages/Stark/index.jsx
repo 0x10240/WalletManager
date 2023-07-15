@@ -10,6 +10,7 @@ import {
     getStarkBalances,
     getStarkActivity,
     getStarkAmount,
+    getStarkERC20
 } from "@utils"
 import {
     DeleteOutlined,
@@ -341,7 +342,7 @@ const Stark = () => {
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
-                    getStarkBalances(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                    getStarkERC20(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         updatedData[index] = {
                             ...updatedData[index],
                             stark_eth_balance: eth_balance,
@@ -549,7 +550,7 @@ const Stark = () => {
         }
         setIsLoading(true);
         try {
-            const limit = 4;
+            const limit = 20;
             let activePromises = 0;
             let promisesQueue = [];
             const newData = [...data];
@@ -610,15 +611,29 @@ const Stark = () => {
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     })})
+                    promisesQueue.push(() => {
+                        if(item.wallet_type === undefined) {
+                            return getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
+                              item.wallet_type = wallet_type;
+                              item.create_time = deployed_at_timestamp;
+                              setData([...newData]);
+                              localStorage.setItem('stark_addresses', JSON.stringify(data));
+                            })
+                          } else {
+                            return Promise.resolve(); 
+                          }
+                    })
                     // promisesQueue.push(() => {
-                    //     return getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp}) => {
-                    //     item.wallet_type = wallet_type;
-                    //     item.create_time = deployed_at_timestamp;
+                    //     return getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                    //     item.stark_eth_balance = eth_balance;
+                    //     item.stark_usdc_balance = usdc_balance;
+                    //     item.stark_usdt_balance = usdt_balance;
+                    //     item.stark_dai_balance = dai_balance;
                     //     setData([...newData]);
                     //     localStorage.setItem('stark_addresses', JSON.stringify(data));
                     // })})
                     promisesQueue.push(() => {
-                        return getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                        return getStarkERC20(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         item.stark_eth_balance = eth_balance;
                         item.stark_usdc_balance = usdc_balance;
                         item.stark_usdt_balance = usdt_balance;
