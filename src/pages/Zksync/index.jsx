@@ -25,6 +25,7 @@ import {
 import {useEffect, useState} from "react";
 import './index.css';
 import {Layout, Card} from 'antd';
+import { ethers } from 'ethers';
 
 const {Content} = Layout;
 import {
@@ -61,6 +62,41 @@ function Zksync() {
         setHideColumn(!hideColumn);
       };
     
+    const getNftBalance = async (address) => {
+        try {
+        const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
+        const ABI = [
+            {
+              inputs: [
+                {
+                  internalType: "address",
+                  name: "owner",
+                  type: "address",
+                },
+              ],
+              name: "balanceOf",
+              outputs: [
+                {
+                  internalType: "uint256",
+                  name: "",
+                  type: "uint256",
+                },
+              ],
+              stateMutability: "view",
+              type: "function",
+            },
+          ];
+          const contractAddress = "0xd07180c423f9b8cf84012aa28cc174f3c433ee29";
+          const contract = new ethers.Contract(contractAddress, ABI, provider);
+          const result = await contract.balanceOf(address);
+          return {zks_nft: result.toString()};
+        } 
+        catch (error) {
+            console.log(error);
+            return {zks_nft: "Error"};
+        }
+    }
+
     const getEyeIcon = () => {
     if (hideColumn) {
         return <EyeInvisibleOutlined />;
@@ -339,6 +375,14 @@ function Zksync() {
                             localStorage.setItem('addresses', JSON.stringify(newData));
                         })
                     });
+                    promisesQueue.push(async () => {
+                        item.zks_nft = null;
+                        return getNftBalance(item.address).then(({zks_nft}) => {\
+                            item.zks_nft = zks_nft;
+                            setData([...newData]);
+                            localStorage.setItem('addresses', JSON.stringify(newData));
+                        })
+                    })
                     promisesQueue.push(() => {
                         item.zks1_balance = null;
                         item.zks1_tx_amount = null;
@@ -784,6 +828,14 @@ function Zksync() {
                     title: "eraETH",
                     dataIndex: "zks_eraETH",
                     key: "zks_eraETH",
+                    align: "center",
+                    render: (text, record) => (text === null ? <Spin/> : text),
+                    width: 60
+                },
+                {
+                    title: "临时查NFT",
+                    dataIndex: "zks_nft",
+                    key: "zks_nft",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
                     width: 60
