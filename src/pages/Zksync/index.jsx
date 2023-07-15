@@ -377,7 +377,7 @@ function Zksync() {
                     });
                     promisesQueue.push(async () => {
                         item.zks_nft = null;
-                        return getNftBalance(item.address).then(({zks_nft}) => {\
+                        return getNftBalance(item.address).then(({zks_nft}) => {
                             item.zks_nft = zks_nft;
                             setData([...newData]);
                             localStorage.setItem('addresses', JSON.stringify(newData));
