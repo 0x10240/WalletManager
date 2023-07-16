@@ -833,18 +833,6 @@ function Zksync() {
                     width: 60
                 },
                 {
-                    title: "临时查NFT",
-                    dataIndex: "zks_nft",
-                    key: "zks_nft",
-                    align: "center",
-                    render: (text, record) => (text === null ? <Spin/> : 
-                    <span style={{ color: text === "1" ? 'red' : 'inherit' }}>
-                            {text === null ? <Spin /> : text}
-                        </span>
-                    ),
-                    width: 60
-                },
-                {
                     title: 'Tx',
                     dataIndex: 'zks2_tx_amount',
                     key: 'zks2_tx_amount',
@@ -1283,7 +1271,6 @@ function Zksync() {
                                         <Table.Summary.Cell index={8}>{zks2Balance.toFixed(4)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={9}>{zks2UsdcBalance.toFixed(2)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={10}>{zksEraETH.toFixed(4)}</Table.Summary.Cell>
-                                        <Table.Summary.Cell index={99}>{}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={11}>-{avgTx.toFixed(0)}-</Table.Summary.Cell>
                                         {emptyCells}
                                         <Table.Summary.Cell index={17}>-{avgDay.toFixed(0)}-</Table.Summary.Cell>
