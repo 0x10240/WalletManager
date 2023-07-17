@@ -317,13 +317,17 @@ const Layer = () => {
                     />
                 ) : (
                     <>
-                        <Tag color="blue">{text}</Tag>
-                        <Button
-                            shape="circle"
-                            icon={<EditOutlined/>}
-                            size={"small"}
-                            onClick={() => setEditingKey(record.key)}
-                        />
+                        <Tag color="blue" onClick={() => setEditingKey(record.key)}>
+                            {text}
+                            </Tag>
+                            {!text && (
+                            <Button
+                                shape="circle"
+                                icon={<EditOutlined />}
+                                size="small"
+                                onClick={() => setEditingKey(record.key)}
+                            />
+                        )}
                     </>
                 );
             },
