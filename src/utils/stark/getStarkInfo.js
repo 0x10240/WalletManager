@@ -13,7 +13,7 @@ async function getStarkInfo(address) {
         return {wallet_type: wallet_type, deployed_at_timestamp: deployed_at_timestamp, stark_id: stark_id}
     } catch (error) {
         console.error(error);
-        return {proxy: "Error", deployed_at_timestamp: "Error", stark_id: "Error"}
+        return {wallet_type: "Error", deployed_at_timestamp: "Error", stark_id: "Error"}
     }
 }
 

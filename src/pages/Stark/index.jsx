@@ -706,13 +706,15 @@ const Stark = () => {
                     item.weekActivity = null;
                     item.monthActivity = null;
                     item.stark_exchange_amount = null;
-                    getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp, stark_id}) => {
-                        item.wallet_type = wallet_type;
-                        item.create_time = deployed_at_timestamp;
-                        item.stark_id = stark_id;
-                        setData([...newData]);
-                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
-                    })
+                    if (item.wallet_type === "Error") {
+                        getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp, stark_id}) => {
+                            item.wallet_type = wallet_type;
+                            item.create_time = deployed_at_timestamp;
+                            item.stark_id = stark_id;
+                            setData([...newData]);
+                            localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                        })
+                    }
                     getStarkActivity(item.address).then(({dayActivity, weekActivity, monthActivity}) => {
                         item.dayActivity = dayActivity;
                         item.weekActivity = weekActivity;
@@ -882,7 +884,7 @@ const Stark = () => {
                   }
                 return  (text === null ? <Spin/> : text.slice(0, 6) + "..." + text.slice(-6))
             },
-            // width: 160, 
+            width: 140, 
         },
         {
             title: (
@@ -903,7 +905,7 @@ const Stark = () => {
                   }
                 return  (text === null ? <Spin/> : text)
             },
-            // width: 120, 
+            width: 100, 
         },
         {
             title: "创建时间",
@@ -933,8 +935,8 @@ const Stark = () => {
             render: (text, record) => {
                 if (text === null) {
                     return <Spin/>;
-                } else if (text === undefined) {
-                    return "Error"
+                } else if (text === undefined || text === "Error") {
+                    return "/"
                 } else {
                     return text?.slice(0, -5);
                 }
