@@ -6,10 +6,14 @@ async function getStarkInfo(address) {
         const response = await axios.get(url);
         const deployed_at_timestamp = response.data.creationTimestamp;
         const wallet_type = response.data?.classAlias;
-        return {wallet_type: wallet_type, deployed_at_timestamp: deployed_at_timestamp}
+        let stark_id = response.data.contractAlias;
+        if (stark_id === null) {
+            stark_id = "/"
+        }
+        return {wallet_type: wallet_type, deployed_at_timestamp: deployed_at_timestamp, stark_id: stark_id}
     } catch (error) {
         console.error(error);
-        return {proxy: "Error", deployed_at_timestamp: "Error"}
+        return {proxy: "Error", deployed_at_timestamp: "Error", stark_id: "Error"}
     }
 }
 
