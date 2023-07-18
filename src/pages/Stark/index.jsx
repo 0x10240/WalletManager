@@ -706,7 +706,7 @@ const Stark = () => {
                     item.weekActivity = null;
                     item.monthActivity = null;
                     item.stark_exchange_amount = null;
-                    if (item.wallet_type === "Error") {
+                    if (item.wallet_type === "Error" || item.wallet_type === undefined) {
                         getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp, stark_id}) => {
                             item.wallet_type = wallet_type;
                             item.create_time = deployed_at_timestamp;
