@@ -593,7 +593,7 @@ function ZksyncTasks() {
         },
         {
             title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据]</a>,
+                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🔴eraLend疑似被攻击 谨慎交互</a>,
             key: "zks_era_group",
             className: "zks_era",
             children: [
@@ -819,7 +819,7 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
-                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend</a>,
+                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend🚨</a>,
                     dataIndex: "eralend",
                     key: "eralend",
                     align: "center",
@@ -835,7 +835,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    width: 55
+                    width: 70
                 },
                 {
                     title: <a href="https://app.overnight.fi/stats?tabName=zksync" target="_blank" rel="noopener noreferrer">USD+</a>,
