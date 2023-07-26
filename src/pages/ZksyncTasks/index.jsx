@@ -834,7 +834,7 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
-                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend🚨</a>,
+                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend</a>,
                     dataIndex: "eralend",
                     key: "eralend",
                     align: "center",
@@ -850,7 +850,7 @@ function ZksyncTasks() {
                             {text === null ? <Spin /> : text}
                         </span>
                     ),
-                    width: 70
+                    width: 55
                 },
                 {
                     title: <a href="https://app.overnight.fi/stats?tabName=zksync" target="_blank" rel="noopener noreferrer">USD+</a>,
