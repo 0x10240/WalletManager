@@ -78,6 +78,7 @@ function ZksyncTasks() {
     const openoceanContract = "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230";
     const ezkContract = "0x498f7bB59c61307De7dEA005877220e4406470e9";
     const odosContract = "0xA269031037B4D5fa3F771c401D19E57def6Cb491";
+    const dmailContract = "0x981F198286E40F9979274E0876636E9144B8FB8E";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -213,6 +214,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, odosContract);
                         item.odos = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, dmailContract);
+                        item.dmail = result;
                         resolve();
                     });
                 });
@@ -376,6 +384,13 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, odosContract);
                             item.odos = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, dmailContract);
+                            item.dmail = result;
                             resolve();
                         });
                     });
@@ -914,6 +929,25 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
+                    title: <a href="https://mail.dmail.ai/presale/395788" target="_blank" rel="noopener noreferrer">dmail</a>,
+                    dataIndex: "dmail",
+                    key: "dmail",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.dmail === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 55
+                },
+                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
@@ -921,7 +955,7 @@ function ZksyncTasks() {
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
                       const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns',
-                       'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp', 'ooe', 'ezk', 'odos'];
+                       'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp', 'ooe', 'ezk', 'odos', 'dmail'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
