@@ -10,6 +10,7 @@ async function processData(address, deposit_data, widthdraw_data, erc20TransferE
         const timestamp = erc20TransferEventsDataItem.timestamp
         const transfer_to_identifier = erc20TransferEventsDataItem['transfer_to_identifier']
         const method = erc20TransferEventsDataItem.main_call ? erc20TransferEventsDataItem.main_call['selector_identifier'] : null
+        const erc20 = erc20TransferEventsDataItem['from_erc20_identifier']
         if (transfer_from_address === "0x0000000000000000000000000000000000000000000000000000000000000000" && method === "handle_deposit") {
             const from_erc20_identifier = erc20TransferEventsDataItem['from_erc20_identifier']
             if (from_erc20_identifier in deposit_data) {
@@ -25,8 +26,7 @@ async function processData(address, deposit_data, widthdraw_data, erc20TransferE
                     "count": 1
                 }
             }
-        } else if (transfer_to_address === "0x0000000000000000000000000000000000000000000000000000000000000000") {
-
+        } else if (transfer_to_address === "0x0000000000000000000000000000000000000000000000000000000000000000" && erc20 === "StarkGate: ETH") {
                 const from_erc20_identifier = erc20TransferEventsDataItem['from_erc20_identifier']
                 if (from_erc20_identifier in widthdraw_data) {
                     const amount = widthdraw_data[from_erc20_identifier]["amount"] += parseFloat(transfer_amount_display)
