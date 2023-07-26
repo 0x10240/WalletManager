@@ -557,6 +557,29 @@ function StarkTasks() {
                     width: 60
                 },
                 {
+                    title: "NFT",
+                    children: [
+                        {
+                            title: <a href="https://mail.dmail.ai/presale/394965" target="_blank" rel="noopener noreferrer">Dmail</a>,
+                            align: "center",
+                            render: () => '/',
+                            width: 60
+                        },
+                        {
+                            title: <a href="https://app.starknet.id/identities" target="_blank" rel="noopener noreferrer">StarknetId</a>,
+                            align: "center",
+                            render: () => '/',
+                            width: 60
+                        },
+                        {
+                            title: <a href="https://starkverse.art/" target="_blank" rel="noopener noreferrer">starkverse</a>,
+                            align: "center",
+                            render: () => '/',
+                            width: 60
+                        }
+                    ],
+                },
+                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
