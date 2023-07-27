@@ -79,6 +79,7 @@ function ZksyncTasks() {
     const ezkContract = "0x498f7bB59c61307De7dEA005877220e4406470e9";
     const odosContract = "0xA269031037B4D5fa3F771c401D19E57def6Cb491";
     const dmailContract = "0x981F198286E40F9979274E0876636E9144B8FB8E";
+    const pancakeContract = "0xf8b59f3c3Ab33200ec80a8A58b2aA5F5D2a8944C";
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -221,6 +222,13 @@ function ZksyncTasks() {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, dmailContract);
                         item.dmail = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, pancakeContract);
+                        item.pancake = result;
                         resolve();
                     });
                 });
@@ -391,6 +399,13 @@ function ZksyncTasks() {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, dmailContract);
                             item.dmail = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, pancakeContract);
+                            item.pancake = result;
                             resolve();
                         });
                     });
@@ -608,7 +623,7 @@ function ZksyncTasks() {
         },
         {
             title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🔴eraLend疑似被攻击 谨慎交互</a>,
+                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🔴eraLend usd+ 任务下架</a>,
             key: "zks_era_group",
             className: "zks_era",
             children: [
@@ -833,44 +848,44 @@ function ZksyncTasks() {
                     ),
                     width: 55
                 },
-                {
-                    title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend</a>,
-                    dataIndex: "eralend",
-                    key: "eralend",
-                    align: "center",
-                    filters: [
-                        {
-                          text: '未完成',
-                          value: 0,
-                        }
-                    ],
-                    onFilter: (value, record) => record.eralend === value,
-                    render: (text, record) => (
-                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
-                            {text === null ? <Spin /> : text}
-                        </span>
-                    ),
-                    width: 55
-                },
-                {
-                    title: <a href="https://app.overnight.fi/stats?tabName=zksync" target="_blank" rel="noopener noreferrer">USD+</a>,
-                    dataIndex: "usdp",
-                    key: "usdp",
-                    align: "center",
-                    filters: [
-                        {
-                          text: '未完成',
-                          value: 0,
-                        }
-                    ],
-                    onFilter: (value, record) => record.usdp === value,
-                    render: (text, record) => (
-                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
-                            {text === null ? <Spin /> : text}
-                        </span>
-                    ),
-                    width: 55
-                },
+                // {
+                //     title: <a href="https://app.eralend.com/" target="_blank" rel="noopener noreferrer">eraLend</a>,
+                //     dataIndex: "eralend",
+                //     key: "eralend",
+                //     align: "center",
+                //     filters: [
+                //         {
+                //           text: '未完成',
+                //           value: 0,
+                //         }
+                //     ],
+                //     onFilter: (value, record) => record.eralend === value,
+                //     render: (text, record) => (
+                //         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                //             {text === null ? <Spin /> : text}
+                //         </span>
+                //     ),
+                //     width: 55
+                // },
+                // {
+                //     title: <a href="https://app.overnight.fi/stats?tabName=zksync" target="_blank" rel="noopener noreferrer">USD+</a>,
+                //     dataIndex: "usdp",
+                //     key: "usdp",
+                //     align: "center",
+                //     filters: [
+                //         {
+                //           text: '未完成',
+                //           value: 0,
+                //         }
+                //     ],
+                //     onFilter: (value, record) => record.usdp === value,
+                //     render: (text, record) => (
+                //         <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                //             {text === null ? <Spin /> : text}
+                //         </span>
+                //     ),
+                //     width: 55
+                // },
                 {
                     title: <a href="https://app.openocean.finance/CLASSIC#/ZKSYNC/ETH/USDC" target="_blank" rel="noopener noreferrer">OOE</a>,
                     dataIndex: "ooe",
@@ -948,6 +963,25 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
+                    title: <a href="https://pancakeswap.finance/swap?chain=zkSync" target="_blank" rel="noopener noreferrer">cake</a>,
+                    dataIndex: "pancake",
+                    key: "pancake",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.pancake === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 55
+                },
+                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
@@ -955,7 +989,7 @@ function ZksyncTasks() {
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
                       const items = ['sync', 'mute', 'okx', 'spacefi', '_1inch', 'izumi', 'zns',
-                       'velo', 'rf', 'eralend', 'mav', 'veSync', 'usdp', 'ooe', 'ezk', 'odos', 'dmail'];
+                       'velo', 'rf', 'mav', 'veSync', 'ooe', 'ezk', 'odos', 'dmail', 'pancake']; // 'usdp','eralend',去除
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
