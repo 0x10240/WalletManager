@@ -125,8 +125,8 @@ function Zksync() {
       // Fetch the latest version on component mount
       fetchLatestVersion();
   
-      // Schedule fetching the latest version every 1 hour (you can adjust the interval as needed)
-      const interval = setInterval(fetchLatestVersion, 3600000);
+      // Schedule fetching the latest version every 10 mins
+      const interval = setInterval(fetchLatestVersion, 600000);
   
       // Clean up the interval on component unmount
       return () => clearInterval(interval);
@@ -139,7 +139,7 @@ function Zksync() {
         // Perform actions when a new version is available
         notification.info({
             message: '检查到页面有新的版本!',
-            description: `刷新页面以加载最新版本 (${latestVersion.substring(0, 7)})`,
+            description: `刷新页面以加载最新版本 (${locallyStoredVersion.substring(0, 7)} -> ${latestVersion.substring(0, 7)})`,
             duration: 0,
         });
       }
