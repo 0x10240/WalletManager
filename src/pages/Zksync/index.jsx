@@ -57,6 +57,7 @@ function Zksync() {
     const [hideColumn, setHideColumn] = useState(false);
     const [scoreData, setScoreData] = useState([]);
     const [tableHeight, setTableHeight] = useState(0);
+    const [latestVersion, setLatestVersion] = useState('');
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -103,6 +104,49 @@ function Zksync() {
     }
     return <EyeOutlined />;
     };
+
+    useEffect(() => {
+      // Function to fetch the latest version from GitHub API
+      const fetchLatestVersion = () => {
+        const url = "https://api.github.com/repos/luoyeETH/MyWalletScan/commits?per_page=1";
+        fetch(url)
+          .then(res => res.json())
+          .then(res => {
+            const version = res[0].sha;
+            setLatestVersion(version);
+            // console.log('Latest version:', version);
+            localStorage.setItem('version', version);
+          })
+          .catch(error => {
+            console.error('Error fetching latest version:', error);
+          });
+      };
+  
+      // Fetch the latest version on component mount
+      fetchLatestVersion();
+  
+      // Schedule fetching the latest version every 1 hour (you can adjust the interval as needed)
+      const interval = setInterval(fetchLatestVersion, 3600000);
+  
+      // Clean up the interval on component unmount
+      return () => clearInterval(interval);
+    }, []);
+  
+    // Function to compare the latest version with the locally stored version
+    const checkVersion = () => {
+      const locallyStoredVersion = localStorage.getItem('version');
+      if (locallyStoredVersion && latestVersion && locallyStoredVersion !== latestVersion) {
+        // Perform actions when a new version is available
+        notification.info({
+            message: '检查到页面有新的版本!',
+            description: `刷新页面以加载最新版本 (${latestVersion.substring(0, 7)})`,
+            duration: 0,
+        });
+      }
+    };
+  
+    // Call the checkVersion function on component mount and whenever the latestVersion state changes
+    useEffect(checkVersion, [latestVersion]);
 
     useEffect(() => {
         const handleResize = () => {
