@@ -3,6 +3,7 @@ import React, {Suspense} from "react";
 
 import {Navigate, useRoutes} from "react-router-dom";
 
+const Overview = React.lazy(() => import("@pages/Overview"));
 const Zksync = React.lazy(() => import("@pages/Zksync"));
 const ZksyncTasks = React.lazy(() => import("@pages/ZksyncTasks"))
 const ZkRank = React.lazy(() => import("@pages/ZkRank"));
@@ -22,6 +23,10 @@ const router = [
             //     path: '/',
             //     element: < App/>,
             // },
+            {
+                path: '/overview',
+                element: <Overview/>,
+            },
             {
                 path: '/zksync',
                 element: <Zksync/>,

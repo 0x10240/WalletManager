@@ -11,6 +11,7 @@ import ZkRank from "@pages/ZkRank/index.jsx";
 import Deposit from "@pages/Deposit/index.jsx";
 import Notice from "@components/Notice/index.jsx";
 import StarkTasks from "@pages/StarkTasks/index.jsx";
+import Overview from "@pages/Overview/index.jsx";
 
 function MainPage() {
     const location = useLocation()
@@ -60,6 +61,7 @@ function MainPage() {
                         {location.pathname === "/mirror" && <Mirror/>}
                         {/* {location.pathname === "/coffee" && <Coffee/>} */}
                         {location.pathname === "/deposit" && <Deposit/>}
+                        {location.pathname === "/overview" && <Overview/>}
                     </div>
                 </div>
             </Layout>

@@ -24,6 +24,10 @@ const EthPrice = () => {
 const MenuHeader = () => {
     const items = [
         {
+            label: 'Overview',
+            key: 'overview',
+        },
+        {
             label: 'zkSync',
             key: 'zksync',
         },
@@ -76,7 +80,7 @@ const MenuHeader = () => {
     ];
     const navigate = useNavigate();
     const location = useLocation();
-    const [current, setCurrent] = useState(location.pathname.replace('/', '') || 'zksync');
+    const [current, setCurrent] = useState(location.pathname.replace('/', '') || 'overview');
     const onClick = (e) => {
         setCurrent(e.key);
     };
@@ -84,7 +88,7 @@ const MenuHeader = () => {
         if (location.pathname.replace('/', '') === 'twitter' || location.pathname.replace('/', '') === 'github') {
             return;
         }
-        setCurrent(location.pathname.replace('/', '') || 'zksync');
+        setCurrent(location.pathname.replace('/', '') || 'overview');
     }, [location.pathname]);
 
     useEffect(() => {
