@@ -266,7 +266,7 @@ const Overview = () => {
     const progressOption = {
         title: {
             text: '任务进度分布',
-            subtext: `zksync: ${zksProgress.length}  StarkNet: ${starkProgress.length}`,
+            subtext: `zkSyncEra平均完成率 ${parseInt(zksProgress.reduce((acc, num) => acc + parseFloat(num), 0) / zksProgress.length)}%  StarkNet平均完成率 ${parseInt(starkProgress.reduce((acc, num) => acc + parseFloat(num), 0) / starkProgress.length)}%`,
             left: 'center'
         },
         tooltip: {
@@ -398,7 +398,7 @@ const Overview = () => {
     const txOption = {
         title: {
             text: 'Tx数分布',
-            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}  StarkNet平均Tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}`,
+            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}条  StarkNet平均Tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}条`,
             left: 'center'
         },
         tooltip: {
@@ -529,7 +529,7 @@ const Overview = () => {
     const dayActivityOption = {
         title: {
             text: '日活跃天数分布',
-            subtext: `zkSyncEra平均日活 ${parseInt(zksDayActivity.reduce((acc, num) => acc + num, 0) / zksDayActivity.length)}  StarkNet平均日活 ${parseInt(starkDayActivity.reduce((acc, num) => acc + num, 0) / starkDayActivity.length)}`,
+            subtext: `zkSyncEra平均日活 ${parseInt(zksDayActivity.reduce((acc, num) => acc + num, 0) / zksDayActivity.length)}天  StarkNet平均日活 ${parseInt(starkDayActivity.reduce((acc, num) => acc + num, 0) / starkDayActivity.length)}天`,
             left: 'center'
         },
         tooltip: {
@@ -620,7 +620,7 @@ const Overview = () => {
     const exchangeAmountOption = {
         title: {
             text: '交易额分布',
-            subtext: `zkSyncEra平均交易额 ${parseInt(zksExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / zksExchangeAmount.length)}  StarkNet平均交易额 ${parseInt(starkExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / starkExchangeAmount.length)}`,
+            subtext: `zkSyncEra平均交易额 ${parseInt(zksExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / zksExchangeAmount.length)}u  StarkNet平均交易额 ${parseInt(starkExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / starkExchangeAmount.length)}u`,
             left: 'center'
         },
         tooltip: {
