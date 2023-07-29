@@ -277,7 +277,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zksync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet']
         },
         xAxis: {
           type: 'category',
@@ -398,7 +398,7 @@ const Overview = () => {
     const txOption = {
         title: {
             text: 'Tx数分布',
-            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}条  StarkNet平均Tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}条`,
+            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}条  StarkNet平均tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}条`,
             left: 'center'
         },
         tooltip: {
@@ -409,7 +409,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zksync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet']
         },
         xAxis: {
           type: 'category',
@@ -510,7 +510,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zksync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet']
         },
         xAxis: {
           type: 'category',
@@ -601,7 +601,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zksync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet']
         },
         xAxis: {
           type: 'category',
