@@ -114,8 +114,6 @@ function Zksync() {
           .then(res => {
             const version = res[0].sha;
             setLatestVersion(version);
-            // console.log('Latest version:', version);
-            localStorage.setItem('version', version);
           })
           .catch(error => {
             console.error('Error fetching latest version:', error);
@@ -142,6 +140,7 @@ function Zksync() {
             description: `刷新页面以加载最新版本 (${locallyStoredVersion.substring(0, 7)} -> ${latestVersion.substring(0, 7)})`,
             duration: 0,
         });
+        localStorage.setItem('version', latestVersion);
       }
     };
   
