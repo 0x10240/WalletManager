@@ -181,7 +181,481 @@ const Overview = () => {
         }
     ]
     };
+    const zksProgress = zksAddressList.reduce((acc, entry) => {
+        if ('progress' in entry) {
+            acc.push(entry.progress);
+        }
+        return acc;
+    }, []);
+    const zksProgressIntervalCounts = zksProgress.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0
+      });
+    const starkProgress = starkAddressList.reduce((acc, entry) => {
+        if ('progress' in entry) {
+            acc.push(entry.progress);
+        }
+        return acc;
+    }, []);
+    const starkProgressIntervalCounts = starkProgress.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0
+      });
+    const progressOption = {
+        title: {
+            text: '任务进度分布',
+            subtext: `zksync: ${zksProgress.length}  StarkNet: ${starkProgress.length}`,
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        legend: {
+            top: '1%',
+            orient: 'vertical',
+            left: 'left',
+            data: ['zksync Era', 'StarkNet']
+        },
+        xAxis: {
+          type: 'category',
+          data: ['0-10%', '10%-20%', '20%-30%', '30%-40%', '40%-50%', '50%-60%', '60%-70%', '70%-80%', '80%-90%', '90%-100%'],
+          axisLabel:{
+    		interval: 0
+    	    }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: 'zksync Era',
+            data: [zksProgressIntervalCounts['0-10'], zksProgressIntervalCounts['10-20'], zksProgressIntervalCounts['20-30'], zksProgressIntervalCounts['30-40'], zksProgressIntervalCounts['40-50'], zksProgressIntervalCounts['50-60'], zksProgressIntervalCounts['60-70'], zksProgressIntervalCounts['70-80'], zksProgressIntervalCounts['80-90'], zksProgressIntervalCounts['90-100']],
+            type: 'bar'
+          },
+          {
+            name: 'StarkNet',
+            data: [starkProgressIntervalCounts['0-10'], starkProgressIntervalCounts['10-20'], starkProgressIntervalCounts['20-30'], starkProgressIntervalCounts['30-40'], starkProgressIntervalCounts['40-50'], starkProgressIntervalCounts['50-60'], starkProgressIntervalCounts['60-70'], starkProgressIntervalCounts['70-80'], starkProgressIntervalCounts['80-90'], starkProgressIntervalCounts['90-100']],
+            type: 'bar'
+          }
+        ]
+      };
 
+    const zksTx = zksAddressList.reduce((acc, entry) => {
+        if ('zks2_tx_amount' in entry) {
+            if (typeof entry.zks2_tx_amount === 'number') {
+                acc.push(entry.zks2_tx_amount);
+            }
+        }
+        return acc;
+    }, []);
+    const zksTxIntervalCounts = zksTx.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        } else if (num > 100) {
+            acc['100+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0,
+        '100+': 0
+      });
+    const starkTx = starkAddressList.reduce((acc, entry) => {
+        if ('stark_tx_amount' in entry) {
+            if (typeof entry.stark_tx_amount === 'number') {
+                acc.push(entry.stark_tx_amount);
+            }
+        }
+        return acc;
+    }, []);
+    const starkTxIntervalCounts = starkTx.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        } else if (num > 100) {
+            acc['100+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0,
+        '100+': 0
+      });
+    const txOption = {
+        title: {
+            text: 'Tx数分布',
+            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}  StarkNet平均Tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}`,
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        legend: {
+            top: '1%',
+            orient: 'vertical',
+            left: 'left',
+            data: ['zksync Era', 'StarkNet']
+        },
+        xAxis: {
+          type: 'category',
+          data: ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100', '100+'],
+          axisLabel:{
+    		interval: 0
+    	    }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: 'zksync Era',
+            data: [zksTxIntervalCounts['0-10'], zksTxIntervalCounts['10-20'], zksTxIntervalCounts['20-30'], zksTxIntervalCounts['30-40'], zksTxIntervalCounts['40-50'], zksTxIntervalCounts['50-60'], zksTxIntervalCounts['60-70'], zksTxIntervalCounts['70-80'], zksTxIntervalCounts['80-90'], zksTxIntervalCounts['90-100'], zksTxIntervalCounts['100+']],
+            type: 'bar'
+          },
+          {
+            name: 'StarkNet',
+            data: [starkTxIntervalCounts['0-10'], starkTxIntervalCounts['10-20'], starkTxIntervalCounts['20-30'], starkTxIntervalCounts['30-40'], starkTxIntervalCounts['40-50'], starkTxIntervalCounts['50-60'], starkTxIntervalCounts['60-70'], starkTxIntervalCounts['70-80'], starkTxIntervalCounts['80-90'], starkTxIntervalCounts['90-100'], starkTxIntervalCounts['100+']],
+            type: 'bar'
+          }
+        ]
+      };
+    const zksDayActivity = zksAddressList.reduce((acc, entry) => {
+        if ('dayActivity' in entry) {
+            if (typeof entry.dayActivity === 'number') {
+                acc.push(entry.dayActivity);
+            }
+        }
+        return acc;
+    }, []);
+    const zksActivityIntervalCounts = zksDayActivity.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        } else if (num > 100) {
+            acc['100+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0,
+        '100+': 0
+      });
+    const starkDayActivity = starkAddressList.reduce((acc, entry) => {
+        if ('dayActivity' in entry) {
+            if (typeof entry.dayActivity === 'number') {
+                acc.push(entry.dayActivity);
+            }
+        }
+        return acc;
+    }, []);
+    const starkActivityIntervalCounts = starkDayActivity.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        } else if (num > 100) {
+            acc['100+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0,
+        '100+': 0
+      });
+    const dayActivityOption = {
+        title: {
+            text: '日活跃天数分布',
+            subtext: `zkSyncEra平均日活 ${parseInt(zksDayActivity.reduce((acc, num) => acc + num, 0) / zksDayActivity.length)}  StarkNet平均日活 ${parseInt(starkDayActivity.reduce((acc, num) => acc + num, 0) / starkDayActivity.length)}`,
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        legend: {
+            top: '1%',
+            orient: 'vertical',
+            left: 'left',
+            data: ['zksync Era', 'StarkNet']
+        },
+        xAxis: {
+          type: 'category',
+          data: ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100', '100+'],
+          axisLabel:{
+    		interval: 0
+    	    }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: 'zksync Era',
+            data: [zksActivityIntervalCounts['0-10'], zksActivityIntervalCounts['10-20'], zksActivityIntervalCounts['20-30'], zksActivityIntervalCounts['30-40'], zksActivityIntervalCounts['40-50'], zksActivityIntervalCounts['50-60'], zksActivityIntervalCounts['60-70'], zksActivityIntervalCounts['70-80'], zksActivityIntervalCounts['80-90'], zksActivityIntervalCounts['90-100'], zksActivityIntervalCounts['100+']],
+            type: 'bar'
+          },
+          {
+            name: 'StarkNet',
+            data: [starkActivityIntervalCounts['0-10'], starkActivityIntervalCounts['10-20'], starkActivityIntervalCounts['20-30'], starkActivityIntervalCounts['30-40'], starkActivityIntervalCounts['40-50'], starkActivityIntervalCounts['50-60'], starkActivityIntervalCounts['60-70'], starkActivityIntervalCounts['70-80'], starkActivityIntervalCounts['80-90'], starkActivityIntervalCounts['90-100'], starkActivityIntervalCounts['100+']],
+            type: 'bar'
+          }
+        ]
+      };
+    const zksExchangeAmount = zksAddressList.reduce((acc, entry) => {
+        if ('totalExchangeAmount' in entry) {
+            acc.push(entry.totalExchangeAmount);
+        }
+        return acc;
+    }, []);
+    const zksExchangeAmountIntervalCounts = zksExchangeAmount.reduce((acc, num) => {
+        if (num >= 0 && num <= 1000) {
+            acc['0-1k']++;
+        } else if (num > 1000 && num <= 10000) {
+            acc['1k-1w']++;
+        } else if (num > 10000 && num <= 50000) {
+            acc['1w-5w']++;
+        } else if (num > 50000 && num <= 250000) {
+            acc['5w-25w']++;
+        } else if (num > 250000) {
+            acc['25w+']++;
+        }
+        return acc;
+      }, {
+        '0-1k': 0,
+        '1k-1w': 0,
+        '1w-5w': 0,
+        '5w-25w': 0,
+        '25w+': 0
+      });
+    const starkExchangeAmount = starkAddressList.reduce((acc, entry) => {
+        if ('stark_exchange_amount' in entry) {
+            acc.push(entry.stark_exchange_amount);
+        }
+        return acc;
+    }, []);
+    const starkExchangeAmountIntervalCounts = starkExchangeAmount.reduce((acc, num) => {
+        if (num >= 0 && num <= 1000) {
+            acc['0-1k']++;
+        } else if (num > 1000 && num <= 10000) {
+            acc['1k-1w']++;
+        } else if (num > 10000 && num <= 50000) {
+            acc['1w-5w']++;
+        } else if (num > 50000 && num <= 250000) {
+            acc['5w-25w']++;
+        } else if (num > 250000) {
+            acc['25w+']++;
+        }
+        return acc;
+      }, {
+        '0-1k': 0,
+        '1k-1w': 0,
+        '1w-5w': 0,
+        '5w-25w': 0,
+        '25w+': 0
+    });
+    const exchangeAmountOption = {
+        title: {
+            text: '交易额分布',
+            subtext: `zkSyncEra平均交易额 ${parseInt(zksExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / zksExchangeAmount.length)}  StarkNet平均交易额 ${parseInt(starkExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / starkExchangeAmount.length)}`,
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c}"
+        },
+        legend: {
+            top: '1%',
+            orient: 'vertical',
+            left: 'left',
+            data: ['zksync Era', 'StarkNet']
+        },
+        xAxis: {
+          type: 'category',
+          data: ['0-1k', '1k-1w', '1w-5w', '5w-25w', '25w+'],
+          axisLabel:{
+    		interval: 0
+    	    }
+        },
+        yAxis: {
+          type: 'value'
+        },
+        series: [
+          {
+            name: 'zksync Era',
+            data: [zksExchangeAmountIntervalCounts['0-1k'], zksExchangeAmountIntervalCounts['1k-1w'], zksExchangeAmountIntervalCounts['1w-5w'], zksExchangeAmountIntervalCounts['5w-25w'], zksExchangeAmountIntervalCounts['25w+']],
+            type: 'bar'
+          },
+          {
+            name: 'StarkNet',
+            data: [starkExchangeAmountIntervalCounts['0-1k'], starkExchangeAmountIntervalCounts['1k-1w'], starkExchangeAmountIntervalCounts['1w-5w'], starkExchangeAmountIntervalCounts['5w-25w'], starkExchangeAmountIntervalCounts['25w+']],
+            type: 'bar'
+          }
+        ]
+      };
     const emptyOption = {
         title : {
             text: '暂无数据',
@@ -201,6 +675,30 @@ const Overview = () => {
                         <Card>
                             <ReactEcharts option={valueOption} style={{ height: '300px' }} />
                         </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <Card>
+                        <ReactEcharts option={progressOption} style={{ height: '400px' }} />
+                            </Card>
+                    </Col>
+                    <Col span={12}>
+                        <Card>
+                        <ReactEcharts option={txOption} style={{ height: '400px' }} />
+                            </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={12}>
+                        <Card>
+                        <ReactEcharts option={dayActivityOption} style={{ height: '400px' }} />
+                            </Card>
+                    </Col>
+                    <Col span={12}>
+                        <Card>
+                        <ReactEcharts option={exchangeAmountOption} style={{ height: '400px' }} />
+                            </Card>
                     </Col>
                 </Row>
                 <Row>
