@@ -453,18 +453,8 @@ const Overview = () => {
             acc['30-40']++;
         } else if (num > 40 && num <= 50) {
             acc['40-50']++;
-        } else if (num > 50 && num <= 60) {
-            acc['50-60']++;
-        } else if (num > 60 && num <= 70) {
-            acc['60-70']++;
-        } else if (num > 70 && num <= 80) {
-            acc['70-80']++;
-        } else if (num > 80 && num <= 90) {
-            acc['80-90']++;
-        } else if (num > 90 && num <= 100) {
-            acc['90-100']++;
-        } else if (num > 100) {
-            acc['100+']++;
+        } else if (num > 50) {
+            acc['50+']++;
         }
         return acc;
       }, {
@@ -473,12 +463,7 @@ const Overview = () => {
         '20-30': 0,
         '30-40': 0,
         '40-50': 0,
-        '50-60': 0,
-        '60-70': 0,
-        '70-80': 0,
-        '80-90': 0,
-        '90-100': 0,
-        '100+': 0
+        '50+': 0
       });
     const starkDayActivity = starkAddressList.reduce((acc, entry) => {
         if ('dayActivity' in entry) {
@@ -499,18 +484,8 @@ const Overview = () => {
             acc['30-40']++;
         } else if (num > 40 && num <= 50) {
             acc['40-50']++;
-        } else if (num > 50 && num <= 60) {
-            acc['50-60']++;
-        } else if (num > 60 && num <= 70) {
-            acc['60-70']++;
-        } else if (num > 70 && num <= 80) {
-            acc['70-80']++;
-        } else if (num > 80 && num <= 90) {
-            acc['80-90']++;
-        } else if (num > 90 && num <= 100) {
-            acc['90-100']++;
-        } else if (num > 100) {
-            acc['100+']++;
+        } else if (num > 50) {
+            acc['50+']++;
         }
         return acc;
       }, {
@@ -519,12 +494,7 @@ const Overview = () => {
         '20-30': 0,
         '30-40': 0,
         '40-50': 0,
-        '50-60': 0,
-        '60-70': 0,
-        '70-80': 0,
-        '80-90': 0,
-        '90-100': 0,
-        '100+': 0
+        '50+': 0,
       });
     const dayActivityOption = {
         title: {
@@ -544,7 +514,7 @@ const Overview = () => {
         },
         xAxis: {
           type: 'category',
-          data: ['0-10', '10-20', '20-30', '30-40', '40-50', '50-60', '60-70', '70-80', '80-90', '90-100', '100+'],
+          data: ['0-10', '10-20', '20-30', '30-40', '40-50', '50+'],
           axisLabel:{
     		interval: 0
     	    }
@@ -555,12 +525,12 @@ const Overview = () => {
         series: [
           {
             name: 'zksync Era',
-            data: [zksActivityIntervalCounts['0-10'], zksActivityIntervalCounts['10-20'], zksActivityIntervalCounts['20-30'], zksActivityIntervalCounts['30-40'], zksActivityIntervalCounts['40-50'], zksActivityIntervalCounts['50-60'], zksActivityIntervalCounts['60-70'], zksActivityIntervalCounts['70-80'], zksActivityIntervalCounts['80-90'], zksActivityIntervalCounts['90-100'], zksActivityIntervalCounts['100+']],
+            data: [zksActivityIntervalCounts['0-10'], zksActivityIntervalCounts['10-20'], zksActivityIntervalCounts['20-30'], zksActivityIntervalCounts['30-40'], zksActivityIntervalCounts['40-50'], zksActivityIntervalCounts['50+']],
             type: 'bar'
           },
           {
             name: 'StarkNet',
-            data: [starkActivityIntervalCounts['0-10'], starkActivityIntervalCounts['10-20'], starkActivityIntervalCounts['20-30'], starkActivityIntervalCounts['30-40'], starkActivityIntervalCounts['40-50'], starkActivityIntervalCounts['50-60'], starkActivityIntervalCounts['60-70'], starkActivityIntervalCounts['70-80'], starkActivityIntervalCounts['80-90'], starkActivityIntervalCounts['90-100'], starkActivityIntervalCounts['100+']],
+            data: [starkActivityIntervalCounts['0-10'], starkActivityIntervalCounts['10-20'], starkActivityIntervalCounts['20-30'], starkActivityIntervalCounts['30-40'], starkActivityIntervalCounts['40-50'], starkActivityIntervalCounts['50+']],
             type: 'bar'
           }
         ]
