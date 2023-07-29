@@ -291,7 +291,7 @@ const Overview = () => {
         },
         series: [
           {
-            name: 'zksync Era',
+            name: 'zkSync Era',
             data: [zksProgressIntervalCounts['0-10'], zksProgressIntervalCounts['10-20'], zksProgressIntervalCounts['20-30'], zksProgressIntervalCounts['30-40'], zksProgressIntervalCounts['40-50'], zksProgressIntervalCounts['50-60'], zksProgressIntervalCounts['60-70'], zksProgressIntervalCounts['70-80'], zksProgressIntervalCounts['80-90'], zksProgressIntervalCounts['90-100']],
             type: 'bar'
           },
@@ -423,7 +423,7 @@ const Overview = () => {
         },
         series: [
           {
-            name: 'zksync Era',
+            name: 'zkSync Era',
             data: [zksTxIntervalCounts['0-10'], zksTxIntervalCounts['10-20'], zksTxIntervalCounts['20-30'], zksTxIntervalCounts['30-40'], zksTxIntervalCounts['40-50'], zksTxIntervalCounts['50-60'], zksTxIntervalCounts['60-70'], zksTxIntervalCounts['70-80'], zksTxIntervalCounts['80-90'], zksTxIntervalCounts['90-100'], zksTxIntervalCounts['100+']],
             type: 'bar'
           },
@@ -524,7 +524,7 @@ const Overview = () => {
         },
         series: [
           {
-            name: 'zksync Era',
+            name: 'zkSync Era',
             data: [zksActivityIntervalCounts['0-10'], zksActivityIntervalCounts['10-20'], zksActivityIntervalCounts['20-30'], zksActivityIntervalCounts['30-40'], zksActivityIntervalCounts['40-50'], zksActivityIntervalCounts['50+']],
             type: 'bar'
           },
@@ -615,7 +615,7 @@ const Overview = () => {
         },
         series: [
           {
-            name: 'zksync Era',
+            name: 'zkSync Era',
             data: [zksExchangeAmountIntervalCounts['0-1k'], zksExchangeAmountIntervalCounts['1k-1w'], zksExchangeAmountIntervalCounts['1w-5w'], zksExchangeAmountIntervalCounts['5w-25w'], zksExchangeAmountIntervalCounts['25w+']],
             type: 'bar'
           },
