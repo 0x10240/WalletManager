@@ -623,7 +623,13 @@ function ZksyncTasks() {
         },
         {
             title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] 🔴eraLend usd+ 任务下架</a>,
+                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] <br/>🔴请注意，通过点击任务列表的超链接，您将离开本网页。我们建议您在访问这些外部链接之前，仔细阅读其网站的隐私政策和使用条款。我们不能控制这些网站的内容和安全性，并且不对其造成的任何损失或损害负责。
+
+                在访问外部链接时，您需要自行评估潜在的风险。这些链接不构成对所链接网站内容的认可或支持。我们不对这些外部链接的准确性、内容、服务质量或安全性做任何承诺。
+                
+                我们建议您保持您的计算机和设备的安全性，使用防病毒软件和防火墙，并时刻注意潜在的网络钓鱼或恶意软件攻击。
+                
+                通过继续使用本网页并访问其中的超链接，您同意承担访问外部链接可能带来的一切风险。我们不对由此导致的任何损失或损害负责！</a>,
             key: "zks_era_group",
             className: "zks_era",
             children: [
