@@ -149,7 +149,7 @@ const Overview = () => {
     },
     series: [
         {
-        name: '资产总览',
+        name: '币种',
         type: 'pie',
         radius: ['40%', '70%'],
         avoidLabelOverlap: false,
@@ -162,6 +162,10 @@ const Overview = () => {
             show: false,
             position: 'center'
         },
+        left: 0,
+        right: '35%',
+        top: 0,
+        bottom: 0,
         emphasis: {
             label: {
             show: true,
@@ -177,6 +181,41 @@ const Overview = () => {
             { value: totalUsdc, name: 'USDC' },
             { value: totalUsdt, name: 'USDT' },
             { value: totalDai, name: 'DAI' }
+        ]
+        },
+        {
+        name: '链',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        avoidLabelOverlap: false,
+        itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2
+        },
+        label: {
+            show: false,
+            position: 'center'
+        },
+        left: "35%",
+        right: 0,
+        top: 0,
+        bottom: 0,
+        emphasis: {
+            label: {
+            show: true,
+            fontSize: 40,
+            fontWeight: 'bold'
+            }
+        },
+        labelLine: {
+            show: false
+        },
+        data: [
+            { value: parseInt(totalzksEthBalance * ethPrice), name: 'ETH' },
+            { value: parseInt(totalzks1Balance * ethPrice), name: 'zkSync Lite' },
+            { value: parseInt(totalzks2Balance * ethPrice + totalzks2UsdcBalance), name: 'zkSync Era' },
+            { value: parseInt(totalstarkEthBalance * ethPrice + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance), name: 'StarkNet' }
         ]
         }
     ]

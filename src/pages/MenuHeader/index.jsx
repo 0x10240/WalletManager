@@ -1,7 +1,7 @@
 import {Menu} from 'antd';
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
-import {GithubOutlined, TwitterOutlined} from "@ant-design/icons";
+import {GithubOutlined, TwitterOutlined, CaretDownOutlined} from "@ant-design/icons";
 import './index.css'
 import {getEthPrice} from "@utils";
 
@@ -28,24 +28,36 @@ const MenuHeader = () => {
             key: 'overview',
         },
         {
-            label: 'zkSync',
+            label: <span>zkSync <CaretDownOutlined /></span>,
             key: 'zksync',
+            children: [
+                {
+                    label: 'zkSync',
+                    key: 'zksync',
+                },
+                {
+                    label: 'zkSyncTasks',
+                    key: 'zksyncTasks',
+                },
+                {
+                    label: 'zkRank',
+                    key: 'zkRank',
+                },
+            ],
         },
         {
-            label: 'zkSyncTasks',
-            key: 'zksyncTasks',
-        },
-        {
-            label: 'zkRank',
-            key: 'zkRank',
-        },
-        {
-            label: 'Stark',
+            label: <span>Stark <CaretDownOutlined /></span>,
             key: 'stark',
-        },
-        {
-            label: 'StarkTasks',
-            key: 'starkTasks',
+            children: [
+                {
+                    label: 'Stark',
+                    key: 'stark',
+                },
+                {
+                    label: 'StarkTasks',
+                    key: 'starkTasks',
+                },
+            ],
         },
         {
             label: 'LayerZero',
