@@ -58,6 +58,7 @@ function Zksync() {
     const [scoreData, setScoreData] = useState([]);
     const [tableHeight, setTableHeight] = useState(0);
     const [latestVersion, setLatestVersion] = useState('');
+    const [commitMessage, setCommitMessage] = useState('');
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
@@ -113,7 +114,9 @@ function Zksync() {
           .then(res => res.json())
           .then(res => {
             const version = res[0].sha;
+            const message = res[0].commit.message;
             setLatestVersion(version);
+            setCommitMessage(message);
           })
           .catch(error => {
             console.error('Error fetching latest version:', error);
@@ -136,8 +139,14 @@ function Zksync() {
       if (locallyStoredVersion && latestVersion && locallyStoredVersion !== latestVersion) {
         // Perform actions when a new version is available
         notification.info({
-            message: '检查到页面有新的版本!',
-            description: `刷新页面以加载最新版本 (${locallyStoredVersion.substring(0, 7)} -> ${latestVersion.substring(0, 7)})`,
+            message: '检查到页面有新的版本! 请刷新',
+            description: (
+                <div>
+                    {commitMessage}
+                    <br />
+                    {locallyStoredVersion.substring(0, 7)} -{'>'} {latestVersion.substring(0, 7)}
+                </div>
+            ),
             duration: 0,
         });
         localStorage.setItem('version', latestVersion);
