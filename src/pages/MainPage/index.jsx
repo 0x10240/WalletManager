@@ -3,6 +3,7 @@ import Zksync from "@pages/Zksync/index.jsx";
 import {useLocation} from "react-router-dom";
 import Stark from "@pages/Stark/index.jsx";
 import {Layout, FloatButton} from "antd";
+import Linea from "@pages/Linea/index.jsx";
 import Layer from "@pages/Layer/index.jsx";
 import Mirror from "@pages/Mirror/index.jsx";
 import Coffee from "@pages/Coffee/index.jsx";
@@ -57,6 +58,7 @@ function MainPage() {
                         {location.pathname === "/zkRank" && <ZkRank/>}
                         {location.pathname === "/stark" && <Stark/>}
                         {location.pathname === "/starkTasks" && <StarkTasks/>}
+                        {location.pathname === "/linea" && <Linea/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}
                         {/* {location.pathname === "/coffee" && <Coffee/>} */}

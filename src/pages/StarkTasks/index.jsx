@@ -55,9 +55,9 @@ function StarkTasks() {
     const _10KSwapETHUSDCpool = "0x000023c72abdf49dffc85ae3ede714f2168ad384cc67d08524732acea90df325";
     const _10KSwapETHDAIpool = "0x017e9e62c04b50800d7c59454754fe31a2193c9c3c6c92c093f2ab0faadf8c87";
     const sithSwapETHUSDCpool = "0x030615bec9c1506bfac97d9dbd3c546307987d467a7f95d5533c2e861eb81f3f";
-    const sithSwapETHUSDTpool = "0x05e86d570376e8dc917d241288150a3286c8ad7151638c152d787eca2b96aec3";
-    const sithSwapETHDAIpool = "0x02aab581754064a87ade1b680fd9756dc3a17440a87aaf496dcfb39fd163d1dd";
-
+    const sithSwapETHUSDTpool = "0x00691fa7f66d63dc8c89ff4e77732fff5133f282e7dbd41813273692cc595516";
+    const sithSwapETHDAIpool = "0x0032ebb8e68553620b97b308684babf606d9556d5c0a652450c32e85f40d000d";
+    
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
       };

@@ -29,7 +29,7 @@ const MenuHeader = () => {
         },
         {
             label: <span>zkSync <CaretDownOutlined /></span>,
-            key: 'zksync',
+            key: 'zks',
             children: [
                 {
                     label: 'zkSync',
@@ -47,7 +47,7 @@ const MenuHeader = () => {
         },
         {
             label: <span>Stark <CaretDownOutlined /></span>,
-            key: 'stark',
+            key: 'starknet',
             children: [
                 {
                     label: 'Stark',
@@ -58,6 +58,10 @@ const MenuHeader = () => {
                     key: 'starkTasks',
                 },
             ],
+        },
+        {
+            label: 'Linea',
+            key: 'linea',
         },
         {
             label: 'LayerZero',

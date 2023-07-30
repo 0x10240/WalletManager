@@ -12,15 +12,18 @@ const Overview = () => {
     const zksAddresses = localStorage.getItem('addresses');
     const starkAddresses = localStorage.getItem('stark_addresses');
     const l0Addresses = localStorage.getItem('l0_addresses');
+    const lineaAddresses = localStorage.getItem('linea_addresses');
 
     const zksAddressList = zksAddresses ? JSON.parse(zksAddresses) : [];
     const starkAddressList = starkAddresses ? JSON.parse(starkAddresses) : [];
     const l0AddressList = l0Addresses ? JSON.parse(l0Addresses) : [];
+    const lineaAddressList = lineaAddresses ? JSON.parse(lineaAddresses) : [];
 
     const zksAddressCount = zksAddressList.length;
     const starkAddressCount = starkAddressList.length;
     const l0AddressCount = l0AddressList.length;
-    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount;
+    const lineaAddressCount = lineaAddressList.length;
+    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount + lineaAddressCount;
     const accountOption = {
         title : {
             text: '账号总览',
@@ -64,7 +67,8 @@ const Overview = () => {
             data: [
               { value: zksAddressCount, name: 'zkSync Era' },
               { value: starkAddressCount, name: 'StarkNet' },
-              { value: l0AddressCount, name: 'LayerZero' }
+              { value: l0AddressCount, name: 'LayerZero' },
+              { value: lineaAddressCount, name: 'Linea' }
             ]
           }
         ]
@@ -126,12 +130,27 @@ const Overview = () => {
         }
             return total;
     }, 0);
-    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance).toFixed(2);
+    const totallineaEthBalance = lineaAddressList.reduce((total, addressData) => {
+        if ('linea_eth_balance' in addressData) {
+            const linea_eth_balance = parseFloat(addressData.linea_eth_balance);
+            return total + linea_eth_balance;
+        }
+            return total;
+    }, 0);
+    const totallineaBusdBalance = lineaAddressList.reduce((total, addressData) => {
+        if ('linea_busd_balance' in addressData) {
+            const linea_busd_balance = parseFloat(addressData.linea_busd_balance);
+            return total + linea_busd_balance;
+        }
+            return total;
+    }, 0);
+    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance + totallineaEthBalance).toFixed(2);
     const totalUsdc = parseFloat(totalzks2UsdcBalance + totalstarkUsdcBalance).toFixed(2);
     const totalUsdt = parseFloat(totalstarkUsdtBalance).toFixed(2);
     const totalDai = parseFloat(totalstarkDaiBalance).toFixed(2);
+    const totalBusd = parseFloat(totallineaBusdBalance).toFixed(2);
     const ethPrice = 1880;
-    const totalBalance = parseFloat(totalEth * ethPrice + totalUsdc + totalUsdt + totalDai).toFixed(2);
+    const totalBalance = parseFloat(totalEth * ethPrice + totalUsdc + totalUsdt + totalDai + totalBusd).toFixed(2);
     const valueOption = {
     title : {
         text: '资产总览',
@@ -180,7 +199,8 @@ const Overview = () => {
             { value: totalEth * ethPrice, name: 'ETH' },
             { value: totalUsdc, name: 'USDC' },
             { value: totalUsdt, name: 'USDT' },
-            { value: totalDai, name: 'DAI' }
+            { value: totalDai, name: 'DAI' },
+            { value: totalBusd, name: 'BUSD' }
         ]
         },
         {
@@ -212,10 +232,11 @@ const Overview = () => {
             show: false
         },
         data: [
-            { value: parseInt(totalzksEthBalance * ethPrice), name: 'ETH' },
-            { value: parseInt(totalzks1Balance * ethPrice), name: 'zkSync Lite' },
+            { value: parseInt(totalzksEthBalance * ethPrice), name: 'Ethereum' },
             { value: parseInt(totalzks2Balance * ethPrice + totalzks2UsdcBalance), name: 'zkSync Era' },
-            { value: parseInt(totalstarkEthBalance * ethPrice + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance), name: 'StarkNet' }
+            { value: parseInt(totalzks1Balance * ethPrice), name: 'zkSync Lite' },
+            { value: parseInt(totalstarkEthBalance * ethPrice + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance), name: 'StarkNet' },
+            { value: parseInt(totallineaEthBalance * ethPrice + totallineaBusdBalance), name: 'Linea' }
         ]
         }
     ]
@@ -434,10 +455,56 @@ const Overview = () => {
         '90-100': 0,
         '100+': 0
       });
+    const lineaTx = lineaAddressList.reduce((acc, entry) => {
+        if ('linea_tx_amount' in entry) {
+            if (typeof entry.linea_tx_amount === 'number') {
+                acc.push(entry.linea_tx_amount);
+            }
+        }
+        return acc;
+    }, []);
+    const lineaTxIntervalCounts = lineaTx.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        } else if (num > 100) {
+            acc['100+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0,
+        '100+': 0
+      });
     const txOption = {
         title: {
             text: 'Tx数分布',
-            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}条  StarkNet平均tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}条`,
+            subtext: `zkSyncEra平均tx ${parseInt(zksTx.reduce((acc, num) => acc + num, 0) / zksTx.length)}条  StarkNet平均tx ${parseInt(starkTx.reduce((acc, num) => acc + num, 0) / starkTx.length)}条 Linea平均tx ${parseInt(lineaTx.reduce((acc, num) => acc + num, 0) / lineaTx.length)}条`,
             left: 'center'
         },
         tooltip: {
@@ -448,7 +515,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zkSync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet', 'Linea']
         },
         xAxis: {
           type: 'category',
@@ -469,6 +536,11 @@ const Overview = () => {
           {
             name: 'StarkNet',
             data: [starkTxIntervalCounts['0-10'], starkTxIntervalCounts['10-20'], starkTxIntervalCounts['20-30'], starkTxIntervalCounts['30-40'], starkTxIntervalCounts['40-50'], starkTxIntervalCounts['50-60'], starkTxIntervalCounts['60-70'], starkTxIntervalCounts['70-80'], starkTxIntervalCounts['80-90'], starkTxIntervalCounts['90-100'], starkTxIntervalCounts['100+']],
+            type: 'bar'
+          },
+          {
+            name: 'Linea',
+            data: [lineaTxIntervalCounts['0-10'], lineaTxIntervalCounts['10-20'], lineaTxIntervalCounts['20-30'], lineaTxIntervalCounts['30-40'], lineaTxIntervalCounts['40-50'], lineaTxIntervalCounts['50-60'], lineaTxIntervalCounts['60-70'], lineaTxIntervalCounts['70-80'], lineaTxIntervalCounts['80-90'], lineaTxIntervalCounts['90-100'], lineaTxIntervalCounts['100+']],
             type: 'bar'
           }
         ]
@@ -535,10 +607,41 @@ const Overview = () => {
         '40-50': 0,
         '50+': 0,
       });
+    const lineaDayActivity = lineaAddressList.reduce((acc, entry) => {
+        if ('dayActivity' in entry) {
+            if (typeof entry.dayActivity === 'number') {
+                acc.push(entry.dayActivity);
+            }
+        }
+        return acc;
+    }, []);
+    const lineaActivityIntervalCounts = lineaDayActivity.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50) {
+            acc['50+']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50+': 0,
+      });
     const dayActivityOption = {
         title: {
             text: '日活跃天数分布',
-            subtext: `zkSyncEra平均日活 ${parseInt(zksDayActivity.reduce((acc, num) => acc + num, 0) / zksDayActivity.length)}天  StarkNet平均日活 ${parseInt(starkDayActivity.reduce((acc, num) => acc + num, 0) / starkDayActivity.length)}天`,
+            subtext: `zkSyncEra平均日活 ${parseInt(zksDayActivity.reduce((acc, num) => acc + num, 0) / zksDayActivity.length)}天  StarkNet平均日活 ${parseInt(starkDayActivity.reduce((acc, num) => acc + num, 0) / starkDayActivity.length)}天 Linea平均日活 ${parseInt(lineaDayActivity.reduce((acc, num) => acc + num, 0) / lineaDayActivity.length)}天`,
             left: 'center'
         },
         tooltip: {
@@ -549,7 +652,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zkSync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet', 'Linea']
         },
         xAxis: {
           type: 'category',
@@ -570,6 +673,11 @@ const Overview = () => {
           {
             name: 'StarkNet',
             data: [starkActivityIntervalCounts['0-10'], starkActivityIntervalCounts['10-20'], starkActivityIntervalCounts['20-30'], starkActivityIntervalCounts['30-40'], starkActivityIntervalCounts['40-50'], starkActivityIntervalCounts['50+']],
+            type: 'bar'
+          },
+          {
+            name: 'Linea',
+            data: [lineaActivityIntervalCounts['0-10'], lineaActivityIntervalCounts['10-20'], lineaActivityIntervalCounts['20-30'], lineaActivityIntervalCounts['30-40'], lineaActivityIntervalCounts['40-50'], lineaActivityIntervalCounts['50+']],
             type: 'bar'
           }
         ]
@@ -701,12 +809,12 @@ const Overview = () => {
                 <Row>
                     <Col span={12}>
                         <Card>
-                        <ReactEcharts option={dayActivityOption} style={{ height: '400px' }} />
+                        <ReactEcharts option={exchangeAmountOption} style={{ height: '400px' }} />
                             </Card>
                     </Col>
                     <Col span={12}>
                         <Card>
-                        <ReactEcharts option={exchangeAmountOption} style={{ height: '400px' }} />
+                        <ReactEcharts option={dayActivityOption} style={{ height: '400px' }} />
                             </Card>
                     </Col>
                 </Row>

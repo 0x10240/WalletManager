@@ -17,6 +17,9 @@ import getStarkTasks from "@utils/stark/getStarkTasks.js";
 import getStarkActivity from "@utils/stark/getStarkActivity.js";
 import getStarkAmount from "@utils/stark/getStarkAmount.js";
 import getStarkBalances from "@utils/stark/getStarkBalances.js";
+import getLineaInfo from "@utils/linea/getLineaInfo.js";
+import getLineaTx from "@utils/linea/getLineaTx.js";
+import getLineaERC20 from "@utils/linea/getLineaERC20.js";
 
 export {
     getEthBalance,
@@ -37,5 +40,8 @@ export {
     getStarkTasks,
     getStarkActivity,
     getStarkAmount,
-    getStarkBalances
+    getStarkBalances,
+    getLineaInfo,
+    getLineaTx,
+    getLineaERC20,
 };

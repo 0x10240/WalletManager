@@ -11,6 +11,7 @@ const App = React.lazy(() => import("@/App"));
 const MainPage = React.lazy(() => import("@pages/MainPage"));
 const Stark = React.lazy(() => import("@pages/Stark"));
 const StarkTasks = React.lazy(() => import("@pages/StarkTasks"));
+const Linea = React.lazy(() => import("@pages/Linea"));
 const Layer = React.lazy(() => import("@pages/Layer"));
 const Mirror = React.lazy(() => import("@pages/Mirror"));
 const Coffee = React.lazy(() => import("@pages/Coffee"));
@@ -46,6 +47,10 @@ const router = [
             {
                 path: '/starkTasks',
                 element: <StarkTasks/>,
+            },
+            {
+                path: '/Linea',
+                element: <Linea/>,
             },
             {
                 path: '/Layer',
