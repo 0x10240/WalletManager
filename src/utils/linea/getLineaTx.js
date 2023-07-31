@@ -72,6 +72,9 @@ async function getLineaTx(address, apiKey) {
         });
         const fee = transactions.reduce((acc, item) => acc + parseFloat(item.gasPrice) * parseFloat(item.gasUsed), 0);
         const feeEth = ethers.formatEther(fee);
+        const exchangeAmount = transactions.reduce((acc, item) => acc + parseFloat(ethers.formatEther(item.value)), 0);
+        const ethPrice = await getEthPrice();
+        const toytalExchangeAmount = exchangeAmount * ethPrice;
         const tx = transactions.length;
         const linea_last_tx = getZkSyncLastTX(lastTxDatetime);
         const dayActivity = days.size;
@@ -86,7 +89,8 @@ async function getLineaTx(address, apiKey) {
             weekActivity: weekActivity, 
             monthActivity: monthActivity, 
             contractActivity: contractActivity, 
-            totalFee: parseFloat(feeEth).toFixed(4)
+            totalFee: parseFloat(feeEth).toFixed(4),
+            totalExchangeAmount: parseFloat(toytalExchangeAmount).toFixed(2),
         };
     } catch (error) {
         console.error(error);
@@ -97,7 +101,8 @@ async function getLineaTx(address, apiKey) {
             weekActivity: "Error", 
             monthActivity: "Error", 
             contractActivity: "Error",
-            totalFee: "Error"
+            totalFee: "Error",
+            totalExchangeAmount: "Error",
         };
     }
 }

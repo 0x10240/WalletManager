@@ -23,7 +23,8 @@ import {
     getDebankValue,
     getLineaInfo,
     getLineaTx,
-    getLineaERC20
+    getLineaERC20,
+    getLineaBridge,
 } from "@utils"
 import {useEffect, useState} from "react";
 import './index.css';
@@ -142,7 +143,7 @@ function Linea() {
         }
         setIsLoading(true);
         try {
-            const limit = 3;
+            const limit = 2;
             let activePromises = 0;
             let promisesQueue = [];
             const newData = [...data];
@@ -157,7 +158,7 @@ function Linea() {
                     });
                 }
                 if (promisesQueue.length > 0) {
-                    setTimeout(processQueue, 2000);
+                    setTimeout(processQueue, 2500);
                 }
             };
             for (let key of selectedKeys) {
@@ -188,7 +189,7 @@ function Linea() {
                         item.monthActivity = null;
                         item.contractActivity = null;
                         item.totalFee = null;
-                        return getLineaTx(item.address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee}) => {
+                        return getLineaTx(item.address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee, totalExchangeAmount}) => {
                             item.linea_tx_amount = linea_tx_amount;
                             item.linea_last_tx = linea_last_tx;
                             item.dayActivity = dayActivity;
@@ -196,6 +197,7 @@ function Linea() {
                             item.monthActivity = monthActivity;
                             item.contractActivity = contractActivity;
                             item.totalFee = totalFee;
+                            item.totalExchangeAmount = totalExchangeAmount;
                             setData([...newData]);
                             localStorage.setItem('linea_addresses', JSON.stringify(newData));
                         })
@@ -212,6 +214,16 @@ function Linea() {
                         item.eth_tx_amount = null;
                         return getTxCount(item.address, "ethereum").then((eth_tx_amount) => {
                             item.eth_tx_amount = eth_tx_amount;
+                            setData([...newData]);
+                            localStorage.setItem('linea_addresses', JSON.stringify(newData));
+                        })
+                    });
+                    promisesQueue.push(() => {
+                        item.l1Tol2Times = null;
+                        item.l1Tol2Amount = null;
+                        return getLineaBridge(item.address, apiKey).then(({l1Tol2Times, l1Tol2Amount}) => {
+                            item.l1Tol2Times = l1Tol2Times;
+                            item.l1Tol2Amount = l1Tol2Amount;
                             setData([...newData]);
                             localStorage.setItem('linea_addresses', JSON.stringify(newData));
                         })
@@ -245,7 +257,7 @@ function Linea() {
             const names = wallets.map(obj => obj.name);
             setBatchLength(addresses.length);
             const newData = [...data];
-            const limit = 50;
+            const limit = 3;
             let activePromises = 0;
             let promisesQueue = [];
             setBatchProgress(0);
@@ -319,7 +331,7 @@ function Linea() {
                     item.eth_tx_amount = eth_tx_amount;
                 }));
 
-                promisesQueue.push(() => getLineaTx(address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee}) => {
+                promisesQueue.push(() => getLineaTx(address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee, totalExchangeAmount}) => {
                     item.linea_tx_amount = linea_tx_amount;
                     item.linea_last_tx = linea_last_tx;
                     item.dayActivity = dayActivity;
@@ -327,6 +339,12 @@ function Linea() {
                     item.monthActivity = monthActivity;
                     item.contractActivity = contractActivity;
                     item.totalFee = totalFee;
+                    item.totalExchangeAmount = totalExchangeAmount;
+                }));
+
+                promisesQueue.push(() => getLineaBridge(address, apiKey).then(({l1Tol2Times, l1Tol2Amount}) => {
+                    item.l1Tol2Times = l1Tol2Times;
+                    item.l1Tol2Amount = l1Tol2Amount;
                 }));
 
                 promisesQueue.push(promiseWithProgress);
@@ -334,7 +352,7 @@ function Linea() {
 
             }
             while (activePromises > 0 || promisesQueue.length > 0) {
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
 
             setData(newData);

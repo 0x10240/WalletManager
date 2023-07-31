@@ -20,6 +20,7 @@ import getStarkBalances from "@utils/stark/getStarkBalances.js";
 import getLineaInfo from "@utils/linea/getLineaInfo.js";
 import getLineaTx from "@utils/linea/getLineaTx.js";
 import getLineaERC20 from "@utils/linea/getLineaERC20.js";
+import getLineaBridge from "@utils/linea/getLineaBridge.js";
 
 export {
     getEthBalance,
@@ -44,4 +45,5 @@ export {
     getLineaInfo,
     getLineaTx,
     getLineaERC20,
+    getLineaBridge,
 };

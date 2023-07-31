@@ -786,10 +786,36 @@ const Overview = () => {
         '5w-25w': 0,
         '25w+': 0
     });
+    const lineaExchangeAmount = lineaAddressList.reduce((acc, entry) => {
+        if ('totalExchangeAmount' in entry) {
+            acc.push(entry.totalExchangeAmount);
+        }
+        return acc;
+    }, []);
+    const lineaExchangeAmountIntervalCounts = lineaExchangeAmount.reduce((acc, num) => {
+        if (num >= 0 && num <= 1000) {
+            acc['0-1k']++;
+        } else if (num > 1000 && num <= 10000) {
+            acc['1k-1w']++;
+        } else if (num > 10000 && num <= 50000) {
+            acc['1w-5w']++;
+        } else if (num > 50000 && num <= 250000) {
+            acc['5w-25w']++;
+        } else if (num > 250000) {
+            acc['25w+']++;
+        }
+        return acc;
+      }, {
+        '0-1k': 0,
+        '1k-1w': 0,
+        '1w-5w': 0,
+        '5w-25w': 0,
+        '25w+': 0
+    });
     const exchangeAmountOption = {
         title: {
             text: '交易额分布',
-            subtext: `zkSyncEra平均交易额 ${parseInt(zksExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / zksExchangeAmount.length)}u  StarkNet平均交易额 ${parseInt(starkExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / starkExchangeAmount.length)}u`,
+            subtext: `zkSyncEra平均交易额 ${parseInt(zksExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / zksExchangeAmount.length)}u  StarkNet平均交易额 ${parseInt(starkExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / starkExchangeAmount.length)}u Linea平均交易额 ${parseInt(lineaExchangeAmount.reduce((acc, num) => acc + parseInt(num), 0) / lineaExchangeAmount.length)}u`,
             left: 'center'
         },
         tooltip: {
@@ -821,6 +847,11 @@ const Overview = () => {
           {
             name: 'StarkNet',
             data: [starkExchangeAmountIntervalCounts['0-1k'], starkExchangeAmountIntervalCounts['1k-1w'], starkExchangeAmountIntervalCounts['1w-5w'], starkExchangeAmountIntervalCounts['5w-25w'], starkExchangeAmountIntervalCounts['25w+']],
+            type: 'bar'
+          },
+          {
+            name: 'Linea',
+            data: [lineaExchangeAmountIntervalCounts['0-1k'], lineaExchangeAmountIntervalCounts['1k-1w'], lineaExchangeAmountIntervalCounts['1w-5w'], lineaExchangeAmountIntervalCounts['5w-25w'], lineaExchangeAmountIntervalCounts['25w+']],
             type: 'bar'
           }
         ]
