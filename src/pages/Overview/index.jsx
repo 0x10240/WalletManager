@@ -902,6 +902,94 @@ const Overview = () => {
           }
         ]
       };
+    // Function to preprocess the timestamp data and convert it into a format suitable for the heatmap
+    function preprocessData(timeArray) {
+        // Create an object to store the counts for each date
+        const dateCounts = {};
+
+        timeArray.forEach((timestamp) => {
+            const date = new Date(timestamp);
+            const formattedDate = date.toISOString().substring(0, 10);
+            if (dateCounts[formattedDate]) {
+                dateCounts[formattedDate]++;
+            } else {
+                dateCounts[formattedDate] = 1;
+            }
+        });
+
+        const data = [];
+        for (const date in dateCounts) {
+            data.push([date, dateCounts[date]]);
+        }
+        return data;
+    }
+
+    const zksTimestampsList = localStorage.getItem('zks_timestamps') ? JSON.parse(localStorage.getItem('zks_timestamps')) : [];
+    const starkTimestampsList = localStorage.getItem('stark_timestamps') ? JSON.parse(localStorage.getItem('stark_timestamps')) : [];
+    const lineaTimestampsList = localStorage.getItem('linea_timestamps') ? JSON.parse(localStorage.getItem('linea_timestamps')) : [];
+    const allTimestamps = zksTimestampsList.concat(starkTimestampsList).concat(lineaTimestampsList);
+
+    const timeOption = {
+        title: {
+            top: 30,
+            left: 'center',
+            text: '黑奴工作量证明 (Proof of Gas)',
+            subtext: `2023年 日均交互次数 ${parseInt(allTimestamps.length/365)}   zkSync Era ${parseInt(zksTimestampsList.length/365)} StarkNet ${parseInt(starkTimestampsList.length/365)} Linea ${parseInt(lineaTimestampsList.length/365)}`,
+        },
+        tooltip: {
+            position: 'top',
+            formatter: function (p) {
+                return `${p.data[0]}<br>tx: ${p.data[1]}`;
+            }
+        },
+        visualMap: {
+            type: 'piecewise',
+            orient: 'horizontal',
+            left: 'center',
+            show: false,
+            top: 65,
+            pieces: [
+                { min: 0, max: 1, label: '1', color: '#EAFCEA' },
+                { min: 1, max: 5, label: '1-5', color: '#82C485' },
+                { min: 5, max: 10, label: '5-10', color: '#52A86C' },
+                { min: 10, max: 20, label: '10-20', color: '#1E703E' },
+                { min: 20, max: 50, label: '20-50', color: '#008000' },
+                { min: 50, max: 999, label: '50+', color: '#FFDF00' },
+            ],
+        },
+        calendar: {
+            top: 100,
+            left: 100,
+            right: 100,
+            cellSize: ['auto', 30],
+            range: '2023',
+            itemStyle: {
+                borderWidth: 2,
+                borderColor: '#F0F0F0',
+            },
+            yearLabel: { show: true },
+            monthLabel: {
+                nameMap: 'ZH',
+                borderWidth: 0,
+              },
+            dayLabel: {
+                nameMap: 'ZH',
+            },
+            splitLine: {
+                lineStyle: {
+                    color: '#F0F0F0',
+                    width: 1.25
+                }
+            }
+        },
+        series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            // Pass your timestamp data array to the preprocessData function
+            data: preprocessData(allTimestamps),
+        },
+    };
+  
     const emptyOption = {
         title : {
             text: '暂无数据',
@@ -950,7 +1038,14 @@ const Overview = () => {
                 <Row>
                     <Col span={24}>
                         <Card>
-                        <ReactEcharts option={emptyOption} style={{ height: '300px' }} />
+                        <ReactEcharts option={timeOption} style={{ height: '400px' }} />
+                            </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={24}>
+                        <Card>
+                        <ReactEcharts option={emptyOption} style={{ height: '200px' }} />
                             </Card>
                     </Col>
                 </Row>

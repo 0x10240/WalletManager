@@ -558,6 +558,7 @@ const Stark = () => {
             let activePromises = 0;
             let promisesQueue = [];
             const newData = [...data];
+            let timestampsArray = [];
             const processQueue = () => {
                 while (activePromises < limit && promisesQueue.length > 0) {
                     const promise = promisesQueue.shift();
@@ -604,9 +605,10 @@ const Stark = () => {
                     item.total_deposit_count = null;
                     setData([...newData]);
                     promisesQueue.push(() => {
-                        return getStarkTx(item.address).then(({tx, stark_latest_tx_time}) => {
+                        return getStarkTx(item.address).then(({tx, stark_latest_tx_time, stark_timestamps}) => {
                         item.stark_tx_amount = tx;
                         item.stark_latest_tx_time = stark_latest_tx_time;
+                        timestampsArray.push(stark_timestamps);
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     })})
@@ -698,6 +700,8 @@ const Stark = () => {
             while (activePromises > 0 || promisesQueue.length > 0) {
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
+            const stark_timestamps = timestampsArray.flat()
+            localStorage.setItem('stark_timestamps', JSON.stringify(stark_timestamps));
             for (let key of selectedKeys) {
                 const index = newData.findIndex(item => item.key === key);
                 if (index !== -1) {
@@ -754,6 +758,7 @@ const Stark = () => {
             let activePromises = 0;
             let promisesQueue = [];
             const newData = [...data];
+            let timestampsArray = [];
             const processQueue = () => {
                 while (activePromises < limit && promisesQueue.length > 0) {
                     const promise = promisesQueue.shift();
@@ -777,9 +782,10 @@ const Stark = () => {
                     item.stark_dai_balance = null;
                     setData([...newData]);
                     promisesQueue.push(() => {
-                        return getStarkTx(item.address).then(({tx, stark_latest_tx_time}) => {
+                        return getStarkTx(item.address).then(({tx, stark_latest_tx_time, stark_timestamps}) => {
                         item.stark_tx_amount = tx;
                         item.stark_latest_tx_time = stark_latest_tx_time;
+                        timestampsArray.push(stark_timestamps);
                         setData([...newData]);
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     })})
@@ -798,6 +804,8 @@ const Stark = () => {
             while (activePromises > 0 || promisesQueue.length > 0) {
                 await new Promise(resolve => setTimeout(resolve, 2000));
             }
+            const stark_timestamps = timestampsArray.flat()
+            localStorage.setItem('stark_timestamps', JSON.stringify(stark_timestamps));
         } catch (error) {
             notification.error({
                 message: "错误",

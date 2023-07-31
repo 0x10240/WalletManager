@@ -261,8 +261,8 @@ function ZksyncTasks() {
                 if (index !== -1) {
                     const item = newData[index];
                     const taskContractsMap = new Map();
-                    const contractAddresses = await getZksTasks(item.address);
-                    taskContractsMap.set(item.address, contractAddresses);
+                    const result = await getZksTasks(item.address);
+                    const contractAddresses = result[0];
                     setTaskContracts(taskContractsMap);
                     await new Promise((resolve) => {
                         setTimeout(() => {
@@ -485,13 +485,15 @@ function ZksyncTasks() {
             }
             // 存储每个地址对应的合约数组到map中
             const taskContractsMap = new Map();
+            let timestampsArray = [];
             const promises = []; // 存储所有的异步任务
           
             for (const entry of parsedAddresses) {
               const address = entry.address;
               const promise = getZksTasks(address)
-                .then(contractAddresses => {
-                  taskContractsMap.set(address, contractAddresses);
+                .then(result => {
+                    taskContractsMap.set(address, result[0]);
+                    timestampsArray.push(result[1]);
                 })
                 .catch(error => {
                   // 处理错误
@@ -505,6 +507,8 @@ function ZksyncTasks() {
               await Promise.all(promises); // 等待所有的异步任务完成
               setTableLoading(false);
               setTaskContracts(taskContractsMap);
+              const zks_timestamps = timestampsArray.flat()
+              localStorage.setItem('zks_timestamps', JSON.stringify(zks_timestamps));
             } catch (error) {
               // 处理错误
               console.error('Error fetching task contracts:', error);

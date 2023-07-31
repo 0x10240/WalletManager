@@ -102,6 +102,7 @@ async function getStarkTx(address) {
       }
       hasNextPage = response.data.data['transactions']['pageInfo']['hasNextPage'];
       const timestamp = response.data.data['transactions']['edges'][0]['node']['timestamp'];
+      const timestamps =  response.data.data['transactions']['edges'].map(item => item.node.timestamp * 1000);
       const latestDate = new Date(timestamp * 1000);
       let year = latestDate.getFullYear();
       let month = latestDate.getMonth() + 1;
@@ -140,7 +141,7 @@ async function getStarkTx(address) {
         diffTime = "刚刚"
       }
       console.log(tx, formattedDate, diffTime)
-      return {tx: tx, stark_latest_tx: formattedDate, stark_latest_tx_time: diffTime};
+      return {tx: tx, stark_latest_tx: formattedDate, stark_latest_tx_time: diffTime, stark_timestamps: timestamps};
   } catch (error) {
       console.error(error);
       return {tx: "Error", stark_latest_tx: "Error"};

@@ -168,7 +168,8 @@ function LineaTasks() {
                 if (index !== -1) {
                     const item = newData[index];
                     const taskContractsMap = new Map();
-                    const contractAddresses = await getLineaTasks(item.address, apiKey);
+                    const result = await getLineaTasks(item.address, apiKey);
+                    const contractAddresses = result[0];
                     taskContractsMap.set(item.address, contractAddresses);
                     setTaskContracts(taskContractsMap);
                     await new Promise((resolve) => {
@@ -301,13 +302,15 @@ function LineaTasks() {
             }
             // 存储每个地址对应的合约数组到map中
             const taskContractsMap = new Map();
+            let timestampsArray = [];
             const promises = []; // 存储所有的异步任务
           
             for (const entry of parsedAddresses) {
               const address = entry.address;
               const promise = getLineaTasks(address, apiKey)
-                .then(contractAddresses => {
-                  taskContractsMap.set(address, contractAddresses);
+                .then(result => {
+                    taskContractsMap.set(address, result[0]);
+                    timestampsArray.push(result[1]);
                 })
                 .catch(error => {
                   // 处理错误
@@ -321,6 +324,8 @@ function LineaTasks() {
               await Promise.all(promises); // 等待所有的异步任务完成
               setTableLoading(false);
               setTaskContracts(taskContractsMap);
+              const linea_timestamps = timestampsArray.flat()
+              localStorage.setItem('linea_timestamps', JSON.stringify(linea_timestamps));
             } catch (error) {
               // 处理错误
               console.error('Error fetching task contracts:', error);
