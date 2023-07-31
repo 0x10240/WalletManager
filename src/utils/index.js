@@ -21,6 +21,7 @@ import getLineaInfo from "@utils/linea/getLineaInfo.js";
 import getLineaTx from "@utils/linea/getLineaTx.js";
 import getLineaERC20 from "@utils/linea/getLineaERC20.js";
 import getLineaBridge from "@utils/linea/getLineaBridge.js";
+import getLineaTasks from "@utils/linea/getLineaTasks.js";
 
 export {
     getEthBalance,
@@ -46,4 +47,5 @@ export {
     getLineaTx,
     getLineaERC20,
     getLineaBridge,
+    getLineaTasks,
 };

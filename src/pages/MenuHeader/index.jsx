@@ -60,8 +60,18 @@ const MenuHeader = () => {
             ],
         },
         {
-            label: 'Linea',
-            key: 'linea',
+            label: <span>Linea <CaretDownOutlined /></span>,
+            key: 'lin',
+            children: [
+                {
+                    label: 'Linea',
+                    key: 'linea',
+                },
+                {
+                    label: 'LineaTasks',
+                    key: 'lineaTasks',
+                },
+            ],
         },
         {
             label: 'LayerZero',

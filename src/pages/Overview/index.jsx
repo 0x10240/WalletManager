@@ -375,10 +375,51 @@ const Overview = () => {
         '80-90': 0,
         '90-100': 0
       });
+    const lineaProgress = lineaAddressList.reduce((acc, entry) => {
+        if ('progress' in entry) {
+            acc.push(entry.progress);
+        }
+        return acc;
+    }, []);
+    const lineaProgressIntervalCounts = lineaProgress.reduce((acc, num) => {
+        if (num >= 0 && num <= 10) {
+            acc['0-10']++;
+        } else if (num > 10 && num <= 20) {
+            acc['10-20']++;
+        } else if (num > 20 && num <= 30) {
+            acc['20-30']++;
+        } else if (num > 30 && num <= 40) {
+            acc['30-40']++;
+        } else if (num > 40 && num <= 50) {
+            acc['40-50']++;
+        } else if (num > 50 && num <= 60) {
+            acc['50-60']++;
+        } else if (num > 60 && num <= 70) {
+            acc['60-70']++;
+        } else if (num > 70 && num <= 80) {
+            acc['70-80']++;
+        } else if (num > 80 && num <= 90) {
+            acc['80-90']++;
+        } else if (num > 90 && num <= 100) {
+            acc['90-100']++;
+        }
+        return acc;
+      }, {
+        '0-10': 0,
+        '10-20': 0,
+        '20-30': 0,
+        '30-40': 0,
+        '40-50': 0,
+        '50-60': 0,
+        '60-70': 0,
+        '70-80': 0,
+        '80-90': 0,
+        '90-100': 0
+      });
     const progressOption = {
         title: {
             text: '任务进度分布',
-            subtext: `zkSyncEra平均完成率 ${parseInt(zksProgress.reduce((acc, num) => acc + parseFloat(num), 0) / zksProgress.length)}%  StarkNet平均完成率 ${parseInt(starkProgress.reduce((acc, num) => acc + parseFloat(num), 0) / starkProgress.length)}%`,
+            subtext: `zkSyncEra平均完成率 ${parseInt(zksProgress.reduce((acc, num) => acc + parseFloat(num), 0) / zksProgress.length)}%  StarkNet平均完成率 ${parseInt(starkProgress.reduce((acc, num) => acc + parseFloat(num), 0) / starkProgress.length)}% Linea平均完成率 ${parseInt(lineaProgress.reduce((acc, num) => acc + parseFloat(num), 0) / lineaProgress.length)}%`,
             left: 'center'
         },
         tooltip: {
@@ -389,7 +430,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zkSync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet', 'Linea']
         },
         xAxis: {
           type: 'category',
@@ -410,6 +451,11 @@ const Overview = () => {
           {
             name: 'StarkNet',
             data: [starkProgressIntervalCounts['0-10'], starkProgressIntervalCounts['10-20'], starkProgressIntervalCounts['20-30'], starkProgressIntervalCounts['30-40'], starkProgressIntervalCounts['40-50'], starkProgressIntervalCounts['50-60'], starkProgressIntervalCounts['60-70'], starkProgressIntervalCounts['70-80'], starkProgressIntervalCounts['80-90'], starkProgressIntervalCounts['90-100']],
+            type: 'bar'
+          },
+          {
+            name: 'Linea',
+            data: [lineaProgressIntervalCounts['0-10'], lineaProgressIntervalCounts['10-20'], lineaProgressIntervalCounts['20-30'], lineaProgressIntervalCounts['30-40'], lineaProgressIntervalCounts['40-50'], lineaProgressIntervalCounts['50-60'], lineaProgressIntervalCounts['60-70'], lineaProgressIntervalCounts['70-80'], lineaProgressIntervalCounts['80-90'], lineaProgressIntervalCounts['90-100']],
             type: 'bar'
           }
         ]
@@ -826,7 +872,7 @@ const Overview = () => {
             top: '1%',
             orient: 'vertical',
             left: 'left',
-            data: ['zkSync Era', 'StarkNet']
+            data: ['zkSync Era', 'StarkNet', 'Linea']
         },
         xAxis: {
           type: 'category',
