@@ -594,7 +594,7 @@ function LineaTasks() {
                     align: 'center',
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['horizon', 'bank', 'sync', 'izi', 'echo', 'leet'];
+                      const items = ['horizon', 'bank', 'sync', 'izi', 'echo', 'leet', 'swirl'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;

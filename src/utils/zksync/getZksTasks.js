@@ -11,6 +11,7 @@ async function getZksTasks(address) {
         let timestamps = transactions.map(item => Date.parse(item["receivedAt"]));
         if (pageValue > 1) {
             contractAddresses = [];
+            timestamps = [];
             for (let i = 1; i <= pageValue; i++) {
                 const url = `https://block-explorer-api.mainnet.zksync.io/transactions?address=${address}&limit=100&page=${i}`;
                 const response = await axios.get(url);
