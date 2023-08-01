@@ -1025,30 +1025,6 @@ function ZksyncTasks() {
             ],
         }
     ];
-    // const isRowSatisfyCondition = (record) => {
-    //     const conditionKeyMapping = {
-    //         "ETHTx": "eth_tx_amount",
-    //         "zkSyncLiteMinTx": "zks1_tx_amount",
-    //         "zkSyncEraMinTx": "zks2_tx_amount",
-    //         "L1ToL2Tx": "l1Tol2Times",
-    //         "L2ToL1Tx": "l2Tol1Times",
-    //         "L1ToL2ETH": "l1Tol2Amount",
-    //         "L2ToL1ETH": "l2Tol1Amount",
-    //         "contractMin": "contractActivity",
-    //         "dayMin": "dayActivity",
-    //         "weekMin": "weekActivity",
-    //         "monthMin": "monthActivity",
-    //         "gasFee": "totalFee",
-    //         "totalAmount": "totalExchangeAmount",
-    //     };
-    //     return Object.keys(conditionKeyMapping).every((conditionKey) => {
-    //         if (!(conditionKey in zkSyncConfigStore) || zkSyncConfigStore[conditionKey] === null || zkSyncConfigStore[conditionKey] === undefined) {
-    //             return true;
-    //         }
-    //         const recordKey = conditionKeyMapping[conditionKey];
-    //         return Number(record[recordKey]) >= Number(zkSyncConfigStore[conditionKey])
-    //     });
-    // };
 
     return (
         <div>
@@ -1065,31 +1041,6 @@ function ZksyncTasks() {
                         scroll={{
                             y: tableHeight
                           }}
-                        // sticky
-                        summary={pageData => {
-                            let ethBalance = 0;
-                            let zks1Balance = 0;
-                            let zks2Balance = 0;
-                            let zks2UsdcBalance = 0;
-                            let totalFees = 0;
-                            pageData.forEach(({
-                                                  eth_balance,
-                                                  zks1_balance,
-                                                  zks2_balance,
-                                                  zks2_usdcBalance,
-                                                  totalFee
-                                              }) => {
-                                ethBalance += Number(eth_balance);
-                                zks1Balance += Number(zks1_balance);
-                                zks2Balance += Number(zks2_balance);
-                                zks2UsdcBalance += Number(zks2_usdcBalance);
-                                totalFees += Number(totalFee);
-                            })
-
-                            const emptyCells = Array(10).fill().map((_, index) => <Table.Summary.Cell
-                                index={index + 6}/>);
-
-                        }}
                         footer={() => (
                             <Card>
                                 <div style={{
