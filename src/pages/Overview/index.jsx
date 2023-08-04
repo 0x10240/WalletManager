@@ -202,11 +202,11 @@ const Overview = () => {
     const totalDai = parseFloat(totalstarkDaiBalance).toFixed(2);
     const totalBusd = parseFloat(totallineaBusdBalance).toFixed(2);
     const ethPrice = 1880;
-    const totalBalance = parseFloat(totalEth * ethPrice + totalUsdc + totalUsdt + totalDai + totalBusd).toFixed(2);
+    const totalBalance = parseFloat(Number(totalEth) * ethPrice + Number(totalUsdc) + Number(totalUsdt) + Number(totalDai) + Number(totalBusd)).toFixed(2);
     const valueOption = {
     title : {
         text: '资产总览',
-        subtext: `资产总额 ${Number(totalBalance)}U L2资产总额 ${parseInt(Number(totalBalance) - Number(totalzksEthBalance) * ethPrice)}U\n\nETH(${totalEth}) 稳定币(${parseInt(Number(totalzks2UsdcBalance) + Number(totalstarkUsdcBalance) + Number(totalstarkUsdtBalance) + Number(totalstarkDaiBalance) + Number(totallineaBusdBalance))})`,
+        subtext: `资产总额 ${totalBalance}U L2资产总额 ${parseInt(Number(totalBalance) - Number(totalzksEthBalance) * ethPrice)}U\n\nETH(${totalEth}) 稳定币(${parseInt(Number(totalzks2UsdcBalance) + Number(totalstarkUsdcBalance) + Number(totalstarkUsdtBalance) + Number(totalstarkDaiBalance) + Number(totallineaBusdBalance))})`,
         x:'center'
         },
     tooltip: {
