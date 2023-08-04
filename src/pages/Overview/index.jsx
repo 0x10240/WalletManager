@@ -206,7 +206,7 @@ const Overview = () => {
     const valueOption = {
     title : {
         text: '资产总览',
-        subtext: `资产总额 ${totalBalance}U L2资产总额 ${parseInt(totalBalance - totalzksEthBalance * ethPrice)}U\n\nETH(${totalEth}) 稳定币(${parseInt(totalzks2UsdcBalance + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance + totallineaBusdBalance)})`,
+        subtext: `资产总额 ${Number(totalBalance)}U L2资产总额 ${parseInt(Number(totalBalance) - Number(totalzksEthBalance) * ethPrice)}U\n\nETH(${totalEth}) 稳定币(${parseInt(Number(totalzks2UsdcBalance) + Number(totalstarkUsdcBalance) + Number(totalstarkUsdtBalance) + Number(totalstarkDaiBalance) + Number(totallineaBusdBalance))})`,
         x:'center'
         },
     tooltip: {
