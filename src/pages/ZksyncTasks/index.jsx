@@ -64,6 +64,7 @@ function ZksyncTasks() {
     const spacefiContract = "0xbE7D1FD1f6748bbDefC4fbaCafBb11C6Fc506d1d";
     const _1inchContract = "0x6e2B76966cbD9cF4cC2Fa0D76d24d5241E0ABC2F";
     const izumiContract = "0x9606eC131EeC0F84c95D82c9a63959F2331cF2aC";
+    const izumiContract2 = "0x943ac2310D9BC703d6AB5e5e76876e212100f894";
     const rollupContract = "0x5B91962F5ECa75E6558E4d32Df69B30f75cc6FE5";
     const znsContract = "0xCBE2093030F485adAaf5b61deb4D9cA8ADEAE509";
     const veloContract = "0xd999E16e68476bC749A28FC14a0c3b6d7073F50c";
@@ -135,7 +136,8 @@ function ZksyncTasks() {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, izumiContract);
-                        item.izumi = result;
+                        const result2 = checkTaskStatus(item.address, izumiContract2);
+                        item.izumi = result + result2;
                         resolve();
                     });
                 });
@@ -312,7 +314,8 @@ function ZksyncTasks() {
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, izumiContract);
-                            item.izumi = result;
+                            const result2 = checkTaskStatusByArray(contractAddresses, izumiContract2);
+                            item.izumi = result + result2;
                             resolve();
                         });
                     });
