@@ -61,6 +61,16 @@ const Overview = () => {
     
     useEffect(checkVersion, [latestVersion]);
 
+    useEffect(() => {
+        const fetchEthPrice = async () => {
+            const ethPrice = await getEthPrice();
+            setEthPrice(ethPrice);
+        };
+        fetchEthPrice();
+    }, []);
+
+    const [ethPrice, setEthPrice] = useState(0);
+
     const zksAddresses = localStorage.getItem('addresses');
     const starkAddresses = localStorage.getItem('stark_addresses');
     const l0Addresses = localStorage.getItem('l0_addresses');
@@ -201,7 +211,6 @@ const Overview = () => {
     const totalUsdt = parseFloat(totalstarkUsdtBalance).toFixed(2);
     const totalDai = parseFloat(totalstarkDaiBalance).toFixed(2);
     const totalBusd = parseFloat(totallineaBusdBalance).toFixed(2);
-    const ethPrice = 1880;
     const totalBalance = parseFloat(Number(totalEth) * ethPrice + Number(totalUsdc) + Number(totalUsdt) + Number(totalDai) + Number(totalBusd)).toFixed(2);
     const valueOption = {
     title : {
