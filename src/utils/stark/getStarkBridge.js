@@ -63,7 +63,6 @@ async function getStarkBridge(address) {
                 'after': null,
                 'input': {
                     'transfer_from_or_to_address': address,
-                    'call_invocation_type': 'FUNCTION',
                     'sort_by': 'timestamp',
                     'order_by': 'desc'
                 }
