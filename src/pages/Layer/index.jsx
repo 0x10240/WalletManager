@@ -332,6 +332,7 @@ const Layer = () => {
                 );
             },
             width: 80,
+            sorter: (a, b) => a.name - b.name,
         },
         {
             title: (

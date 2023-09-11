@@ -994,6 +994,7 @@ const Stark = () => {
                     align: "center",
                     render: (text, record) => text === null ? <Spin/> : text,
                     width: 70,
+                    sorter: (a, b) => a.stark_eth_balance - b.stark_eth_balance,
                 },
                 {
                     title: "USDC",
