@@ -64,8 +64,10 @@ function LineaTasks() {
     const syncswapContract = "0x80e38291e06339d10aab483c65695d004dbd5c69";
     const iziswapContract = "0x032b241De86a8660f1Ae0691a4760B426EA246d7";
     const echodexContract = "0xc66149996d0263C0B42D3bC05e50Db88658106cE";
-    const leetswapContract = "0x169C06b4cfB09bFD73A81e6f2Bb1eB514D75bB19";
-    const swirllendContract = "0x91067B912f89dFCa50c3F5529dBeB78b63C6a2E5";
+    const leetswapContract = "0xd3Ea3BC1F5A3F881bD6cE9761cbA5A0833a5d737";
+    const kyberswapContract = "0x6131B5fae19EA4f9D964eAc0408E4408b66337b5";
+    const velocoreContract = "0x1d0188c4B276A09366D05d6Be06aF61a73bC7535";
+    const memdiContract = "0xAd7f33984bed10518012013D4aB0458D37FEE6F3";
 
     useEffect(() => {
         const storedApiKey = localStorage.getItem('linea_api_key');
@@ -134,8 +136,22 @@ function LineaTasks() {
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, swirllendContract);
-                        item.swirl = result;
+                        const result = checkTaskStatus(item.address, kyberswapContract);
+                        item.kyber = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, velocoreContract);
+                        item.velo = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, memdiContract);
+                        item.memdi = result;
                         resolve();
                     });
                 });
@@ -221,8 +237,22 @@ function LineaTasks() {
                     });
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
-                            const result = checkTaskStatusByArray(contractAddresses, swirllendContract);
-                            item.swirl = result;
+                            const result = checkTaskStatusByArray(contractAddresses, kyberswapContract);
+                            item.kyber = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, velocoreContract);
+                            item.velo = result;
+                            resolve();
+                        });
+                    });
+                    promisesQueue.push(() => {
+                        return new Promise((resolve) => {
+                            const result = checkTaskStatusByArray(contractAddresses, memdiContract);
+                            item.memdi = result;
                             resolve();
                         });
                     });
@@ -443,8 +473,8 @@ function LineaTasks() {
             width: 65
         },
         {
-            title: <a href="https://defillama.com/chain/zkSync Era" style={{ color: 'white' }} 
-                target="_blank" rel="noopener noreferrer">zkSyncEra Task List  [参考defillama TVL数据] <br/>🔴请注意，通过点击任务列表的超链接，您将离开本网页。我们建议您在访问这些外部链接之前，仔细阅读其网站的隐私政策和使用条款。我们不能控制这些网站的内容和安全性，并且不对其造成的任何损失或损害负责。
+            title: <a href="https://defillama.com/chain/linea" style={{ color: 'white' }} 
+                target="_blank" rel="noopener noreferrer">Linea Task List  [参考defillama TVL数据] <br/>🔴请注意，通过点击任务列表的超链接，您将离开本网页。我们建议您在访问这些外部链接之前，仔细阅读其网站的隐私政策和使用条款。我们不能控制这些网站的内容和安全性，并且不对其造成的任何损失或损害负责。
 
                 在访问外部链接时，您需要自行评估潜在的风险。这些链接不构成对所链接网站内容的认可或支持。我们不对这些外部链接的准确性、内容、服务质量或安全性做任何承诺。
                 
@@ -454,6 +484,63 @@ function LineaTasks() {
             key: "zks_era_group",
             className: "zks_era",
             children: [
+                {
+                    title: <a href="https://kyberswap.com/swap/linea" target="_blank" rel="noopener noreferrer">KyberSwap</a>,
+                    dataIndex: "kyber",
+                    key: "kyber",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.kyber === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 65
+                },
+                {
+                    title: <a href="https://linea.velocore.xyz/swap" target="_blank" rel="noopener noreferrer">velo</a>,
+                    dataIndex: "velo",
+                    key: "velo",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.velo === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 65
+                },
+                {
+                    title: <a href="https://mendi.finance/" target="_blank" rel="noopener noreferrer">Memdi</a>,
+                    dataIndex: "memdi",
+                    key: "memdi",
+                    align: "center",
+                    filters: [
+                        {
+                          text: '未完成',
+                          value: 0,
+                        }
+                    ],
+                    onFilter: (value, record) => record.memdi === value,
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                    ),
+                    width: 65
+                },
                 {
                     title: <a href="https://app.horizondex.io/swap" target="_blank" rel="noopener noreferrer">horizondex</a>,
                     dataIndex: "horizon",
@@ -569,32 +656,13 @@ function LineaTasks() {
                     width: 65
                 },
                 {
-                    title: <a href="https://www.swirllend.com/" target="_blank" rel="noopener noreferrer">SwirlLend</a>,
-                    dataIndex: "swirl",
-                    key: "swirl",
-                    align: "center",
-                    filters: [
-                        {
-                          text: '未完成',
-                          value: 0,
-                        }
-                    ],
-                    onFilter: (value, record) => record.swirl === value,
-                    render: (text, record) => (
-                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
-                            {text === null ? <Spin /> : text}
-                        </span>
-                    ),
-                    width: 65
-                },
-                {
                     title: '进度',
                     dataIndex: 'progress',
                     key: 'progress',
                     align: 'center',
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['horizon', 'bank', 'sync', 'izi', 'echo', 'leet', 'swirl'];
+                      const items = ['horizon', 'bank', 'sync', 'izi', 'echo', 'leet', 'kyber', 'velo', 'memdi'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
