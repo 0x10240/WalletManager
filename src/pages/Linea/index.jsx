@@ -174,9 +174,11 @@ function Linea() {
                         })
                     });
                     promisesQueue.push(async () => {
-                        item.linea_busdBalance = null;
-                        return getLineaERC20(item.address, apiKey).then(({BUSD}) => {
-                            item.linea_busdBalance = BUSD;
+                        item.linea_busd_balance = null;
+                        item.linea_usdc_balance = null;
+                        return getLineaERC20(item.address, apiKey).then(({BUSD, USDC}) => {
+                            item.linea_busd_balance = BUSD;
+                            item.linea_usdc_balance = USDC;
                             setData([...newData]);
                             localStorage.setItem('linea_addresses', JSON.stringify(newData));
                         })
@@ -299,7 +301,8 @@ function Linea() {
                     linea_eth_balance: null,
                     linea_last_tx: null,
                     linea_tx_amount: null,
-                    linea_busdBalance: null,
+                    linea_busd_balance: null,
+                    linea_usdc_balance: null,
                     linea_usdtBalance: null,
                     dayActivity: null,
                     weekActivity: null,
@@ -319,8 +322,9 @@ function Linea() {
                     item.linea_eth_balance = balance;
                 }));
     
-                promisesQueue.push(() => getLineaERC20(address, apiKey).then(({BUSD}) => {
-                    item.linea_busdBalance = BUSD;
+                promisesQueue.push(() => getLineaERC20(address, apiKey).then(({BUSD, USDC}) => {
+                    item.linea_busd_balance = BUSD;
+                    item.linea_usdc_balance = USDC;
                 }));
 
                 promisesQueue.push(() => getEthBalance(address, "ethereum").then((eth_balance) => {
@@ -559,15 +563,23 @@ function Linea() {
                     key: "linea_eth_balance",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
-                    width: 80
+                    width: 70
+                },
+                {
+                    title: "USDC",
+                    dataIndex: "linea_usdc_balance",
+                    key: "linea_usdc_balance",
+                    align: "center",
+                    render: (text, record) => (text === null ? <Spin/> : text),
+                    width: 70
                 },
                 {
                     title: "BUSD",
-                    dataIndex: "linea_busdBalance",
-                    key: "linea_busdBalance",
+                    dataIndex: "linea_busd_balance",
+                    key: "linea_busd_balance",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
-                    width: 80
+                    width: 70
                 },
                 // {
                 //     title: "USDT",
@@ -654,7 +666,7 @@ function Linea() {
                             align: "center",
                             sorter: (a, b) => a.l1Tol2Times - b.l1Tol2Times,
                             render: (text, record) => (text === null ? "/" : text),
-                            width: 70
+                            width: 65
                         },
                         {
                             title: "L2->L1",
@@ -662,7 +674,7 @@ function Linea() {
                             key: "l2Tol1Times",
                             align: "center",
                             render: (text, record) => (text === null ? "/" : text),
-                            width: 60
+                            width: 55
                         },
                     ],
                 },
@@ -676,7 +688,7 @@ function Linea() {
                             key: "l1Tol2Amount",
                             align: "center",
                             render: (text, record) => (text === null ? "/" : text),
-                            width: 60
+                            width: 55
                         },
                         {
                             title: "L2->L1",
@@ -684,7 +696,7 @@ function Linea() {
                             key: "l2Tol1Amount",
                             align: "center",
                             render: (text, record) => (text === null ? "/" : text),
-                            width: 60
+                            width: 55
                         },
                     ],
                 },
@@ -708,7 +720,7 @@ function Linea() {
                             align: "center",
                             sorter: (a, b) => a.weekActivity - b.weekActivity,
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 55
+                            width: 50
                         },
                         {
                             title: "月",
@@ -716,7 +728,7 @@ function Linea() {
                             key: "monthActivity",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 55
+                            width: 50
                         },
                         {
                             title: "不同合约",
@@ -724,7 +736,7 @@ function Linea() {
                             key: "contractActivity",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 90
+                            width: 85
                         },
                         {
                             title: "金额(U)",
@@ -884,6 +896,7 @@ function Linea() {
                         summary={pageData => {
                             let ethBalance = 0;
                             let lineaEthBalance = 0;
+                            let lineaUsdcBalance = 0;
                             let lineaBusdBalance = 0;
                             let totalFees = 0;
                             let avgTx = 0;
@@ -896,7 +909,8 @@ function Linea() {
                             pageData.forEach(({
                                 eth_balance,
                                 linea_eth_balance,
-                                linea_busdBalance,
+                                linea_usdc_balance,
+                                linea_busd_balance,
                                 linea_tx_amount,
                                 totalFee,
                                 dayActivity,
@@ -908,7 +922,8 @@ function Linea() {
                             }) => {
                                 ethBalance += Number(eth_balance);
                                 lineaEthBalance += Number(linea_eth_balance);
-                                lineaBusdBalance += Number(linea_busdBalance);
+                                lineaUsdcBalance += Number(linea_usdc_balance);
+                                lineaBusdBalance += Number(linea_busd_balance);
                                 totalFees += Number(totalFee);
                                 avgTx += Number(linea_tx_amount);
                                 avgDay += Number(dayActivity);
@@ -934,6 +949,7 @@ function Linea() {
                                         <Table.Summary.Cell index={4}>{ethBalance.toFixed(4)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={5}/>
                                         <Table.Summary.Cell index={8}>{lineaEthBalance.toFixed(4)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={9}>{lineaUsdcBalance.toFixed(2)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={9}>{lineaBusdBalance.toFixed(2)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={11}>-{avgTx.toFixed(0)}-</Table.Summary.Cell>
                                         {emptyCells}
