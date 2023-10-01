@@ -80,6 +80,7 @@ function ZksyncTasks() {
     const openoceanContract = "0x36A1aCbbCAfca2468b85011DDD16E7Cb4d673230";
     const ezkContract = "0x498f7bB59c61307De7dEA005877220e4406470e9";
     const odosContract = "0xA269031037B4D5fa3F771c401D19E57def6Cb491";
+    const odosContract2 = "0x4bBa932E9792A2b917D47830C93a9BC79320E4f7";
     const dmailContract = "0x981F198286E40F9979274E0876636E9144B8FB8E";
     const pancakeContract = "0xf8b59f3c3Ab33200ec80a8A58b2aA5F5D2a8944C";
 
@@ -218,7 +219,8 @@ function ZksyncTasks() {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, odosContract);
-                        item.odos = result;
+                        const result2 = checkTaskStatus(item.address, odosContract2);
+                        item.odos = result + result2;
                         resolve();
                     });
                 });
@@ -397,7 +399,8 @@ function ZksyncTasks() {
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
                             const result = checkTaskStatusByArray(contractAddresses, odosContract);
-                            item.odos = result;
+                            const result2 = checkTaskStatusByArray(contractAddresses, odosContract2);
+                            item.odos = result + result2;
                             resolve();
                         });
                     });
