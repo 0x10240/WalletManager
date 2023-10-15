@@ -936,8 +936,8 @@ function Zksync() {
                       
                         if (text === null) {
                           return <Spin />;
-                        } else if (text.includes("周")) {
-                          textColor = "red";
+                        } else if (text?.includes("天") && parseInt(text) > 7) {
+                            textColor = "red";
                         } else {
                           textColor = "#1677ff";
                         }

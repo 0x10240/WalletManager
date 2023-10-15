@@ -43,9 +43,9 @@ function getZkSyncLastTX(lastTxDatetime) {
     const diffInHours = Math.floor(diff / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInHours / 24);
     if (diffInDays > 0) {
-        if (diffInDays > 7) {
-            return `${parseInt(diffInDays / 7)} 周前`
-        }
+        // if (diffInDays > 7) {
+        //     return `${parseInt(diffInDays / 7)} 周前`
+        // }
         return `${diffInDays} 天前`
     } else if (diffInHours > 0) {
         return `${diffInHours} 小时前`
