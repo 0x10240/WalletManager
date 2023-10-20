@@ -27,7 +27,7 @@ npm run dev
 
 ## 使用
 
-https://airdrop.zksync.io/
+https://airdrop.dddd8.xyz/
 
 
 
