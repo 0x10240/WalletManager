@@ -3,7 +3,7 @@ import axios from 'axios';
 async function getEthBalance(walletAddress, network) {
     try {
         const rpcPool = [
-            "https://cloudflare-eth.com",
+            // "https://cloudflare-eth.com",
             "https://eth.llamarpc.com",
             "https://rpc.ankr.com/eth",
             "https://1rpc.io/eth",
