@@ -75,17 +75,20 @@ const Overview = () => {
     const starkAddresses = localStorage.getItem('stark_addresses');
     const l0Addresses = localStorage.getItem('l0_addresses');
     const lineaAddresses = localStorage.getItem('linea_addresses');
+    const baseAddresses = localStorage.getItem('base_addresses');
 
     const zksAddressList = zksAddresses ? JSON.parse(zksAddresses) : [];
     const starkAddressList = starkAddresses ? JSON.parse(starkAddresses) : [];
     const l0AddressList = l0Addresses ? JSON.parse(l0Addresses) : [];
     const lineaAddressList = lineaAddresses ? JSON.parse(lineaAddresses) : [];
+    const baseAddressList = baseAddresses ? JSON.parse(baseAddresses) : [];
 
     const zksAddressCount = zksAddressList.length;
     const starkAddressCount = starkAddressList.length;
     const l0AddressCount = l0AddressList.length;
     const lineaAddressCount = lineaAddressList.length;
-    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount + lineaAddressCount;
+    const baseAddressCount = baseAddressList.length;
+    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount + lineaAddressCount + baseAddressCount;
     const accountOption = {
         title : {
             text: '账号总览',
@@ -130,7 +133,8 @@ const Overview = () => {
               { value: zksAddressCount, name: 'zkSync Era' },
               { value: starkAddressCount, name: 'StarkNet' },
               { value: l0AddressCount, name: 'LayerZero' },
-              { value: lineaAddressCount, name: 'Linea' }
+              { value: lineaAddressCount, name: 'Linea' },
+              { value: baseAddressCount, name: 'Base' }
             ]
           }
         ]
@@ -213,8 +217,22 @@ const Overview = () => {
         }
             return total;
     }, 0);
-    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance + totallineaEthBalance).toFixed(2);
-    const totalUsdc = parseFloat(totalzks2UsdcBalance + totalstarkUsdcBalance + totallineaUsdcBalance).toFixed(2);
+    const totalbaseEthBalance = baseAddressList.reduce((total, addressData) => {
+        if ('base_eth_balance' in addressData) {
+            const base_eth_balance = parseFloat(addressData.base_eth_balance);
+            return total + base_eth_balance;
+        }
+            return total;
+    }, 0);
+    const totalbaseUsdcBalance = baseAddressList.reduce((total, addressData) => {
+        if ('base_usdc_balance' in addressData) {
+            const base_usdc_balance = parseFloat(addressData.base_usdc_balance);
+            return total + base_usdc_balance;
+        }
+            return total;
+    }, 0);
+    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance + totallineaEthBalance + totalbaseEthBalance).toFixed(2);
+    const totalUsdc = parseFloat(totalzks2UsdcBalance + totalstarkUsdcBalance + totallineaUsdcBalance + totalbaseUsdcBalance).toFixed(2);
     const totalUsdt = parseFloat(totalstarkUsdtBalance).toFixed(2);
     const totalDai = parseFloat(totalstarkDaiBalance).toFixed(2);
     const totalBusd = parseFloat(totallineaBusdBalance).toFixed(2);
@@ -304,7 +322,8 @@ const Overview = () => {
             { value: parseInt(totalzks2Balance * ethPrice + totalzks2UsdcBalance), name: 'zkSync Era' },
             { value: parseInt(totalzks1Balance * ethPrice), name: 'zkSync Lite' },
             { value: parseInt(totalstarkEthBalance * ethPrice + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance), name: 'StarkNet' },
-            { value: parseInt(totallineaEthBalance * ethPrice + totallineaBusdBalance + totallineaUsdcBalance), name: 'Linea' }
+            { value: parseInt(totallineaEthBalance * ethPrice + totallineaBusdBalance + totallineaUsdcBalance), name: 'Linea' },
+            { value: parseInt(totalbaseEthBalance * ethPrice ), name: 'Base' },
         ]
         }
     ]
