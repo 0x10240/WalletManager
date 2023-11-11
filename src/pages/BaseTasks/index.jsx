@@ -95,63 +95,63 @@ function BaseTasks() {
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, aaveContract);
-                        item.horizon = result;
+                        item.aave = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, inchContract);
-                        item.bank = result;
+                        item._1inch = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, matchaContract);
-                        item.sync = result;
+                        item.matcha = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, kyberContract);
-                        item.izi = result;
-                        resolve();
-                    });
-                });
-                promisesQueue.push(() => {
-                    return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, uniswapContract);
-                        item.echo = result;
-                        resolve();
-                    });
-                });
-                promisesQueue.push(() => {
-                    return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, baseswapContract);
-                        item.leet = result;
-                        resolve();
-                    });
-                });
-                promisesQueue.push(() => {
-                    return new Promise((resolve) => {
-                        const result = checkTaskStatus(item.address, openseaContract);
                         item.kyber = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, uniswapContract);
+                        item.uniswap = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, baseswapContract);
+                        item.baseswap = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
+                        const result = checkTaskStatus(item.address, openseaContract);
+                        item.opensea = result;
+                        resolve();
+                    });
+                });
+                promisesQueue.push(() => {
+                    return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, stargateContract);
-                        item.velo = result;
+                        item.stargate = result;
                         resolve();
                     });
                 });
                 promisesQueue.push(() => {
                     return new Promise((resolve) => {
                         const result = checkTaskStatus(item.address, lifiContract);
-                        item.memdi = result;
+                        item.lifi = result;
                         resolve();
                     });
                 });
@@ -217,7 +217,7 @@ function BaseTasks() {
                     promisesQueue.push(() => {
                         return new Promise((resolve) => {
                             const result = checkTaskStatus(item.address, kyberContract);
-                            item.kyberswap = result;
+                            item.kyber = result;
                             resolve();
                         });
                     });
@@ -662,7 +662,7 @@ function BaseTasks() {
                     align: 'center',
                     sorter: (a, b) => a.progress - b.progress,
                     render: (text, record) => {
-                      const items = ['aave', '_1inch', 'matcha', 'kyberswap', 'uniswap', 'baseswap', 'opensea', 'stargate', 'lifi'];
+                      const items = ['aave', '_1inch', 'matcha', 'kyber', 'uniswap', 'baseswap', 'opensea', 'stargate', 'lifi'];
                       const count = items.reduce((total, item) => {
                         if (record[item] > 0) {
                           return total + 1;
