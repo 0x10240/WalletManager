@@ -1,25 +1,27 @@
 import axios from 'axios';
 
-const RPC_MAP = {
-    "ethereum": "https://cloudflare-eth.com",
-    "optimism": "https://optimism-mainnet.public.blastapi.io",
-    "arbitrum": "https://rpc.ankr.com/arbitrum",
-    "polygon": "https://polygon-bor.publicnode.com",
-    "bsc": "https://bscrpc.com"
-};
-
 async function getEthBalance(walletAddress, network) {
     try {
-        let rpcLink = RPC_MAP[network];
-        if (!rpcLink) {
-            return "Error: Invalid Network Name";
-        }
+        const rpcPool = [
+            // "https://cloudflare-eth.com",
+            "https://eth.llamarpc.com",
+            "https://rpc.ankr.com/eth",
+            "https://1rpc.io/eth",
+            "https://eth.rpc.blxrbdn.com",
+            "https://eth-mainnet.public.blastapi.io"
+            // Add more RPC URLs as needed
+        ];
+
+        const randomIndex = Math.floor(Math.random() * rpcPool.length);
+        const rpcLink = rpcPool[randomIndex];
+
         const response = await axios.post(rpcLink, {
             jsonrpc: "2.0",
             method: "eth_getBalance",
             params: [walletAddress, "latest"],
             id: 1
         });
+
         let balance = response.data.result;
         return (parseInt(balance, 16) / 10 ** 18).toFixed(4);
     } catch (error) {

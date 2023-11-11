@@ -345,7 +345,7 @@ const Stark = () => {
                         setData(updatedData);
                         localStorage.setItem('stark_addresses', JSON.stringify(updatedData));
                     })
-                    getStarkERC20(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                    getStarkBalances(address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         updatedData[index] = {
                             ...updatedData[index],
                             stark_eth_balance: eth_balance,
@@ -631,7 +631,7 @@ const Stark = () => {
                     //     localStorage.setItem('stark_addresses', JSON.stringify(data));
                     // })})
                     promisesQueue.push(() => {
-                        return getStarkERC20(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                        return getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         item.stark_eth_balance = eth_balance;
                         item.stark_usdc_balance = usdc_balance;
                         item.stark_usdt_balance = usdt_balance;
@@ -790,7 +790,7 @@ const Stark = () => {
                         localStorage.setItem('stark_addresses', JSON.stringify(data));
                     })})
                     promisesQueue.push(() => {
-                        return getStarkERC20(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
+                        return getStarkBalances(item.address).then(({eth_balance, usdc_balance, usdt_balance, dai_balance}) => {
                         item.stark_eth_balance = eth_balance;
                         item.stark_usdc_balance = usdc_balance;
                         item.stark_usdt_balance = usdt_balance;
