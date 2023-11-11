@@ -74,6 +74,20 @@ const MenuHeader = () => {
             ],
         },
         {
+            label: <span>Base <CaretDownOutlined /></span>,
+            key: 'base',
+            children: [
+                {
+                    label: 'Base',
+                    key: 'base',
+                },
+                {
+                    label: 'BaseTasks',
+                    key: 'baseTasks',
+                },
+            ],
+        },
+        {
             label: 'LayerZero',
             key: 'layer',
         },
