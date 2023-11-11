@@ -42,4 +42,3 @@ async function getTxCount(address, network) {
 }
 
 export default getTxCount;
-

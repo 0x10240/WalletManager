@@ -13,6 +13,8 @@ const Stark = React.lazy(() => import("@pages/Stark"));
 const StarkTasks = React.lazy(() => import("@pages/StarkTasks"));
 const Linea = React.lazy(() => import("@pages/Linea"));
 const LineaTasks = React.lazy(() => import("@pages/LineaTasks"));
+const Base = React.lazy(() => import("@pages/Base"));
+const BaseTasks = React.lazy(() => import("@pages/BaseTasks"));
 const Layer = React.lazy(() => import("@pages/Layer"));
 const Mirror = React.lazy(() => import("@pages/Mirror"));
 const Coffee = React.lazy(() => import("@pages/Coffee"));
@@ -56,6 +58,14 @@ const router = [
             {
                 path: '/LineaTasks',
                 element: <LineaTasks/>,
+            },
+            {
+                path: '/Base',
+                element: <Base/>,
+            },
+            {
+                path: '/BaseTasks',
+                element: <BaseTasks/>,
             },
             {
                 path: '/Layer',

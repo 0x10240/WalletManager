@@ -23,6 +23,11 @@ import getLineaERC20 from "@utils/linea/getLineaERC20.js";
 import getLineaBridge from "@utils/linea/getLineaBridge.js";
 import getLineaTasks from "@utils/linea/getLineaTasks.js";
 
+import getBaseInfo from "@utils/base/getBaseInfo.js";
+import getBaseTx from "@utils/base/getBaseTx.js";
+import getBaseERC20 from "@utils/base/getBaseERC20.js";
+import getBaseBridge from "@utils/base/getBaseBridge.js";
+import getBaseTasks from "@utils/base/getBaseTasks.js";
 export {
     getEthBalance,
     getTxCount,
@@ -48,4 +53,9 @@ export {
     getLineaERC20,
     getLineaBridge,
     getLineaTasks,
+    getBaseInfo,
+    getBaseTx,
+    getBaseERC20,
+    getBaseBridge,
+    getBaseTasks,
 };
