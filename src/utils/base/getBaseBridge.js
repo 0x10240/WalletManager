@@ -7,7 +7,7 @@ async function getBaseBridge(address, apiKey) {
                 let url = `https://api.basescan.org/api?module=account&action=txlist&address=${address}&startblock=0&endblock=9999999999&page=1&offset=9999&sort=asc&apikey=${apiKey}`;
                 const response = await axios.get(url);
                 const transactions = response.data.result;
-                const bridgeTx = transactions.filter(item => item.to === address && item?.value > 1);
+                const bridgeTx = transactions.filter(item => item.from === address && item.to === address && item?.value > 1);
                 if (bridgeTx.length === 0) {
                     return { l1Tol2Times: 0, l1Tol2Amount: 0 };
                 }
