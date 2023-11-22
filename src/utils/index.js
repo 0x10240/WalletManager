@@ -22,12 +22,15 @@ import getLineaTx from "@utils/linea/getLineaTx.js";
 import getLineaERC20 from "@utils/linea/getLineaERC20.js";
 import getLineaBridge from "@utils/linea/getLineaBridge.js";
 import getLineaTasks from "@utils/linea/getLineaTasks.js";
-
 import getBaseInfo from "@utils/base/getBaseInfo.js";
 import getBaseTx from "@utils/base/getBaseTx.js";
 import getBaseERC20 from "@utils/base/getBaseERC20.js";
 import getBaseBridge from "@utils/base/getBaseBridge.js";
 import getBaseTasks from "@utils/base/getBaseTasks.js";
+import getScrollInfo from "@utils/scroll/getScrollInfo.js";
+import getScrollTx from "@utils/scroll/getScrollTx.js";
+import getScrollERC20 from "@utils/scroll/getScrollERC20.js";
+import getScrollBridge from "@utils/scroll/getScrollBridge.js";
 export {
     getEthBalance,
     getTxCount,
@@ -58,4 +61,8 @@ export {
     getBaseERC20,
     getBaseBridge,
     getBaseTasks,
+    getScrollInfo,
+    getScrollTx,
+    getScrollERC20,
+    getScrollBridge,
 };

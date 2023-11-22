@@ -830,7 +830,7 @@ function ZksyncTasks() {
                     width: 55
                 },
                 {
-                    title: <a href="https://zksync-v2.velocore.xyz/swap" target="_blank" rel="noopener noreferrer">velo-v2</a>,
+                    title: <a href="https://zksync.velocore.xyz/swap" target="_blank" rel="noopener noreferrer">velo-v2</a>,
                     dataIndex: "velo",
                     key: "velo",
                     align: "center",

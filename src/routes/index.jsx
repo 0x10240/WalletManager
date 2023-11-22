@@ -15,6 +15,7 @@ const Linea = React.lazy(() => import("@pages/Linea"));
 const LineaTasks = React.lazy(() => import("@pages/LineaTasks"));
 const Base = React.lazy(() => import("@pages/Base"));
 const BaseTasks = React.lazy(() => import("@pages/BaseTasks"));
+const Scroll = React.lazy(() => import("@pages/Scroll"));
 const Layer = React.lazy(() => import("@pages/Layer"));
 const Mirror = React.lazy(() => import("@pages/Mirror"));
 const Coffee = React.lazy(() => import("@pages/Coffee"));
@@ -66,6 +67,10 @@ const router = [
             {
                 path: '/BaseTasks',
                 element: <BaseTasks/>,
+            },
+            {
+                path: '/Scroll',
+                element: <Scroll/>,
             },
             {
                 path: '/Layer',

@@ -7,6 +7,7 @@ import Linea from "@pages/Linea/index.jsx";
 import LineaTasks from "@pages/LineaTasks/index.jsx";
 import Base from "@pages/Base/index.jsx";
 import BaseTasks from "@pages/BaseTasks/index.jsx";
+import Scroll from "@pages/Scroll/index.jsx";
 import Layer from "@pages/Layer/index.jsx";
 import Mirror from "@pages/Mirror/index.jsx";
 import Coffee from "@pages/Coffee/index.jsx";
@@ -65,6 +66,7 @@ function MainPage() {
                         {location.pathname === "/lineaTasks" && <LineaTasks/>}
                         {location.pathname === "/base" && <Base/>}
                         {location.pathname === "/baseTasks" && <BaseTasks/>}
+                        {location.pathname === "/scroll" && <Scroll/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}
                         {/* {location.pathname === "/coffee" && <Coffee/>} */}

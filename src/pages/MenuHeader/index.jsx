@@ -75,7 +75,7 @@ const MenuHeader = () => {
         },
         {
             label: <span>Base <CaretDownOutlined /></span>,
-            key: 'base',
+            key: 'basechain',
             children: [
                 {
                     label: 'Base',
@@ -86,6 +86,10 @@ const MenuHeader = () => {
                     key: 'baseTasks',
                 },
             ],
+        },
+        {
+            label: 'Scroll',
+            key: 'scroll',
         },
         {
             label: 'LayerZero',
