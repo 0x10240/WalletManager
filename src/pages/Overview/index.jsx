@@ -76,19 +76,22 @@ const Overview = () => {
     const l0Addresses = localStorage.getItem('l0_addresses');
     const lineaAddresses = localStorage.getItem('linea_addresses');
     const baseAddresses = localStorage.getItem('base_addresses');
+    const scrollAddresses = localStorage.getItem('scroll_addresses');
 
     const zksAddressList = zksAddresses ? JSON.parse(zksAddresses) : [];
     const starkAddressList = starkAddresses ? JSON.parse(starkAddresses) : [];
     const l0AddressList = l0Addresses ? JSON.parse(l0Addresses) : [];
     const lineaAddressList = lineaAddresses ? JSON.parse(lineaAddresses) : [];
     const baseAddressList = baseAddresses ? JSON.parse(baseAddresses) : [];
+    const scrollAddressList = scrollAddresses ? JSON.parse(scrollAddresses) : [];
 
     const zksAddressCount = zksAddressList.length;
     const starkAddressCount = starkAddressList.length;
     const l0AddressCount = l0AddressList.length;
     const lineaAddressCount = lineaAddressList.length;
     const baseAddressCount = baseAddressList.length;
-    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount + lineaAddressCount + baseAddressCount;
+    const scrollAddressCount = scrollAddressList.length;
+    const accountCount = zksAddressCount + starkAddressCount + l0AddressCount + lineaAddressCount + baseAddressCount + scrollAddressCount;
     const accountOption = {
         title : {
             text: '账号总览',
@@ -134,7 +137,8 @@ const Overview = () => {
               { value: starkAddressCount, name: 'StarkNet' },
               { value: l0AddressCount, name: 'LayerZero' },
               { value: lineaAddressCount, name: 'Linea' },
-              { value: baseAddressCount, name: 'Base' }
+              { value: baseAddressCount, name: 'Base' },
+              { value: scrollAddressCount, name: 'Scroll' }
             ]
           }
         ]
@@ -231,9 +235,30 @@ const Overview = () => {
         }
             return total;
     }, 0);
-    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance + totallineaEthBalance + totalbaseEthBalance).toFixed(2);
-    const totalUsdc = parseFloat(totalzks2UsdcBalance + totalstarkUsdcBalance + totallineaUsdcBalance + totalbaseUsdcBalance).toFixed(2);
-    const totalUsdt = parseFloat(totalstarkUsdtBalance).toFixed(2);
+    const totalscrollEthBalance = scrollAddressList.reduce((total, addressData) => {
+        if ('scroll_eth_balance' in addressData) {
+            const scroll_eth_balance = parseFloat(addressData.scroll_eth_balance);
+            return total + scroll_eth_balance;
+        }
+            return total;
+    }, 0);
+    const totalscrollUsdcBalance = scrollAddressList.reduce((total, addressData) => {
+        if ('scroll_usdc_balance' in addressData) {
+            const scroll_usdc_balance = parseFloat(addressData.scroll_usdc_balance);
+            return total + scroll_usdc_balance;
+        }
+            return total;
+    }, 0);
+    const totalscrollUsdtBalance = scrollAddressList.reduce((total, addressData) => {
+        if ('scroll_usdt_balance' in addressData) {
+            const scroll_usdt_balance = parseFloat(addressData.scroll_usdt_balance);
+            return total + scroll_usdt_balance;
+        }
+            return total;
+    }, 0);
+    const totalEth = parseFloat(totalzksEthBalance + totalzks1Balance + totalzks2Balance + totalstarkEthBalance + totallineaEthBalance + totalbaseEthBalance + totalbaseEthBalance).toFixed(2);
+    const totalUsdc = parseFloat(totalzks2UsdcBalance + totalstarkUsdcBalance + totallineaUsdcBalance + totalbaseUsdcBalance + totalbaseUsdcBalance).toFixed(2);
+    const totalUsdt = parseFloat(totalstarkUsdtBalance + totalscrollUsdtBalance).toFixed(2);
     const totalDai = parseFloat(totalstarkDaiBalance).toFixed(2);
     const totalBusd = parseFloat(totallineaBusdBalance).toFixed(2);
     const totalBalance = parseFloat(Number(totalEth) * ethPrice + Number(totalUsdc) + Number(totalUsdt) + Number(totalDai) + Number(totalBusd)).toFixed(2);
@@ -324,6 +349,7 @@ const Overview = () => {
             { value: parseInt(totalstarkEthBalance * ethPrice + totalstarkUsdcBalance + totalstarkUsdtBalance + totalstarkDaiBalance), name: 'StarkNet' },
             { value: parseInt(totallineaEthBalance * ethPrice + totallineaBusdBalance + totallineaUsdcBalance), name: 'Linea' },
             { value: parseInt(totalbaseEthBalance * ethPrice ), name: 'Base' },
+            { value: parseInt(totalscrollEthBalance * ethPrice + totalscrollUsdcBalance + totalscrollUsdtBalance), name: 'Scroll' },
         ]
         }
     ]
@@ -962,14 +988,15 @@ const Overview = () => {
     const zksTimestampsList = localStorage.getItem('zks_timestamps') ? JSON.parse(localStorage.getItem('zks_timestamps')) : [];
     const starkTimestampsList = localStorage.getItem('stark_timestamps') ? JSON.parse(localStorage.getItem('stark_timestamps')) : [];
     const lineaTimestampsList = localStorage.getItem('linea_timestamps') ? JSON.parse(localStorage.getItem('linea_timestamps')) : [];
-    const allTimestamps = zksTimestampsList.concat(starkTimestampsList).concat(lineaTimestampsList);
+    const baseTimestampsList = localStorage.getItem('base_timestamps') ? JSON.parse(localStorage.getItem('base_timestamps')) : [];
+    const allTimestamps = zksTimestampsList.concat(starkTimestampsList).concat(lineaTimestampsList).concat(baseTimestampsList);
 
     const timeOption = {
         title: {
             top: 30,
             left: 'center',
             text: '黑奴工作量证明 (Proof of Gas)',
-            subtext: `2023年 日均交互次数 ${parseInt(allTimestamps.length/365)}   zkSync Era ${parseInt(zksTimestampsList.length/365)} StarkNet ${parseInt(starkTimestampsList.length/365)} Linea ${parseInt(lineaTimestampsList.length/365)}`,
+            subtext: `2023年 日均交互次数 ${parseInt(allTimestamps.length/365)}   zkSync Era ${parseInt(zksTimestampsList.length/365)} StarkNet ${parseInt(starkTimestampsList.length/365)} Linea ${parseInt(lineaTimestampsList.length/365)} Base ${parseInt(baseTimestampsList.length/365)}`,
         },
         tooltip: {
             position: 'top',
