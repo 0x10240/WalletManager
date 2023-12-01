@@ -1285,7 +1285,10 @@ const Stark = () => {
                     </Form>
                 </Modal>
                 <Spin spinning={tableLoading}>
-                    <Table
+                <div style={{ width: '100%', margin: "0 auto" }}>
+                    <span className="highlight-text">StarkNet官方已确认完成快照 <a href="https://x.com/StarknetFndn/status/1730532927405003219?s=20">点击查看原文</a></span>
+                </div>
+                    <Table className="grayed-out"
                         rowSelection={rowSelection}
                         dataSource={data}
                         pagination={false}
