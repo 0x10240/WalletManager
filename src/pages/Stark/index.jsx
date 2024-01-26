@@ -1286,7 +1286,9 @@ const Stark = () => {
                 </Modal>
                 <Spin spinning={tableLoading}>
                 <div style={{ width: '100%', margin: "0 auto" }}>
-                    <span className="highlight-text">StarkNet官方已确认完成快照 <a href="https://x.com/StarknetFndn/status/1730532927405003219?s=20">点击查看原文</a></span>
+                    <span className="highlight-text">大的💊来了 <a href="https://testnet.starkscan.co/contract/0x02b2e8b8eb3429540c58c0dc69ebb2981267196fe0ca2e361056b852445ee766#token-transfers">点击查看</a></span>
+
+                    {/* <span className="highlight-text">StarkNet官方已确认完成快照 <a href="https://x.com/StarknetFndn/status/1730532927405003219?s=20">点击查看原文</a></span> */}
                 </div>
                     <Table className="grayed-out"
                         rowSelection={rowSelection}
