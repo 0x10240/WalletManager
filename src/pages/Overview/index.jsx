@@ -991,12 +991,12 @@ const Overview = () => {
     const baseTimestampsList = localStorage.getItem('base_timestamps') ? JSON.parse(localStorage.getItem('base_timestamps')) : [];
     const allTimestamps = zksTimestampsList.concat(starkTimestampsList).concat(lineaTimestampsList).concat(baseTimestampsList);
 
-    const timeOption = {
+    const timeOption2023 = {
         title: {
             top: 30,
             left: 'center',
-            text: '黑奴工作量证明 (Proof of Gas)',
-            subtext: `2023年 日均交互次数 ${parseInt(allTimestamps.length/365)}   zkSync Era ${parseInt(zksTimestampsList.length/365)} StarkNet ${parseInt(starkTimestampsList.length/365)} Linea ${parseInt(lineaTimestampsList.length/365)} Base ${parseInt(baseTimestampsList.length/365)}`,
+            // text: '黑奴工作量证明 (Proof of Gas)',
+            // subtext: `2023年 日均交互次数 ${parseFloat(allTimestamps.length/365).toFixed(2) * accountCount}   zkSync Era ${(parseFloat(zksTimestampsList.length/365) * zksAddressCount).toFixed(2)} StarkNet ${parseInt(starkTimestampsList.length/365) * starkAddressCount} Linea ${parseInt(lineaTimestampsList.length/365)  * lineaAddressCount} Base ${parseInt(baseTimestampsList.length/365) * baseAddressCount}`,
         },
         tooltip: {
             position: 'top',
@@ -1008,7 +1008,7 @@ const Overview = () => {
             type: 'piecewise',
             orient: 'vertical',
             left: 'left',
-            show: true,
+            show: false,
             top: "1%",
             pieces: [
                 { min: 0, max: 3, label: '1-3', color: '#EAFCEA' },
@@ -1020,7 +1020,7 @@ const Overview = () => {
             ],
         },
         calendar: {
-            top: 100,
+            top: 20,
             left: 100,
             right: 100,
             cellSize: ['auto', 30],
@@ -1051,7 +1051,66 @@ const Overview = () => {
             data: preprocessData(allTimestamps),
         },
     };
-  
+    const timeOption2024 = {
+        title: {
+            top: 30,
+            left: 'center',
+            text: '黑奴工作量证明 (Proof of Gas)',
+            // subtext: `2024年 日均交互次数 ${parseInt(allTimestamps.length/365)}   zkSync Era ${parseInt(zksTimestampsList.length/365)} StarkNet ${parseInt(starkTimestampsList.length/365)} Linea ${parseInt(lineaTimestampsList.length/365)} Base ${parseInt(baseTimestampsList.length/365)}`,
+        },
+        tooltip: {
+            position: 'top',
+            formatter: function (p) {
+                return `${p.data[0]}<br>tx: ${p.data[1]}`;
+            }
+        },
+        visualMap: {
+            type: 'piecewise',
+            orient: 'vertical',
+            left: 'left',
+            show: true,
+            top: "1%",
+            pieces: [
+                { min: 0, max: 3, label: '1-3', color: '#EAFCEA' },
+                { min: 3, max: 10, label: '3-10', color: '#82C485' },
+                { min: 10, max: 20, label: '10-20', color: '#52A86C' },
+                { min: 20, max: 50, label: '20-50', color: '#1E703E' },
+                { min: 50, max: 100, label: '50-100', color: '#008000' },
+                { min: 100, max: 999, label: '金色传说 100+', color: '#FFDF00' },
+            ],
+        },
+        calendar: {
+            top: 100,
+            left: 100,
+            right: 100,
+            cellSize: ['auto', 30],
+            range: '2024',
+            itemStyle: {
+                borderWidth: 2,
+                borderColor: '#F0F0F0',
+            },
+            yearLabel: { show: true },
+            monthLabel: {
+                nameMap: 'ZH',
+                borderWidth: 0,
+              },
+            dayLabel: {
+                nameMap: 'ZH',
+            },
+            splitLine: {
+                lineStyle: {
+                    color: '#F0F0F0',
+                    width: 1.25
+                }
+            }
+        },
+        series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            // Pass your timestamp data array to the preprocessData function
+            data: preprocessData(allTimestamps),
+        },
+    };
     const emptyOption = {
         title : {
             text: '暂无数据',
@@ -1100,8 +1159,9 @@ const Overview = () => {
                 <Row>
                     <Col span={24}>
                         <Card>
-                        <ReactEcharts option={timeOption} style={{ height: '400px' }} />
-                            </Card>
+                            <ReactEcharts option={timeOption2024} style={{ height: '400px' }} />
+                            <ReactEcharts option={timeOption2023} style={{ height: '400px' }} />
+                        </Card>
                     </Col>
                 </Row>
                 <Row>
