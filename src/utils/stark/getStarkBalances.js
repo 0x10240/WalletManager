@@ -34,7 +34,7 @@ async function getStarkBalances(address) {
     try {
         const response = await axios.get(url, config);
         const tokens = response.data.data.tokenList;
-        console.log(response.data.data);
+        // console.log(response.data.data);
         let eth_balance = 0, usdc_balance = 0, usdt_balance = 0, dai_balance = 0;
 
         eth_balance = tokens.find(token => token.symbol === 'ETH')?.holdingAmount || 0;

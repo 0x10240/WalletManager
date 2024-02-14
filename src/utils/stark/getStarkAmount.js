@@ -28,7 +28,7 @@ async function getStarkAmount(address) {
             const response = await axios.get(url);
             const list = response.data.items;
             for (let i = 0; i < list.length; i++) {
-                if (list[i]['transfer_from'].toLowerCase() === address.toLowerCase() && list[i]['transfer_to'].toLowerCase() !== '0x01176a1bd84444c89232ec27754698e5d2e7e1a7f1539f12027f28b23ec9f3d8') {
+                if (list[i]['transfer_from']?.toLowerCase() === address?.toLowerCase() && list[i]['transfer_to']?.toLowerCase() !== '0x01176a1bd84444c89232ec27754698e5d2e7e1a7f1539f12027f28b23ec9f3d8') {
                     const symbol = list[i]['token_symbol'];
                     if (symbol === 'ETH') {
                         totalExchangeAmount += (parseFloat(list[i]['transfer_value']) * parseFloat(ethPrice))
