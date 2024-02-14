@@ -10,7 +10,8 @@ import {
     getStarkBalances,
     getStarkActivity,
     getStarkAmount,
-    getStarkERC20
+    getStarkERC20,
+    getStarkId
 } from "@utils"
 import {
     DeleteOutlined,
@@ -714,11 +715,16 @@ const Stark = () => {
                         getStarkInfo(item.address).then(({wallet_type, deployed_at_timestamp, stark_id}) => {
                             item.wallet_type = wallet_type;
                             item.create_time = deployed_at_timestamp;
-                            item.stark_id = stark_id;
+                            // item.stark_id = stark_id;
                             setData([...newData]);
                             localStorage.setItem('stark_addresses', JSON.stringify(newData));
                         })
                     }
+                    getStarkId(item.address).then(({stark_id}) => {
+                        item.stark_id = stark_id;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                    })
                     getStarkActivity(item.address).then(({dayActivity, weekActivity, monthActivity}) => {
                         item.dayActivity = dayActivity;
                         item.weekActivity = weekActivity;
@@ -781,6 +787,13 @@ const Stark = () => {
                     item.stark_usdt_balance = null;
                     item.stark_dai_balance = null;
                     setData([...newData]);
+                    
+                    promisesQueue.push(() => {
+                        return getStarkId(item.address).then(({stark_id}) => {
+                        item.stark_id = stark_id;
+                        setData([...newData]);
+                        localStorage.setItem('stark_addresses', JSON.stringify(newData));
+                    })})
                     promisesQueue.push(() => {
                         return getStarkTx(item.address).then(({tx, stark_latest_tx_time, stark_timestamps}) => {
                         item.stark_tx_amount = tx;

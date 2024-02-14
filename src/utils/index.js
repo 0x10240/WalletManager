@@ -31,6 +31,7 @@ import getScrollInfo from "@utils/scroll/getScrollInfo.js";
 import getScrollTx from "@utils/scroll/getScrollTx.js";
 import getScrollERC20 from "@utils/scroll/getScrollERC20.js";
 import getScrollBridge from "@utils/scroll/getScrollBridge.js";
+import getStarkId from "@utils/stark/getStarkId.js";
 export {
     getEthBalance,
     getTxCount,
@@ -65,4 +66,5 @@ export {
     getScrollTx,
     getScrollERC20,
     getScrollBridge,
+    getStarkId
 };
