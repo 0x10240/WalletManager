@@ -9,10 +9,13 @@ async function getLineaERC20(address, apiKey) {
         let usdcUrl = `https://api.lineascan.build/api?module=account&action=tokenbalance&contractaddress=0x176211869cA2b568f2A7D4EE941E073a821EE1ff&address=${address}&tag=latest&apikey=${apiKey}`;
         const response1 = await axios.get(usdcUrl);
         const balance1 = parseFloat(response1.data?.result / 1000000).toFixed(2);
-        return {BUSD: balance, USDC: balance1};
+        let lxpUrl = `https://api.lineascan.build/api?module=account&action=tokenbalance&contractaddress=0xd83af4fbd77f3ab65c3b1dc4b38d7e67aecf599a&address=${address}&tag=latest&apikey=${apiKey}`;
+        const response2 = await axios.get(lxpUrl);
+        const balance2 = parseFloat(ethers.formatEther(response2.data?.result)).toFixed(0);
+        return {BUSD: balance, USDC: balance1, LXP: balance2};
     } catch (error) {
         console.error(error);
-        return {BUSD: "Error", USDC: "Error"};
+        return {BUSD: "Error", USDC: "Error", LXP: "Error"};
     }
 }
 

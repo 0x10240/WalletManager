@@ -12,7 +12,7 @@ async function getLineaBridge(address, apiKey) {
             return { l1Tol2Times: 0, l1Tol2Amount: 0 };
         }
         const bridgeTxCount = bridgeTx?.length;
-        const bridgeTxAmount = bridgeTx.reduce((acc, item) => acc + parseFloat(ethers.formatEther(item.value)), 0);
+        const bridgeTxAmount = (bridgeTx.reduce((acc, item) => acc + parseFloat(ethers.formatEther(item.value)), 0)).toFixed(4);
         return { l1Tol2Times: bridgeTxCount, l1Tol2Amount: bridgeTxAmount };
     } catch (error) {
         console.error(error);

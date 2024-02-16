@@ -71,7 +71,8 @@ async function getLineaTx(address, apiKey) {
             months.add(getMonthNumber(item));
         });
         const fee = transactions.reduce((acc, item) => acc + parseFloat(item.gasPrice) * parseFloat(item.gasUsed), 0);
-        const feeEth = ethers.formatEther(fee);
+        // debugger
+        const feeEth = fee / 10 ** 18;
         const exchangeAmount = transactions.reduce((acc, item) => acc + parseFloat(ethers.formatEther(item.value)), 0);
         const ethPrice = await getEthPrice();
         const toytalExchangeAmount = exchangeAmount * ethPrice;

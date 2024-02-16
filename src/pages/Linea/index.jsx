@@ -176,9 +176,11 @@ function Linea() {
                     promisesQueue.push(async () => {
                         item.linea_busd_balance = null;
                         item.linea_usdc_balance = null;
-                        return getLineaERC20(item.address, apiKey).then(({BUSD, USDC}) => {
+                        item.linea_lxp_balance = null;
+                        return getLineaERC20(item.address, apiKey).then(({BUSD, USDC, LXP}) => {
                             item.linea_busd_balance = BUSD;
                             item.linea_usdc_balance = USDC;
+                            item.linea_lxp_balance = LXP;
                             setData([...newData]);
                             localStorage.setItem('linea_addresses', JSON.stringify(newData));
                         })
@@ -303,6 +305,7 @@ function Linea() {
                     linea_tx_amount: null,
                     linea_busd_balance: null,
                     linea_usdc_balance: null,
+                    linea_lxp_balance: null,
                     linea_usdtBalance: null,
                     dayActivity: null,
                     weekActivity: null,
@@ -322,9 +325,10 @@ function Linea() {
                     item.linea_eth_balance = balance;
                 }));
     
-                promisesQueue.push(() => getLineaERC20(address, apiKey).then(({BUSD, USDC}) => {
+                promisesQueue.push(() => getLineaERC20(address, apiKey).then(({BUSD, USDC, LXP}) => {
                     item.linea_busd_balance = BUSD;
                     item.linea_usdc_balance = USDC;
+                    item.linea_lxp_balance = LXP;
                 }));
 
                 promisesQueue.push(() => getEthBalance(address, "ethereum").then((eth_balance) => {
@@ -577,6 +581,14 @@ function Linea() {
                     title: "BUSD",
                     dataIndex: "linea_busd_balance",
                     key: "linea_busd_balance",
+                    align: "center",
+                    render: (text, record) => (text === null ? <Spin/> : text),
+                    width: 70
+                },
+                {
+                    title: "LXP",
+                    dataIndex: "linea_lxp_balance",
+                    key: "linea_lxp_balance",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
                     width: 70
@@ -898,6 +910,7 @@ function Linea() {
                             let lineaEthBalance = 0;
                             let lineaUsdcBalance = 0;
                             let lineaBusdBalance = 0;
+                            let lineaLxpBalance = 0;
                             let totalFees = 0;
                             let avgTx = 0;
                             let avgDay = 0;
@@ -911,6 +924,7 @@ function Linea() {
                                 linea_eth_balance,
                                 linea_usdc_balance,
                                 linea_busd_balance,
+                                linea_lxp_balance,
                                 linea_tx_amount,
                                 totalFee,
                                 dayActivity,
@@ -924,6 +938,7 @@ function Linea() {
                                 lineaEthBalance += Number(linea_eth_balance);
                                 lineaUsdcBalance += Number(linea_usdc_balance);
                                 lineaBusdBalance += Number(linea_busd_balance);
+                                lineaLxpBalance += Number(linea_lxp_balance);
                                 totalFees += Number(totalFee);
                                 avgTx += Number(linea_tx_amount);
                                 avgDay += Number(dayActivity);
@@ -951,6 +966,7 @@ function Linea() {
                                         <Table.Summary.Cell index={8}>{lineaEthBalance.toFixed(4)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={9}>{lineaUsdcBalance.toFixed(2)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={9}>{lineaBusdBalance.toFixed(2)}</Table.Summary.Cell>
+                                        <Table.Summary.Cell index={9}>{lineaLxpBalance.toFixed(0)}</Table.Summary.Cell>
                                         <Table.Summary.Cell index={11}>-{avgTx.toFixed(0)}-</Table.Summary.Cell>
                                         {emptyCells}
                                         <Table.Summary.Cell index={17}>-{avgDay.toFixed(0)}-</Table.Summary.Cell>
