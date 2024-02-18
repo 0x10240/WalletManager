@@ -824,6 +824,7 @@ function Zksync() {
                     dataIndex: "eth_balance",
                     key: "eth_balance",
                     align: "center",
+                    sorter: (a, b) => a.eth_balance - b.eth_balance,
                     render: (text, record) => (text === null ? <Spin/> : text),
                     width: 60
                 },
