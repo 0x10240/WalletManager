@@ -952,8 +952,11 @@ function Zksync() {
                     key: "zks2_last_tx",
                     align: "center",
                     render: (text, record) => {
-                        let textColor = "inherit";
+                        if (record.zks2_tx_amount < 1) {
+                            return '无'
+                        }
 
+                        let textColor = "inherit";
                         let last_text = getZkSyncLastTX(text)
 
                         if (last_text === null) {
@@ -976,8 +979,8 @@ function Zksync() {
                       },
                     width: 70,
                     sorter: (a, b) => {
-                        let timeA = a.zks2_last_tx ? new Date(a.zks2_last_tx).getTime() : 0;
-                        let timeB = b.zks2_last_tx ? new Date(b.zks2_last_tx).getTime() : 0;
+                        let timeA = a.zks2_last_tx !== "无交易" ? new Date(a.zks2_last_tx).getTime() : 0;
+                        let timeB = b.zks2_last_tx !== "无交易" ? new Date(b.zks2_last_tx).getTime() : 0;
 
                         return timeA - timeB;
                     },

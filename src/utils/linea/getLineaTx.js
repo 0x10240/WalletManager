@@ -17,24 +17,6 @@ function getMonthNumber(d) {
     return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1);
 }
 
-function getZkSyncLastTX(lastTxDatetime) {
-    const date = new Date(lastTxDatetime);
-    const offset = 8;
-    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
-    const now = new Date();
-    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
-    const diff = utc8Now - utc8Date;
-    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays > 0) {
-        return `${diffInDays} 天前`
-    } else if (diffInHours > 0) {
-        return `${diffInHours} 小时前`
-    } else {
-        return "刚刚"
-    }
-}
-
 const getEthPrice = async () => {
     try {
         const options = {
@@ -76,7 +58,7 @@ async function getLineaTx(address, apiKey) {
         const ethPrice = await getEthPrice();
         const toytalExchangeAmount = exchangeAmount * ethPrice;
         const tx = transactions.length;
-        const linea_last_tx = getZkSyncLastTX(lastTxDatetime);
+        const linea_last_tx = lastTxDatetime;
         const dayActivity = days.size;
         const weekActivity = weeks.size;
         const monthActivity = months.size;

@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 import {GithubOutlined, TwitterOutlined, CaretDownOutlined} from "@ant-design/icons";
 import './index.css'
-import {getEthPrice} from "@utils";
+import {getEthPrice, getEthGasPrice} from "@utils";
 
 const EthPrice = () => {
     const [ethPrice, setEthPrice] = useState(null);
@@ -21,6 +21,24 @@ const EthPrice = () => {
     }
     return <div>ETH Price: ${ethPrice}</div>
 }
+
+const EthGasPrice = () => {
+    const [ethGasPrice, setEthGasPrice] = useState(null);
+    useEffect(() => {
+        const fetchPrice = async () => {
+            const price = await getEthGasPrice();
+            setEthGasPrice(price);
+        };
+        fetchPrice();
+        const interval = setInterval(fetchPrice, 10000);
+        return () => clearInterval(interval);
+    }, []);
+    if (ethGasPrice === null) {
+        return <div>Loading Gas Price...</div>;
+    }
+    return <div>Gas Price: {ethGasPrice}</div>
+}
+
 const MenuHeader = () => {
     const items = [
         {
@@ -103,10 +121,10 @@ const MenuHeader = () => {
             label: 'Deposit',
             key: 'deposit',
         },
-        {
-            label: '捐赠',
-            key: 'donate',
-        },
+        // {
+        //     label: '捐赠',
+        //     key: 'donate',
+        // },
         {
             label: <a href="https://github.com/luoyeETH/MyWalletScan" target="_blank"
                       rel="noopener noreferrer"><GithubOutlined/></a>,
@@ -120,6 +138,10 @@ const MenuHeader = () => {
         {
             label: <EthPrice/>,
             key: 'ethPrice',
+        },
+        {
+            label: <EthGasPrice/>,
+            key: 'ethGasPrice',
         }
     ];
     const navigate = useNavigate();

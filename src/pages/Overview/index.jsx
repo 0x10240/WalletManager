@@ -2,7 +2,7 @@ import React from 'react';
 import {useEffect, useState} from 'react';
 import {Layout, Typography, Button, message, Space, Card, Row, Col, notification} from 'antd';
 import ReactEcharts from 'echarts-for-react';
-import { getEthPrice } from '@/utils';
+import { getEthPrice, getEthGasPrice } from '@/utils';
 
 const {Content} = Layout;
 const {Title, Text} = Typography;
@@ -69,7 +69,16 @@ const Overview = () => {
         fetchEthPrice();
     }, []);
 
+    useEffect(() => {
+        const fetchEthGasPrice = async () => {
+            const ethPrice = await getEthGasPrice();
+            setEthPrice(ethPrice);
+        };
+        fetchEthGasPrice();
+    }, []);
+
     const [ethPrice, setEthPrice] = useState(0);
+    const [ethGasPrice, setGasEthPrice] = useState(0);
 
     const zksAddresses = localStorage.getItem('addresses');
     const starkAddresses = localStorage.getItem('stark_addresses');

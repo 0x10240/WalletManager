@@ -920,9 +920,9 @@ const Stark = () => {
             className: "address",
             render: (text, record) =>{
                 if (hideColumn) {
-                    return '***';
+                    return text.slice(0, 6) + "..." + text.slice(-6);
                   }
-                return  (text === null ? <Spin/> : text.slice(0, 6) + "..." + text.slice(-6))
+                return  (text === null ? <Spin/> : text)
             },
             width: 140, 
         },

@@ -9,6 +9,7 @@ import getStarkBridge from "@utils/stark/getStarkBridge.js";
 import getStarkInfo from "@utils/stark/getStarkInfo.js";
 import getLayerData from "@utils/layer/getLayerData.js";
 import getEthPrice from "@utils/ether/getEthPrice.js";
+import getEthGasPrice from "@utils/ether/getGasPrice.js";
 import getZksTasks from "@utils/zksync/getZksTasks.js";
 import calculateScore from "@utils/score/getScore.js";
 import getStarkERC20 from "@utils/stark/getStarkERC20.js";
@@ -45,6 +46,7 @@ export {
     getStarkInfo,
     getLayerData,
     getEthPrice,
+    getEthGasPrice,
     getZksTasks,
     calculateScore,
     getStarkERC20,

@@ -11,7 +11,7 @@ import {
     Popconfirm,
     Row, Col, InputNumber, Badge, message, Switch, Pagination
 } from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined, SlidersOutlined } from "@ant-design/icons"
+import {EyeOutlined, EyeInvisibleOutlined, SlidersOutlined} from "@ant-design/icons"
 import {
     getEthBalance,
     getTxCount,
@@ -29,7 +29,7 @@ import {
 import {useEffect, useState} from "react";
 import './index.css';
 import {Layout, Card} from 'antd';
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
 
 const {Content} = Layout;
 import {
@@ -42,6 +42,25 @@ import {
 } from "@ant-design/icons";
 
 const {TextArea} = Input;
+
+
+function getZkSyncLastTX(lastTxDatetime) {
+    const date = new Date(lastTxDatetime);
+    const offset = 8;
+    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
+    const now = new Date();
+    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
+    const diff = utc8Now - utc8Date;
+    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays > 0) {
+        return `${diffInDays} 天前`
+    } else if (diffInHours > 0) {
+        return `${diffInHours} 小时前`
+    } else {
+        return "刚刚"
+    }
+}
 
 function Linea() {
     const [batchProgress, setBatchProgress] = useState(0);
@@ -57,15 +76,15 @@ function Linea() {
     const [tableLoading, setTableLoading] = useState(false);
     const [hideColumn, setHideColumn] = useState(false);
     const [scoreData, setScoreData] = useState([]);
-    const [tableHeight, setTableHeight] = useState(0);    
+    const [tableHeight, setTableHeight] = useState(0);
     const [changeApiForm] = Form.useForm();
     const [apiKey, setApiKey] = useState(localStorage.getItem('linea_api_key'));
     const [isChangeApiModalVisible, setIsChangeApiModalVisible] = useState(false);
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
-      };
-    
+    };
+
     const handleChangeApiOk = () => {
         localStorage.setItem('linea_api_key', changeApiForm.getFieldsValue().linea);
         setIsChangeApiModalVisible(false);
@@ -78,59 +97,58 @@ function Linea() {
             changeApiForm.setFieldsValue(storedApiKey);
         }
     }, []);
-    
+
     const getNftBalance = async (address) => {
         try {
-        const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
-        const ABI = [
-            {
-              inputs: [
+            const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
+            const ABI = [
                 {
-                  internalType: "address",
-                  name: "owner",
-                  type: "address",
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "owner",
+                            type: "address",
+                        },
+                    ],
+                    name: "balanceOf",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
                 },
-              ],
-              name: "balanceOf",
-              outputs: [
-                {
-                  internalType: "uint256",
-                  name: "",
-                  type: "uint256",
-                },
-              ],
-              stateMutability: "view",
-              type: "function",
-            },
-          ];
-          const contractAddress = "0xd07180c423f9b8cf84012aa28cc174f3c433ee29";
-          const contract = new ethers.Contract(contractAddress, ABI, provider);
-          const result = await contract.balanceOf(address);
-          return {zks_nft: result.toString()};
-        } 
-        catch (error) {
+            ];
+            const contractAddress = "0xd07180c423f9b8cf84012aa28cc174f3c433ee29";
+            const contract = new ethers.Contract(contractAddress, ABI, provider);
+            const result = await contract.balanceOf(address);
+            return {zks_nft: result.toString()};
+        } catch (error) {
             console.log(error);
             return {zks_nft: "Error"};
         }
     }
 
     const getEyeIcon = () => {
-    if (hideColumn) {
-        return <EyeInvisibleOutlined />;
-    }
-    return <EyeOutlined />;
+        if (hideColumn) {
+            return <EyeInvisibleOutlined/>;
+        }
+        return <EyeOutlined/>;
     };
 
     useEffect(() => {
         const handleResize = () => {
             setTableHeight(window.innerHeight - 210); // 减去其他组件的高度，如页眉、页脚等
         };
-    window.addEventListener('resize', handleResize);
-    handleResize();
+        window.addEventListener('resize', handleResize);
+        handleResize();
 
-    return () => {
-        window.removeEventListener('resize', handleResize);
-    };
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     const handleRefresh = async () => {
@@ -193,7 +211,16 @@ function Linea() {
                         item.monthActivity = null;
                         item.contractActivity = null;
                         item.totalFee = null;
-                        return getLineaTx(item.address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee, totalExchangeAmount}) => {
+                        return getLineaTx(item.address, apiKey).then(({
+                                                                          linea_tx_amount,
+                                                                          linea_last_tx,
+                                                                          dayActivity,
+                                                                          weekActivity,
+                                                                          monthActivity,
+                                                                          contractActivity,
+                                                                          totalFee,
+                                                                          totalExchangeAmount
+                                                                      }) => {
                             item.linea_tx_amount = linea_tx_amount;
                             item.linea_last_tx = linea_last_tx;
                             item.dayActivity = dayActivity;
@@ -255,8 +282,8 @@ function Linea() {
             const addressLines = values.addresses.split("\n");
             const wallets = addressLines.map(line => {
                 const [address, name] = line.split(",");
-                return { address: address.trim(), name: name ? name.trim() : ''  };
-              });
+                return {address: address.trim(), name: name ? name.trim() : ''};
+            });
             const addresses = wallets.map(obj => obj.address);
             const names = wallets.map(obj => obj.name);
             setBatchLength(addresses.length);
@@ -324,7 +351,7 @@ function Linea() {
                 promisesQueue.push(() => getLineaInfo(address, apiKey).then(({balance}) => {
                     item.linea_eth_balance = balance;
                 }));
-    
+
                 promisesQueue.push(() => getLineaERC20(address, apiKey).then(({BUSD, USDC, LXP}) => {
                     item.linea_busd_balance = BUSD;
                     item.linea_usdc_balance = USDC;
@@ -339,7 +366,16 @@ function Linea() {
                     item.eth_tx_amount = eth_tx_amount;
                 }));
 
-                promisesQueue.push(() => getLineaTx(address, apiKey).then(({linea_tx_amount, linea_last_tx, dayActivity, weekActivity, monthActivity, contractActivity, totalFee, totalExchangeAmount}) => {
+                promisesQueue.push(() => getLineaTx(address, apiKey).then(({
+                                                                               linea_tx_amount,
+                                                                               linea_last_tx,
+                                                                               dayActivity,
+                                                                               weekActivity,
+                                                                               monthActivity,
+                                                                               contractActivity,
+                                                                               totalFee,
+                                                                               totalExchangeAmount
+                                                                           }) => {
                     item.linea_tx_amount = linea_tx_amount;
                     item.linea_last_tx = linea_last_tx;
                     item.dayActivity = dayActivity;
@@ -384,7 +420,7 @@ function Linea() {
         setIsModalVisible(true);
     };
     const showBatchModal = () => {
-        
+
         if (apiKey === null) {
             notification.error({
                 message: "请先填写API Key",
@@ -411,21 +447,21 @@ function Linea() {
     }, []);
     useEffect(() => {
         const newData = [...data];
-      
+
         for (const item of newData) {
-          setTimeout(async () => {
-            const score = await calculateScore(item);
-            item.linea_score = score;
-            
-            // 检查是否所有数据的评分都已计算完成
-            const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
-            
-            if (allScoresCalculated) {
-              setData(newData);
-            }
-          }, 0);
+            setTimeout(async () => {
+                const score = await calculateScore(item);
+                item.linea_score = score;
+
+                // 检查是否所有数据的评分都已计算完成
+                const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
+
+                if (allScoresCalculated) {
+                    setData(newData);
+                }
+            }, 0);
         }
-      }, [scoreData]);
+    }, [scoreData]);
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -485,11 +521,11 @@ function Linea() {
                     <>
                         <Tag color="blue" onClick={() => setEditingKey(record.key)}>
                             {text}
-                            </Tag>
-                            {!text && (
+                        </Tag>
+                        {!text && (
                             <Button
                                 shape="circle"
-                                icon={<EditOutlined />}
+                                icon={<EditOutlined/>}
                                 size="small"
                                 onClick={() => setEditingKey(record.key)}
                             />
@@ -503,7 +539,7 @@ function Linea() {
             title: (
                 <span>
                 钱包地址
-                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                    <span onClick={toggleHideColumn} style={{marginLeft: 8, cursor: 'pointer'}}>
                         {getEyeIcon()}
                     </span>
                 </span>
@@ -514,7 +550,7 @@ function Linea() {
             render: (text, record) => {
                 if (hideColumn) {
                     return '***';
-                  }
+                }
                 return text;
             },
             width: 360
@@ -609,62 +645,72 @@ function Linea() {
                     sorter: (a, b) => a.linea_tx_amount - b.linea_tx_amount,
                     render: (text, record) => {
                         if (text === null) {
-                          return <Spin />;
+                            return <Spin/>;
                         }
-                  
+
                         // 计算对数值
                         const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                         // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-                  
+
                         // 归一化处理
                         const minValue = Math.log(1); // 最小值的对数
                         const maxValue = Math.log(100); // 最大值的对数
                         const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-                  
+
                         // 计算透明度
                         const minOpacity = 0.1; // 最小透明度
                         const maxOpacity = 1; // 最大透明度
                         const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-                  
-                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; 
-                  
+
+                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`;
+
                         return {
-                          children: text,
-                          props: {
-                            style: {
-                              background: backgroundColor,
+                            children: text,
+                            props: {
+                                style: {
+                                    background: backgroundColor,
+                                },
                             },
-                          },
                         };
-                      },
-                      width: 60
                     },
+                    width: 60
+                },
                 {
                     title: "最后交易",
                     dataIndex: "linea_last_tx",
                     key: "linea_last_tx",
                     align: "center",
                     render: (text, record) => {
+                        if (record.linea_tx_amount < 1) {
+                            return '无'
+                        }
                         let textColor = "inherit";
-                      
-                        if (text === null) {
-                          return <Spin />;
-                        } else if (text?.includes("天") && parseInt(text) > 7) {
+                        let last_text = getZkSyncLastTX(text)
+
+                        if (last_text === null) {
+                            return <Spin/>;
+                        } else if (last_text?.includes("天") && parseInt(last_text) > 7) {
                             textColor = "red";
                         } else {
-                          textColor = "#1677ff";
+                            textColor = "#1677ff";
                         }
-                      
+
                         return (
-                          <a
-                            href={"https://lineascan.build/address/" + record.address}
-                            target={"_blank"}
-                            style={{ color: textColor }}
-                          >
-                            {text}
-                          </a>
+                            <a
+                                href={"https://lineascan.build/address/" + record.address}
+                                target={"_blank"}
+                                style={{color: textColor}}
+                            >
+                                {last_text}
+                            </a>
                         );
-                      },
+                    },
+                    sorter: (a, b) => {
+                        let timeA = a.linea_last_tx ? new Date(a.linea_last_tx).getTime() : 0;
+                        let timeB = b.linea_last_tx ? new Date(b.linea_last_tx).getTime() : 0;
+
+                        return timeA - timeB;
+                    },
                     width: 90
                 },
                 {
@@ -758,36 +804,36 @@ function Linea() {
                             sorter: (a, b) => a.totalExchangeAmount - b.totalExchangeAmount,
                             render: (text, record) => {
                                 if (text === null) {
-                                  return "/";
+                                    return "/";
                                 }
-                          
+
                                 // 计算对数值
                                 const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                                 // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-                          
+
                                 // 归一化处理
                                 const minValue = Math.log(1); // 最小值的对数
                                 const maxValue = Math.log(100); // 最大值的对数
                                 const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-                          
+
                                 // 计算透明度
                                 const minOpacity = 0.1; // 最小透明度
                                 const maxOpacity = 1; // 最大透明度
                                 const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-                          
-                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; 
-                          
+
+                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`;
+
                                 return {
-                                  children: text,
-                                  props: {
-                                    style: {
-                                      background: backgroundColor,
+                                    children: text,
+                                    props: {
+                                        style: {
+                                            background: backgroundColor,
+                                        },
                                     },
-                                  },
                                 };
-                              },
-                              width: 90
                             },
+                            width: 90
+                        },
                         {
                             title: "FeeΞ",
                             dataIndex: "totalFee",
@@ -808,34 +854,34 @@ function Linea() {
             sorter: (a, b) => a.linea_score - b.linea_score,
             render: (text, record) => {
                 if (text === null) {
-                  return <Spin />;
+                    return <Spin/>;
                 }
-          
+
                 // 计算对数值
                 const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                 // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-          
+
                 // 归一化处理
                 const minValue = Math.log(1); // 最小值的对数
                 const maxValue = Math.log(100); // 最大值的对数
                 const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-          
+
                 // 计算透明度
                 const minOpacity = 0.1; // 最小透明度
                 const maxOpacity = 1; // 最大透明度
                 const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-          
-                const backgroundColor = `rgba(240, 121, 78, ${opacity})`; 
-          
+
+                const backgroundColor = `rgba(240, 121, 78, ${opacity})`;
+
                 return {
-                  children: text,
-                  props: {
-                    style: {
-                      background: backgroundColor,
+                    children: text,
+                    props: {
+                        style: {
+                            background: backgroundColor,
+                        },
                     },
-                  },
                 };
-              },
+            },
             width: 70
         },
         {
@@ -865,7 +911,8 @@ function Linea() {
                 >
                     <Form form={batchForm} layout="vertical">
                         <Form.Item label="地址" name="addresses" rules={[{required: true}]}>
-                            <TextArea placeholder="请输入地址，每行一个  要添加备注时放在地址后以逗号(,)间隔" style={{width: "500px", height: "200px"}}/>
+                            <TextArea placeholder="请输入地址，每行一个  要添加备注时放在地址后以逗号(,)间隔"
+                                      style={{width: "500px", height: "200px"}}/>
                         </Form.Item>
                     </Form>
                 </Modal>
@@ -876,7 +923,8 @@ function Linea() {
                             <div style={{fontSize: '12px', color: '#888'}}>
                                 <Space>
                                     <Button type="link"
-                                            onClick={() => window.open('https://lineascan.build/myapikey', '_blank')}>注册Lineascan API</Button>
+                                            onClick={() => window.open('https://lineascan.build/myapikey', '_blank')}>注册Lineascan
+                                        API</Button>
                                 </Space>
                             </div>
                         </>
@@ -903,7 +951,7 @@ function Linea() {
                         columns={columns}
                         scroll={{
                             y: tableHeight
-                          }}
+                        }}
                         // sticky
                         summary={pageData => {
                             let ethBalance = 0;
@@ -920,20 +968,20 @@ function Linea() {
                             let avgAmount = 0;
                             let avgScore = 0;
                             pageData.forEach(({
-                                eth_balance,
-                                linea_eth_balance,
-                                linea_usdc_balance,
-                                linea_busd_balance,
-                                linea_lxp_balance,
-                                linea_tx_amount,
-                                totalFee,
-                                dayActivity,
-                                weekActivity,
-                                monthActivity,
-                                contractActivity,
-                                totalExchangeAmount,
-                                linea_score
-                            }) => {
+                                                  eth_balance,
+                                                  linea_eth_balance,
+                                                  linea_usdc_balance,
+                                                  linea_busd_balance,
+                                                  linea_lxp_balance,
+                                                  linea_tx_amount,
+                                                  totalFee,
+                                                  dayActivity,
+                                                  weekActivity,
+                                                  monthActivity,
+                                                  contractActivity,
+                                                  totalExchangeAmount,
+                                                  linea_score
+                                              }) => {
                                 ethBalance += Number(eth_balance);
                                 lineaEthBalance += Number(linea_eth_balance);
                                 lineaUsdcBalance += Number(linea_usdc_balance);
@@ -955,7 +1003,8 @@ function Linea() {
                             avgContract = avgContract / pageData.length;
                             avgAmount = avgAmount / pageData.length;
                             avgScore = avgScore / pageData.length;
-                            const emptyCells = Array(5).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 11}/>);
+                            const emptyCells = Array(5).fill().map((_, index) => <Table.Summary.Cell key={index}
+                                                                                                     index={index + 11}/>);
 
                             return (
                                 <>
