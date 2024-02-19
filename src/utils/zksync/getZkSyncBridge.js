@@ -32,27 +32,6 @@ const getEthPrice = async () => {
 
 }
 
-function getZkSyncLastTX(lastTxDatetime) {
-    const date = new Date(lastTxDatetime);
-    const offset = 8;
-    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
-    const now = new Date();
-    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
-    const diff = utc8Now - utc8Date;
-    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays > 0) {
-        // if (diffInDays > 7) {
-        //     return `${parseInt(diffInDays / 7)} 周前`
-        // }
-        return `${diffInDays} 天前`
-    } else if (diffInHours > 0) {
-        return `${diffInHours} 小时前`
-    } else {
-        return "刚刚"
-    }
-}
-
 async function getAmount(address) {
     const ethPrice = await getEthPrice();
     var currentDate = new Date();
@@ -106,7 +85,7 @@ async function processTransactions(
         if (list[i]['from'].toLowerCase() === address.toLowerCase()) {
             const receivedAt = new Date(Date.parse(list[i]['receivedAt']));
             if (zks2_last_tx === null) {
-                zks2_last_tx = getZkSyncLastTX(list[i]['receivedAt']);
+                zks2_last_tx = list[i]['receivedAt'];
                 console.log(zks2_last_tx)
             }
             const contractAddress = list[i]['to'];

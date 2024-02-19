@@ -17,24 +17,6 @@ function getMonthNumber(d) {
     return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1);
 }
 
-function getZkSyncLastTX(lastTxDatetime) {
-    const date = new Date(lastTxDatetime);
-    const offset = 8;
-    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
-    const now = new Date();
-    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
-    const diff = utc8Now - utc8Date;
-    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays > 0) {
-        return `${diffInDays} 天前`
-    } else if (diffInHours > 0) {
-        return `${diffInHours} 小时前`
-    } else {
-        return "刚刚"
-    }
-}
-
 const getEthPrice = async () => {
     try {
         const options = {
@@ -83,22 +65,22 @@ async function getBaseTx(address, apiKey) {
         // console.log(tx, base_last_tx, feeEth, dayActivity, weekActivity, monthActivity, contractActivity);
         return {
             base_tx_amount: tx,
-            base_last_tx: base_last_tx, 
-            dayActivity: dayActivity, 
-            weekActivity: weekActivity, 
-            monthActivity: monthActivity, 
-            contractActivity: contractActivity, 
+            base_last_tx: base_last_tx,
+            dayActivity: dayActivity,
+            weekActivity: weekActivity,
+            monthActivity: monthActivity,
+            contractActivity: contractActivity,
             totalFee: parseFloat(feeEth).toFixed(4),
             totalExchangeAmount: parseFloat(toytalExchangeAmount).toFixed(2),
         };
     } catch (error) {
         console.error(error);
         return {
-            base_tx_amount: "Error", 
-            base_last_tx: "Error", 
-            dayActivity: "Error", 
-            weekActivity: "Error", 
-            monthActivity: "Error", 
+            base_tx_amount: "Error",
+            base_last_tx: "Error",
+            dayActivity: "Error",
+            weekActivity: "Error",
+            monthActivity: "Error",
             contractActivity: "Error",
             totalFee: "Error",
             totalExchangeAmount: "Error",

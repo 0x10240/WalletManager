@@ -20,7 +20,7 @@ import {
     getZkSyncBridge,
     exportToExcel,
     calculateScore,
-    getDebankValue
+    getDebankValue,
 } from "@utils"
 import {useEffect, useState} from "react";
 import './index.css';
@@ -38,6 +38,24 @@ import {
 } from "@ant-design/icons";
 
 const {TextArea} = Input;
+
+function getZkSyncLastTX(lastTxDatetime) {
+    const date = new Date(lastTxDatetime);
+    const offset = 8;
+    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
+    const now = new Date();
+    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
+    const diff = utc8Now - utc8Date;
+    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays > 0) {
+        return `${diffInDays} 天前`
+    } else if (diffInHours > 0) {
+        return `${diffInHours} 小时前`
+    } else {
+        return "刚刚"
+    }
+}
 
 function Zksync() {
     const [batchProgress, setBatchProgress] = useState(0);
@@ -63,7 +81,7 @@ function Zksync() {
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
       };
-    
+
     const getNftBalance = async (address) => {
         try {
         const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
@@ -92,7 +110,7 @@ function Zksync() {
           const contract = new ethers.Contract(contractAddress, ABI, provider);
           const result = await contract.balanceOf(address);
           return {zks_nft: result.toString()};
-        } 
+        }
         catch (error) {
             console.log(error);
             return {zks_nft: "Error"};
@@ -122,17 +140,17 @@ function Zksync() {
             console.error('Error fetching latest version:', error);
           });
       };
-  
+
       // Fetch the latest version on component mount
       fetchLatestVersion();
-  
+
       // Schedule fetching the latest version every 10 mins
       const interval = setInterval(fetchLatestVersion, 600000);
-  
+
       // Clean up the interval on component unmount
       return () => clearInterval(interval);
     }, []);
-  
+
     // Function to compare the latest version with the locally stored version
     const checkVersion = () => {
       const locallyStoredVersion = localStorage.getItem('version');
@@ -152,7 +170,7 @@ function Zksync() {
         localStorage.setItem('version', latestVersion);
       }
     };
-  
+
     // Call the checkVersion function on component mount and whenever the latestVersion state changes
     useEffect(checkVersion, [latestVersion]);
 
@@ -687,15 +705,15 @@ function Zksync() {
     }, []);
     useEffect(() => {
         const newData = [...data];
-      
+
         for (const item of newData) {
           setTimeout(async () => {
             const score = await calculateScore(item);
             item.zk_score = score;
-            
+
             // 检查是否所有数据的评分都已计算完成
             const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
-            
+
             if (allScoresCalculated) {
               setData(newData);
             }
@@ -900,23 +918,23 @@ function Zksync() {
                         if (text === null) {
                           return <Spin />;
                         }
-                  
+
                         // 计算对数值
                         const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                         // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-                  
+
                         // 归一化处理
                         const minValue = Math.log(1); // 最小值的对数
                         const maxValue = Math.log(100); // 最大值的对数
                         const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-                  
+
                         // 计算透明度
                         const minOpacity = 0.1; // 最小透明度
                         const maxOpacity = 1; // 最大透明度
                         const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-                  
-                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`; 
-                  
+
+                        const backgroundColor = `rgba(173, 216, 230, ${opacity})`;
+
                         return {
                           children: text,
                           props: {
@@ -935,26 +953,34 @@ function Zksync() {
                     align: "center",
                     render: (text, record) => {
                         let textColor = "inherit";
-                      
-                        if (text === null) {
+
+                        let last_text = getZkSyncLastTX(text)
+
+                        if (last_text === null) {
                           return <Spin />;
-                        } else if (text?.includes("天") && parseInt(text) > 7) {
+                        } else if (last_text?.includes("天") && parseInt(last_text) > 7) {
                             textColor = "red";
                         } else {
                           textColor = "#1677ff";
                         }
-                      
+
                         return (
                           <a
                             href={"https://explorer.zksync.io/address/" + record.address}
                             target={"_blank"}
                             style={{ color: textColor }}
                           >
-                            {text}
+                            {last_text}
                           </a>
                         );
                       },
-                    width: 70
+                    width: 70,
+                    sorter: (a, b) => {
+                        let timeA = a.zks2_last_tx ? new Date(a.zks2_last_tx).getTime() : 0;
+                        let timeB = b.zks2_last_tx ? new Date(b.zks2_last_tx).getTime() : 0;
+
+                        return timeA - timeB;
+                    },
                 },
                 {
                     title: "官方桥跨链Tx数",
@@ -1049,23 +1075,23 @@ function Zksync() {
                                 if (text === null) {
                                   return <Spin />;
                                 }
-                          
+
                                 // 计算对数值
                                 const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                                 // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-                          
+
                                 // 归一化处理
                                 const minValue = Math.log(1); // 最小值的对数
                                 const maxValue = Math.log(100); // 最大值的对数
                                 const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-                          
+
                                 // 计算透明度
                                 const minOpacity = 0.1; // 最小透明度
                                 const maxOpacity = 1; // 最大透明度
                                 const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-                          
-                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`; 
-                          
+
+                                const backgroundColor = `rgba(211, 211, 211, ${opacity})`;
+
                                 return {
                                   children: text,
                                   props: {
@@ -1099,23 +1125,23 @@ function Zksync() {
                 if (text === null) {
                   return <Spin />;
                 }
-          
+
                 // 计算对数值
                 const logarithmValue = Math.log(text); // 使用自然对数（以e为底）
                 // const logarithmValue = Math.log10(text); // 使用常用对数（以10为底）
-          
+
                 // 归一化处理
                 const minValue = Math.log(1); // 最小值的对数
                 const maxValue = Math.log(100); // 最大值的对数
                 const normalizedValue = (logarithmValue - minValue) / (maxValue - minValue);
-          
+
                 // 计算透明度
                 const minOpacity = 0.1; // 最小透明度
                 const maxOpacity = 1; // 最大透明度
                 const opacity = normalizedValue * (maxOpacity - minOpacity) + minOpacity;
-          
-                const backgroundColor = `rgba(240, 121, 78, ${opacity})`; 
-          
+
+                const backgroundColor = `rgba(240, 121, 78, ${opacity})`;
+
                 return {
                   children: text,
                   props: {
