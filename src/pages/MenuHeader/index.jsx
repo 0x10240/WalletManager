@@ -103,10 +103,10 @@ const MenuHeader = () => {
             label: 'Deposit',
             key: 'deposit',
         },
-        // {
-        //     label: 'Coffee',
-        //     key: 'coffee',
-        // },
+        {
+            label: '捐赠',
+            key: 'donate',
+        },
         {
             label: <a href="https://github.com/luoyeETH/MyWalletScan" target="_blank"
                       rel="noopener noreferrer"><GithubOutlined/></a>,

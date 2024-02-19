@@ -18,7 +18,7 @@ const BaseTasks = React.lazy(() => import("@pages/BaseTasks"));
 const Scroll = React.lazy(() => import("@pages/Scroll"));
 const Layer = React.lazy(() => import("@pages/Layer"));
 const Mirror = React.lazy(() => import("@pages/Mirror"));
-const Coffee = React.lazy(() => import("@pages/Coffee"));
+const Donate = React.lazy(() => import("@pages/Donate"));
 const Deposit = React.lazy(() => import("@pages/Deposit"));
 const router = [
     {
@@ -80,10 +80,10 @@ const router = [
                 path: '/mirror',
                 element: <Mirror/>,
             },
-            // {
-            //     path: '/coffee',
-            //     element: <Coffee/>,
-            // },
+            {
+                path: '/donate',
+                element: <Donate/>,
+            },
             {
                 path: '/deposit',
                 element: <Deposit/>,

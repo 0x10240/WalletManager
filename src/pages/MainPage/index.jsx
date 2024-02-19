@@ -10,7 +10,7 @@ import BaseTasks from "@pages/BaseTasks/index.jsx";
 import Scroll from "@pages/Scroll/index.jsx";
 import Layer from "@pages/Layer/index.jsx";
 import Mirror from "@pages/Mirror/index.jsx";
-import Coffee from "@pages/Coffee/index.jsx";
+import Donate from "@pages/Donate/index.jsx";
 import ZksyncTasks from "@pages/ZksyncTasks/index.jsx";
 import ZkRank from "@pages/ZkRank/index.jsx";
 import Deposit from "@pages/Deposit/index.jsx";
@@ -69,7 +69,7 @@ function MainPage() {
                         {location.pathname === "/scroll" && <Scroll/>}
                         {location.pathname === "/layer" && <Layer/>}
                         {location.pathname === "/mirror" && <Mirror/>}
-                        {/* {location.pathname === "/coffee" && <Coffee/>} */}
+                        {location.pathname === "/donate" && <Donate/>}
                         {location.pathname === "/deposit" && <Deposit/>}
                         {location.pathname === "/overview" && <Overview/>}
                     </div>

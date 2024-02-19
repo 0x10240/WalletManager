@@ -984,7 +984,7 @@ const Stark = () => {
             width: 80,
         },
         {
-            title: "StarkNet   🔴建议减少刷新次数",
+            title: "StarkNet",
             className: "starkNet",
             children: [
                 {
@@ -1322,9 +1322,8 @@ const Stark = () => {
                 </Modal>
                 <Spin spinning={tableLoading}>
                 <div style={{ width: '100%', margin: "0 auto" }}>
-                    <span className="highlight-text">Congratulations!  <a href="https://provisions.starknet.io/">点击跳转官方空投查询页面</a></span>
-
-                    {/* <span className="highlight-text">StarkNet官方已确认完成快照 <a href="https://x.com/StarknetFndn/status/1730532927405003219?s=20">点击查看原文</a></span> */}
+                    <span className="highlight-text">恭喜各位！StarkNet现已空投，本页面将在七天内下线或移动 <br/>如果这款工具对您有所帮助，并为您带来了额外的价值，那么您的支持将是我们最大的动力。维护和改进这个工具需要不少的时间和精力，您的捐赠将有助于确保我们能够持续提供更好的服务和功能。
+                    <br/>点击<a href="https://airdrop.dddd8.xyz/#/donate">这里</a>对本项目进行捐赠 / 对项目原作者<a href="https://bitboxtools.github.io/#/coffee">捐赠</a>。再次感谢您的支持，祝您使用愉快！  </span>
                 </div>
                     <Table className="grayed-out"
                         rowSelection={rowSelection}
