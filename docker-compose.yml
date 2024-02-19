@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  mywalletscan:
+    image: node:latest
+    container_name: mywalletscan
+    ports:
+      - "80:5175"
+    volumes:
+      - /home/code/MyWalletScan/:/home/code/MyWalletScan/
+    working_dir: /home/code/MyWalletScan/
+    command: sh -c "npm install && npm run dev"
+    restart: always
