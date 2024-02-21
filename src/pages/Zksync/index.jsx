@@ -9,6 +9,7 @@ import {
     Spin,
     Tag,
     Popconfirm,
+    Typography,
     Row, Col, InputNumber, Badge, message, Switch, Pagination
 } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
@@ -27,7 +28,9 @@ import './index.css';
 import {Layout, Card} from 'antd';
 import { ethers } from 'ethers';
 
+const {Link, Paragraph} = Typography;
 const {Content} = Layout;
+
 import {
     DeleteOutlined,
     DownloadOutlined,
@@ -36,26 +39,10 @@ import {
     SyncOutlined,
     UploadOutlined
 } from "@ant-design/icons";
+import { getLastTxTime } from '@/utils/utils.js';
+
 
 const {TextArea} = Input;
-
-function getZkSyncLastTX(lastTxDatetime) {
-    const date = new Date(lastTxDatetime);
-    const offset = 8;
-    const utc8Date = new Date(date.getTime() + offset * 3600 * 1000);
-    const now = new Date();
-    const utc8Now = new Date(now.getTime() + offset * 3600 * 1000);
-    const diff = utc8Now - utc8Date;
-    const diffInHours = Math.floor(diff / (1000 * 60 * 60));
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays > 0) {
-        return `${diffInDays} 天前`
-    } else if (diffInHours > 0) {
-        return `${diffInHours} 小时前`
-    } else {
-        return "刚刚"
-    }
-}
 
 function Zksync() {
     const [batchProgress, setBatchProgress] = useState(0);
@@ -72,7 +59,7 @@ function Zksync() {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tableLoading, setTableLoading] = useState(false);
-    const [hideColumn, setHideColumn] = useState(false);
+    const [hideColumn, setHideColumn] = useState(true);
     const [scoreData, setScoreData] = useState([]);
     const [tableHeight, setTableHeight] = useState(0);
     const [latestVersion, setLatestVersion] = useState('');
@@ -797,7 +784,7 @@ function Zksync() {
             title: (
                 <span>
                 钱包地址
-                    <span onClick={toggleHideColumn} style={{ marginLeft: 8, cursor: 'pointer' }}>
+                    <span onClick={toggleHideColumn} style={{marginLeft: 8, cursor: 'pointer'}}>
                         {getEyeIcon()}
                     </span>
                 </span>
@@ -806,15 +793,22 @@ function Zksync() {
             key: "address",
             align: "center",
             render: (text, record) => {
-                if (hideColumn) {
-                    return '***';
-                  }
-                return isRowSatisfyCondition(record) ?
-                    <div
-                        style={{backgroundColor: '#bbeefa', borderRadius: '5px'}}
-                    >
-                        {text}</div> : text ||
-                    <Spin/>;
+                let displayText = hideColumn ? text.slice(0, 6) + "..." + text.slice(-6) : text;
+                let content = (
+                    <Paragraph copyable={{ text: text }} style={{ margin: 0 }}>
+                        <Link href={`https://debank.com/profile/${text}`} target="_blank">{displayText}</Link>
+                    </Paragraph>
+                );
+
+                if (isRowSatisfyCondition(record)) {
+                    return (
+                        <div style={{ backgroundColor: '#bbeefa', borderRadius: '5px' }}>
+                            {content}
+                        </div>
+                    );
+                } else {
+                    return content || <Spin />;
+                }
             },
             width: 168
         },
@@ -952,12 +946,16 @@ function Zksync() {
                     key: "zks2_last_tx",
                     align: "center",
                     render: (text, record) => {
+                        if (record.zks2_last_tx == null) {
+                            return null;
+                        }
+
                         if (record.zks2_tx_amount < 1) {
-                            return '无'
+                            return '无';
                         }
 
                         let textColor = "inherit";
-                        let last_text = getZkSyncLastTX(text)
+                        let last_text = getLastTxTime(text)
 
                         if (last_text === null) {
                           return <Spin />;
