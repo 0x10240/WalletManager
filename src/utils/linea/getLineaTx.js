@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
+import {getEthPrice} from "@utils";
 
 function getDayNumber(d) {
     return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
@@ -15,21 +16,6 @@ function getWeekNumber(d) {
 
 function getMonthNumber(d) {
     return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1);
-}
-
-const getEthPrice = async () => {
-    try {
-        const options = {
-            method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
-        }
-        let response = await axios.request(options)
-        return response.data['USD']
-    } catch (e) {
-        console.log(e)
-        return "/"
-    }
-
 }
 
 async function getLineaTx(address, apiKey) {
@@ -66,22 +52,22 @@ async function getLineaTx(address, apiKey) {
         // console.log(tx, linea_last_tx, feeEth, dayActivity, weekActivity, monthActivity, contractActivity);
         return {
             linea_tx_amount: tx,
-            linea_last_tx: linea_last_tx, 
-            dayActivity: dayActivity, 
-            weekActivity: weekActivity, 
-            monthActivity: monthActivity, 
-            contractActivity: contractActivity, 
+            linea_last_tx: linea_last_tx,
+            dayActivity: dayActivity,
+            weekActivity: weekActivity,
+            monthActivity: monthActivity,
+            contractActivity: contractActivity,
             totalFee: parseFloat(feeEth).toFixed(4),
             totalExchangeAmount: parseFloat(toytalExchangeAmount).toFixed(2),
         };
     } catch (error) {
         console.error(error);
         return {
-            linea_tx_amount: "Error", 
-            linea_last_tx: "Error", 
-            dayActivity: "Error", 
-            weekActivity: "Error", 
-            monthActivity: "Error", 
+            linea_tx_amount: "Error",
+            linea_last_tx: "Error",
+            dayActivity: "Error",
+            weekActivity: "Error",
+            monthActivity: "Error",
             contractActivity: "Error",
             totalFee: "Error",
             totalExchangeAmount: "Error",

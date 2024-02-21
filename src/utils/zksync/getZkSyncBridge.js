@@ -1,5 +1,6 @@
 import axios from "axios";
 import {ethers} from "ethers";
+import {getEthPrice} from "@utils";
 
 function getDayNumber(d) {
     return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}-${d.getUTCDate()}`;
@@ -15,21 +16,6 @@ function getWeekNumber(d) {
 
 function getMonthNumber(d) {
     return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1);
-}
-
-const getEthPrice = async () => {
-    try {
-        const options = {
-            method: 'GET',
-            url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
-        }
-        let response = await axios.request(options)
-        return response.data['USD']
-    } catch (e) {
-        console.log(e)
-        return "/"
-    }
-
 }
 
 async function getAmount(address) {
