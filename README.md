@@ -1,6 +1,6 @@
 # MyWalletScan  
 
-> 基于https://github.com/wxtsky/MyWalletScan 修改
+> 基于 https://github.com/luoyeETH/MyWalletScan 修改
 
 ## 关于
 
@@ -27,7 +27,7 @@ npm run dev
 
 ## 使用
 
-https://airdrop.dddd8.xyz/
+https://airdrop.002022.xyz/
 
 
 
