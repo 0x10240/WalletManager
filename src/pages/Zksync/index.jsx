@@ -966,11 +966,11 @@ function Zksync() {
 
                         return (
                             <a
-                                href={"https://explorer.zksync.io/address/" + record.address}
+                                href={"https://era.zksync.network/address/" + record.address}
                                 target={"_blank"}
-                                style={{color: textColor}}
+                                style={{ color: textColor }}
                             >
-                                {last_text}
+                                {text}
                             </a>
                         );
                     },
