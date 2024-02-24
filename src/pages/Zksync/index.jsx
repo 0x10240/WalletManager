@@ -12,7 +12,7 @@ import {
     Typography,
     Row, Col, InputNumber, Badge, message, Switch, Pagination
 } from 'antd';
-import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
+import {EyeOutlined, EyeInvisibleOutlined} from "@ant-design/icons"
 import {
     getEthBalance,
     getTxCount,
@@ -26,7 +26,7 @@ import {
 import {useEffect, useState} from "react";
 import './index.css';
 import {Layout, Card} from 'antd';
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
 
 const {Link, Paragraph} = Typography;
 const {Content} = Layout;
@@ -39,7 +39,7 @@ import {
     SyncOutlined,
     UploadOutlined
 } from "@ant-design/icons";
-import { getLastTxTime } from '@/utils/utils.js';
+import {getLastTxTime} from '@/utils/utils.js';
 
 
 const {TextArea} = Input;
@@ -67,95 +67,94 @@ function Zksync() {
 
     const toggleHideColumn = () => {
         setHideColumn(!hideColumn);
-      };
+    };
 
     const getNftBalance = async (address) => {
         try {
-        const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
-        const ABI = [
-            {
-              inputs: [
+            const provider = new ethers.JsonRpcProvider('https://mainnet.era.zksync.io');
+            const ABI = [
                 {
-                  internalType: "address",
-                  name: "owner",
-                  type: "address",
+                    inputs: [
+                        {
+                            internalType: "address",
+                            name: "owner",
+                            type: "address",
+                        },
+                    ],
+                    name: "balanceOf",
+                    outputs: [
+                        {
+                            internalType: "uint256",
+                            name: "",
+                            type: "uint256",
+                        },
+                    ],
+                    stateMutability: "view",
+                    type: "function",
                 },
-              ],
-              name: "balanceOf",
-              outputs: [
-                {
-                  internalType: "uint256",
-                  name: "",
-                  type: "uint256",
-                },
-              ],
-              stateMutability: "view",
-              type: "function",
-            },
-          ];
-          const contractAddress = "0xd07180c423f9b8cf84012aa28cc174f3c433ee29";
-          const contract = new ethers.Contract(contractAddress, ABI, provider);
-          const result = await contract.balanceOf(address);
-          return {zks_nft: result.toString()};
-        }
-        catch (error) {
+            ];
+            const contractAddress = "0xd07180c423f9b8cf84012aa28cc174f3c433ee29";
+            const contract = new ethers.Contract(contractAddress, ABI, provider);
+            const result = await contract.balanceOf(address);
+            return {zks_nft: result.toString()};
+        } catch (error) {
             console.log(error);
             return {zks_nft: "Error"};
         }
     }
 
     const getEyeIcon = () => {
-    if (hideColumn) {
-        return <EyeInvisibleOutlined />;
-    }
-    return <EyeOutlined />;
+        if (hideColumn) {
+            return <EyeInvisibleOutlined/>;
+        }
+        return <EyeOutlined/>;
     };
 
     useEffect(() => {
-      // Function to fetch the latest version from GitHub API
-      const fetchLatestVersion = () => {
-        const url = "https://api.github.com/repos/luoyeETH/MyWalletScan/commits?per_page=1";
-        fetch(url)
-          .then(res => res.json())
-          .then(res => {
-            const version = res[0].sha;
-            const message = res[0].commit.message;
-            setLatestVersion(version);
-            setCommitMessage(message);
-          })
-          .catch(error => {
-            console.error('Error fetching latest version:', error);
-          });
-      };
+        // Function to fetch the latest version from GitHub API
+        const fetchLatestVersion = () => {
+            const url = "https://api.github.com/repos/luoyeETH/MyWalletScan/commits?per_page=1";
+            fetch(url)
+                .then(res => res.json())
+                .then(res => {
+                    const version = res[0].sha;
+                    const message = res[0].commit.message;
+                    setLatestVersion(version);
+                    setCommitMessage(message);
+                })
+                .catch(error => {
+                    console.error('Error fetching latest version:', error);
+                });
+        };
 
-      // Fetch the latest version on component mount
-      fetchLatestVersion();
+        // Fetch the latest version on component mount
+        fetchLatestVersion();
 
-      // Schedule fetching the latest version every 10 mins
-      const interval = setInterval(fetchLatestVersion, 600000);
+        // Schedule fetching the latest version every 10 mins
+        const interval = setInterval(fetchLatestVersion, 600000);
 
-      // Clean up the interval on component unmount
-      return () => clearInterval(interval);
+        // Clean up the interval on component unmount
+        return () => clearInterval(interval);
     }, []);
 
     // Function to compare the latest version with the locally stored version
     const checkVersion = () => {
-      const locallyStoredVersion = localStorage.getItem('version');
-      if (locallyStoredVersion && latestVersion && locallyStoredVersion !== latestVersion) {
-        // Perform actions when a new version is available
-        notification.info({
-            message: '检查到页面有新的版本! 请刷新',
-            description: (
-                <div>
-                    {commitMessage}
-                    <br />
-                    {locallyStoredVersion.substring(0, 7)} -{'>'} {latestVersion.substring(0, 7)}
-                </div>
-            ),
-            duration: 0,
-        });
-        localStorage.setItem('version', latestVersion);
-      }
+        const locallyStoredVersion = localStorage.getItem('version');
+        if (locallyStoredVersion && latestVersion && locallyStoredVersion !== latestVersion) {
+            // Perform actions when a new version is available
+            notification.info({
+                message: '检查到页面有新的版本! 请刷新',
+                description: (
+                    <div>
+                        {commitMessage}
+                        <br/>
+                        {locallyStoredVersion.substring(0, 7)} -{'>'} {latestVersion.substring(0, 7)}
+                    </div>
+                ),
+                duration: 0,
+            });
+            localStorage.setItem('version', latestVersion);
+        }
     };
 
     // Call the checkVersion function on component mount and whenever the latestVersion state changes
@@ -165,12 +164,12 @@ function Zksync() {
         const handleResize = () => {
             setTableHeight(window.innerHeight - 210); // 减去其他组件的高度，如页眉、页脚等
         };
-    window.addEventListener('resize', handleResize);
-    handleResize();
+        window.addEventListener('resize', handleResize);
+        handleResize();
 
-    return () => {
-        window.removeEventListener('resize', handleResize);
-    };
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     useEffect(() => {
@@ -533,8 +532,8 @@ function Zksync() {
             const addressLines = values.addresses.split("\n");
             const wallets = addressLines.map(line => {
                 const [address, name] = line.split(",");
-                return { address: address.trim(), name: name ? name.trim() : ''  };
-              });
+                return {address: address.trim(), name: name ? name.trim() : ''};
+            });
             const addresses = wallets.map(obj => obj.address);
             const names = wallets.map(obj => obj.name);
             setBatchLength(addresses.length);
@@ -694,19 +693,19 @@ function Zksync() {
         const newData = [...data];
 
         for (const item of newData) {
-          setTimeout(async () => {
-            const score = await calculateScore(item);
-            item.zk_score = score;
+            setTimeout(async () => {
+                const score = await calculateScore(item);
+                item.zk_score = score;
 
-            // 检查是否所有数据的评分都已计算完成
-            const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
+                // 检查是否所有数据的评分都已计算完成
+                const allScoresCalculated = newData.every(item => item.zk_score !== undefined);
 
-            if (allScoresCalculated) {
-              setData(newData);
-            }
-          }, 0);
+                if (allScoresCalculated) {
+                    setData(newData);
+                }
+            }, 0);
         }
-      }, [scoreData]);
+    }, [scoreData]);
     const handleCancel = () => {
         setIsModalVisible(false);
     };
@@ -766,11 +765,11 @@ function Zksync() {
                     <>
                         <Tag color="blue" onClick={() => setEditingKey(record.key)}>
                             {text}
-                            </Tag>
-                            {!text && (
+                        </Tag>
+                        {!text && (
                             <Button
                                 shape="circle"
-                                icon={<EditOutlined />}
+                                icon={<EditOutlined/>}
                                 size="small"
                                 onClick={() => setEditingKey(record.key)}
                             />
@@ -795,19 +794,19 @@ function Zksync() {
             render: (text, record) => {
                 let displayText = hideColumn ? text.slice(0, 6) + "..." + text.slice(-6) : text;
                 let content = (
-                    <Paragraph copyable={{ text: text }} style={{ margin: 0 }}>
+                    <Paragraph copyable={{text: text}} style={{margin: 0}}>
                         <Link href={`https://debank.com/profile/${text}`} target="_blank">{displayText}</Link>
                     </Paragraph>
                 );
 
                 if (isRowSatisfyCondition(record)) {
                     return (
-                        <div style={{ backgroundColor: '#bbeefa', borderRadius: '5px' }}>
+                        <div style={{backgroundColor: '#bbeefa', borderRadius: '5px'}}>
                             {content}
                         </div>
                     );
                 } else {
-                    return content || <Spin />;
+                    return content || <Spin/>;
                 }
             },
             width: 168
@@ -910,7 +909,7 @@ function Zksync() {
                     sorter: (a, b) => a.zks2_tx_amount - b.zks2_tx_amount,
                     render: (text, record) => {
                         if (text === null) {
-                          return <Spin />;
+                            return <Spin/>;
                         }
 
                         // 计算对数值
@@ -930,16 +929,16 @@ function Zksync() {
                         const backgroundColor = `rgba(173, 216, 230, ${opacity})`;
 
                         return {
-                          children: text,
-                          props: {
-                            style: {
-                              background: backgroundColor,
+                            children: text,
+                            props: {
+                                style: {
+                                    background: backgroundColor,
+                                },
                             },
-                          },
                         };
-                      },
-                      width: 40
                     },
+                    width: 40
+                },
                 {
                     title: "最后交易",
                     dataIndex: "zks2_last_tx",
@@ -958,23 +957,23 @@ function Zksync() {
                         let last_text = getLastTxTime(text)
 
                         if (last_text === null) {
-                          return <Spin />;
+                            return <Spin/>;
                         } else if (last_text?.includes("天") && parseInt(last_text) > 7) {
                             textColor = "red";
                         } else {
-                          textColor = "#1677ff";
+                            textColor = "#1677ff";
                         }
 
                         return (
-                          <a
-                            href={"https://explorer.zksync.io/address/" + record.address}
-                            target={"_blank"}
-                            style={{ color: textColor }}
-                          >
-                            {last_text}
-                          </a>
+                            <a
+                                href={"https://explorer.zksync.io/address/" + record.address}
+                                target={"_blank"}
+                                style={{color: textColor}}
+                            >
+                                {last_text}
+                            </a>
                         );
-                      },
+                    },
                     width: 70,
                     sorter: (a, b) => {
                         let timeA = a.zks2_last_tx !== "无交易" ? new Date(a.zks2_last_tx).getTime() : 0;
@@ -1056,6 +1055,7 @@ function Zksync() {
                             key: "monthActivity",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
+                            sorter: (a, b) => a.monthActivity * 100 + a.weekActivity * 10 + a.dayActivity - b.monthActivity * 100 - a.weekActivity * 10 - b.dayActivity,
                             width: 34
                         },
                         {
@@ -1064,7 +1064,8 @@ function Zksync() {
                             key: "contractActivity",
                             align: "center",
                             render: (text, record) => (text === null ? <Spin/> : text),
-                            width: 70
+                            width: 70,
+                            sorter: (a, b) => a.contractActivity - b.contractActivity
                         },
                         {
                             title: "金额(U)",
@@ -1074,7 +1075,7 @@ function Zksync() {
                             sorter: (a, b) => a.totalExchangeAmount - b.totalExchangeAmount,
                             render: (text, record) => {
                                 if (text === null) {
-                                  return <Spin />;
+                                    return <Spin/>;
                                 }
 
                                 // 计算对数值
@@ -1094,16 +1095,16 @@ function Zksync() {
                                 const backgroundColor = `rgba(211, 211, 211, ${opacity})`;
 
                                 return {
-                                  children: text,
-                                  props: {
-                                    style: {
-                                      background: backgroundColor,
+                                    children: text,
+                                    props: {
+                                        style: {
+                                            background: backgroundColor,
+                                        },
                                     },
-                                  },
                                 };
-                              },
-                              width: 70
                             },
+                            width: 70
+                        },
                         {
                             title: "FeeΞ",
                             dataIndex: "totalFee",
@@ -1124,7 +1125,7 @@ function Zksync() {
             sorter: (a, b) => a.zk_score - b.zk_score,
             render: (text, record) => {
                 if (text === null) {
-                  return <Spin />;
+                    return <Spin/>;
                 }
 
                 // 计算对数值
@@ -1144,14 +1145,14 @@ function Zksync() {
                 const backgroundColor = `rgba(240, 121, 78, ${opacity})`;
 
                 return {
-                  children: text,
-                  props: {
-                    style: {
-                      background: backgroundColor,
+                    children: text,
+                    props: {
+                        style: {
+                            background: backgroundColor,
+                        },
                     },
-                  },
                 };
-              },
+            },
             width: 50
         },
         {
@@ -1220,7 +1221,8 @@ function Zksync() {
                 >
                     <Form form={batchForm} layout="vertical">
                         <Form.Item label="地址" name="addresses" rules={[{required: true}]}>
-                            <TextArea placeholder="请输入地址，每行一个  要添加备注时放在地址后以逗号(,)间隔" style={{width: "500px", height: "200px"}}/>
+                            <TextArea placeholder="请输入地址，每行一个  要添加备注时放在地址后以逗号(,)间隔"
+                                      style={{width: "500px", height: "200px"}}/>
                         </Form.Item>
                     </Form>
                 </Modal>
@@ -1294,7 +1296,7 @@ function Zksync() {
                         columns={columns}
                         scroll={{
                             y: tableHeight
-                          }}
+                        }}
                         // sticky
                         summary={pageData => {
                             let ethBalance = 0;
@@ -1311,20 +1313,20 @@ function Zksync() {
                             let avgAmount = 0;
                             let avgScore = 0;
                             pageData.forEach(({
-                                eth_balance,
-                                zks1_balance,
-                                zks2_balance,
-                                zks2_usdcBalance,
-                                zks_eraETH,
-                                zks2_tx_amount,
-                                totalFee,
-                                dayActivity,
-                                weekActivity,
-                                monthActivity,
-                                contractActivity,
-                                totalExchangeAmount,
-                                zk_score
-                            }) => {
+                                                  eth_balance,
+                                                  zks1_balance,
+                                                  zks2_balance,
+                                                  zks2_usdcBalance,
+                                                  zks_eraETH,
+                                                  zks2_tx_amount,
+                                                  totalFee,
+                                                  dayActivity,
+                                                  weekActivity,
+                                                  monthActivity,
+                                                  contractActivity,
+                                                  totalExchangeAmount,
+                                                  zk_score
+                                              }) => {
                                 ethBalance += Number(eth_balance);
                                 zks1Balance += Number(zks1_balance);
                                 zks2Balance += Number(zks2_balance);
@@ -1346,7 +1348,8 @@ function Zksync() {
                             avgContract = avgContract / pageData.length;
                             avgAmount = avgAmount / pageData.length;
                             avgScore = avgScore / pageData.length;
-                            const emptyCells = Array(5).fill().map((_, index) => <Table.Summary.Cell key={index} index={index + 11}/>);
+                            const emptyCells = Array(5).fill().map((_, index) => <Table.Summary.Cell key={index}
+                                                                                                     index={index + 11}/>);
 
                             return (
                                 <>
