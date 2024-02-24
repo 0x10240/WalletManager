@@ -994,12 +994,16 @@ function Zksync() {
                     },
                 },
                 {
-                    title: <a href="https://docs.zksync.io/build/developer-reference/account-abstraction.html#paymasters" 
-                    target="_blank" rel="noopener noreferrer">Paymaster</a>,
+                    title: <a href="https://docs.zksync.io/build/developer-reference/account-abstraction.html#paymasters"
+                        target="_blank" rel="noopener noreferrer">Paymaster</a>,
                     dataIndex: "paymasterCount",
                     key: "paymasterCount",
                     align: "center",
-                    render: (text, record) => (text === null ? <Spin/> : text),
+                    render: (text, record) => (
+                        <span style={{ color: text === 0 ? 'red' : 'inherit' }}>
+                            {text === null ? <Spin /> : text}
+                        </span>
+                        ),
                     width: 60
                 },
                 {
