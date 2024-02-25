@@ -894,6 +894,7 @@ function Zksync() {
                     key: "zks2_balance",
                     align: "center",
                     render: (text, record) => (text === null ? <Spin/> : text),
+                    sorter: (a, b) => a.zks2_balance - b.zks2_balance,
                     width: 60
                 },
                 {
@@ -981,7 +982,7 @@ function Zksync() {
                                 target={"_blank"}
                                 style={{ color: textColor }}
                             >
-                                {text}
+                                {last_text}
                             </a>
                         );
                     },
