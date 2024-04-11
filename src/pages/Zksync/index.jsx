@@ -788,7 +788,8 @@ function Zksync() {
                     </>
                 );
             },
-            width: 75
+            width: 75,
+            sorter:  (a, b) => a.name - b.name
         },
         {
             title: (

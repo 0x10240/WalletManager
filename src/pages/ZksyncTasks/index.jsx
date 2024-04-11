@@ -34,6 +34,7 @@ import {
     SyncOutlined,
     UploadOutlined
 } from "@ant-design/icons";
+import {getLastTxTime} from "@utils/utils.js";
 
 const {TextArea} = Input;
 
@@ -613,7 +614,8 @@ function ZksyncTasks() {
             align: "center",
             render: (text, record) => {
                 let textColor = "inherit";
-              
+                let last_text = getLastTxTime(text)
+
                 if (text === null) {
                   return <Spin />;
                 } else if (text?.includes("天") && parseInt(text) > 7) {
@@ -628,7 +630,7 @@ function ZksyncTasks() {
                     target={"_blank"}
                     style={{ color: textColor }}
                   >
-                    {text}
+                    {last_text}
                   </a>
                 );
               },

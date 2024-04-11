@@ -122,7 +122,7 @@ const MenuHeader = () => {
             ],
         },
         {
-            label: <a href="https://github.com/luoyeETH/MyWalletScan" target="_blank"
+            label: <a href="https://github.com/0x10240/WalletManager" target="_blank"
                       rel="noopener noreferrer"><GithubOutlined/></a>,
             key: 'github',
         },
