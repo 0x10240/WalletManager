@@ -22,7 +22,7 @@ function getMonthNumber(d) {
 }
 
 async function getLayerData(address) {
-    const url = `http://l0.002022.xyz/layerzero_data/?address=${address}`
+    const url = `https://l0.002022.xyz/layerzero_data/?address=${address}`
     let response = await axios.get(url);
 
     Object.keys(chainMap).forEach(key => {
