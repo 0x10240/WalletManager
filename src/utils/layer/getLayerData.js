@@ -41,6 +41,9 @@ async function getLayerData(address) {
         }
 
         L0Data[srcChainKey]++;
+        if (tx.dstChainKey === "aptos") {
+            L0Data["aptos"]++;
+        }
 
         const created = tx.created;
 
