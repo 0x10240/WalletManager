@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 
 async function getScrollInfo(address) {
     try {
-        let url = `https://blockscout.scroll.io/api?module=account&action=balance&address=${address}`;
+        let url = `https://api.scrollscan.com/api?module=account&action=balance&address=${address}`;
         const response = await axios.get(url);
         const balance = parseFloat(ethers.formatEther(response.data.result)).toFixed(4);
         return {balance: balance};
