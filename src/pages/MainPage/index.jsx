@@ -17,6 +17,7 @@ import Deposit from "@pages/Deposit/index.jsx";
 import Notice from "@components/Notice/index.jsx";
 import StarkTasks from "@pages/StarkTasks/index.jsx";
 import Overview from "@pages/Overview/index.jsx";
+import Bera from "@pages/Bera/index.jsx";
 
 function MainPage() {
     const location = useLocation()
@@ -68,6 +69,7 @@ function MainPage() {
                         {location.pathname === "/baseTasks" && <BaseTasks/>}
                         {location.pathname === "/scroll" && <Scroll/>}
                         {location.pathname === "/layer" && <Layer/>}
+                        {location.pathname === "/bera" && <Bera/>}
                         {location.pathname === "/mirror" && <Mirror/>}
                         {location.pathname === "/donate" && <Donate/>}
                         {location.pathname === "/deposit" && <Deposit/>}

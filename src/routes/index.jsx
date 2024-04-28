@@ -20,6 +20,8 @@ const Layer = React.lazy(() => import("@pages/Layer"));
 const Mirror = React.lazy(() => import("@pages/Mirror"));
 const Donate = React.lazy(() => import("@pages/Donate"));
 const Deposit = React.lazy(() => import("@pages/Deposit"));
+const Bera = React.lazy(() => import("@pages/Bera"));
+
 const router = [
     {
         path: '/', element: <MainPage/>,
@@ -87,7 +89,11 @@ const router = [
             {
                 path: '/deposit',
                 element: <Deposit/>,
-            }
+            },
+            {
+                path: '/bera',
+                element: <Bera/>,
+            },
         ]
     },
     {path: "*", element: <Navigate to="/"/>},

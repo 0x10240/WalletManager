@@ -100,9 +100,13 @@ const MenuHeader = () => {
             key: 'layer',
         },
         {
-            label: 'Mirror',
-            key: 'mirror',
+            label: 'BeraChain',
+            key: 'bera',
         },
+        // {
+        //     label: 'Mirror',
+        //     key: 'mirror',
+        // },
         {
             label: 'Deposit',
             key: 'deposit',
@@ -114,11 +118,11 @@ const MenuHeader = () => {
                 {
                     label: 'Stark',
                     key: 'stark',
-                },
-                {
-                    label: 'StarkTasks',
-                    key: 'starkTasks',
-                },
+                }
+                // {
+                //     label: 'StarkTasks',
+                //     key: 'starkTasks',
+                // },
             ],
         },
         {
