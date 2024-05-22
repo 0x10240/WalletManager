@@ -2,13 +2,14 @@ import {useEffect, useState} from "react";
 import {
     Button, Card, Form, Input, Layout, Modal, notification, Popconfirm, Space, Spin, Table, Tag, Typography
 } from "antd";
-import {exportToExcel, getLayerData} from "@utils";
+import {checkSybil, exportToExcel, getLayerData} from "@utils";
 import {
     DeleteOutlined,
     DownloadOutlined,
     EditOutlined,
     EyeInvisibleOutlined,
     EyeOutlined,
+    FileSearchOutlined,
     PlusOutlined,
     SlidersOutlined,
     SyncOutlined,
@@ -147,6 +148,39 @@ const Layer = () => {
             form.resetFields();
         }
     }
+    const handleCheck = async () => {
+        if (!selectedKeys.length) {
+            notification.error({
+                message: "错误",
+                description: "请先选择要查询的地址",
+            }, 2);
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const newData = [...data];
+            for (let key of selectedKeys) {
+                const index = newData.findIndex(item => item.key === key);
+                if (index !== -1) {
+                    const item = newData[index];
+                    item.sybil = false;
+                    setData([...newData]);
+                    const { sybil } = await checkSybil(item.address);
+                    item.sybil = sybil;
+                    setData([...newData]);
+                    localStorage.setItem('l0_addresses', JSON.stringify(data));
+                }
+            }
+        } catch (error) {
+            notification.error({
+                message: "错误",
+                description: error.message,
+            }, 2);
+        } finally {
+            setIsLoading(false);
+            setSelectedKeys([]);
+        }
+    };
     const handleRefresh = async () => {
         if (!selectedKeys.length) {
             notification.error({
@@ -292,11 +326,13 @@ const Layer = () => {
         align: 'center',
         render: (text, record) => {
             let displayText = hideColumn ? text.slice(0, 6) + "..." + text.slice(-6) : text;
+            displayText = record.sybil ? <span style={{ color: 'red' }} dangerouslySetInnerHTML={{ __html: `${text}💥` }}></span> : text;
             return (
                 <Paragraph copyable={{text: text}} style={{margin: 0}}>
                     <Link href={`https://layerzeroscan.com/address/${text}`} target="_blank">{displayText}</Link>
                 </Paragraph>
             );
+            // return displayText;
         },
         width: 350,
     }, {
@@ -517,6 +553,11 @@ const Layer = () => {
                             style={{width: "15%"}}
                             icon={<SyncOutlined/>}>
                         刷新选中地址
+                    </Button>
+                    <Button type="primary" danger onClick={handleCheck} loading={isLoading} size={"large"}
+                            style={{width: "15%"}}
+                            icon={<FileSearchOutlined />}>
+                        查询女巫(非本地)
                     </Button>
                     <Button type="primary" onClick={() => {
                         setIsModalVisible(true)
