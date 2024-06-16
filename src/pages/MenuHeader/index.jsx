@@ -45,52 +45,66 @@ const MenuHeader = () => {
             label: 'Overview',
             key: 'overview',
         },
+
         {
-            label: <span>zkSync <CaretDownOutlined /></span>,
-            key: 'zks',
-            children: [
-                {
-                    label: 'zkSync',
-                    key: 'zksync',
-                },
-                {
-                    label: 'zkSyncTasks',
-                    key: 'zksyncTasks',
-                },
-                {
-                    label: 'zkRank',
-                    key: 'zkRank',
-                },
-            ],
+            label: 'zkSync',
+            key: 'zksync',
         },
+
+        // {
+        //     label: <span>zkSync <CaretDownOutlined /></span>,
+        //     key: 'zks',
+        //     children: [
+        //         {
+        //             label: 'zkSync',
+        //             key: 'zksync',
+        //         },
+        //         {
+        //             label: 'zkSyncTasks',
+        //             key: 'zksyncTasks',
+        //         },
+        //         {
+        //             label: 'zkRank',
+        //             key: 'zkRank',
+        //         },
+        //     ],
+        // },
+
         {
-            label: <span>Linea <CaretDownOutlined /></span>,
-            key: 'lin',
-            children: [
-                {
-                    label: 'Linea',
-                    key: 'linea',
-                },
-                {
-                    label: 'LineaTasks',
-                    key: 'lineaTasks',
-                },
-            ],
+            label: 'Linea',
+            key: 'linea',
         },
-        {
-            label: <span>Base <CaretDownOutlined /></span>,
-            key: 'basechain',
-            children: [
-                {
-                    label: 'Base',
-                    key: 'base',
-                },
-                {
-                    label: 'BaseTasks',
-                    key: 'baseTasks',
-                },
-            ],
-        },
+
+        // {
+        //     label: <span>Linea <CaretDownOutlined /></span>,
+        //     key: 'lin',
+        //     children: [
+        //         {
+        //             label: 'Linea',
+        //             key: 'linea',
+        //         },
+        //         {
+        //             label: 'LineaTasks',
+        //             key: 'lineaTasks',
+        //         },
+        //     ],
+        // },
+
+        // {
+        //     label: <span>Base <CaretDownOutlined /></span>,
+        //     key: 'basechain',
+        //     children: [
+        //         {
+        //             label: 'Base',
+        //             key: 'base',
+        //         },
+        //         {
+        //             label: 'BaseTasks',
+        //             key: 'baseTasks',
+        //         },
+        //     ],
+        // },
+
         {
             label: 'Scroll',
             key: 'scroll',
